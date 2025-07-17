@@ -1,0 +1,97 @@
+{
+  "name": "msw-request-assertion",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.mjs"
+      }
+    },
+    "./vitest": {
+      "require": {
+        "types": "./dist/cjs/vitest/index.d.cts",
+        "default": "./dist/cjs/vitest/index.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/vitest/index.d.ts",
+        "default": "./dist/esm/vitest/index.mjs"
+      }
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "vitest": [
+        "./dist/esm/vitest/index.d.ts"
+      ],
+      "*": [
+        "./dist/esm/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "vitest run --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marklai1998/msw-request-assertion"
+  },
+  "keywords": [
+    "pino",
+    "datadog",
+    "transport",
+    "logging",
+    "winston",
+    "bunyan",
+    "consola"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marklai1998/msw-request-assertion/issues"
+  },
+  "homepage": "https://github.com/marklai1998/msw-request-assertion#readme",
+  "devDependencies": {
+    "@biomejs/biome": "2.0.6",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@faker-js/faker": "9.9.0",
+    "@types/node": "22.16.0",
+    "@vitest/coverage-v8": "3.2.4",
+    "lefthook": "1.11.16",
+    "msw": "^2.8.4",
+    "rollup": "4.44.2",
+    "rollup-plugin-dts": "6.2.1",
+    "rollup-plugin-esbuild": "6.2.1",
+    "rollup-plugin-node-externals": "8.0.1",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "typescript": "5.8.3",
+    "vitest": "3.2.4",
+    "wretch": "^2.11.0"
+  },
+  "peerDependencies": {
+    "msw": "^2.0.0",
+    "vitest": "^3.2.0"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
+  },
+  "packageManager": "pnpm@10.12.4",
+  "engines": {
+    "node": ">=18"
+  }
+}

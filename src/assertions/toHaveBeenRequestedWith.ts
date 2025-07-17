@@ -11,12 +11,14 @@ export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
   const queryAssertionCalls = received.queryAssertion.mock.calls;
   const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
   const headersAssertionCalls = received.headersAssertion.mock.calls;
+  const hashAssertionCalls = received.hashAssertion.mock.calls;
 
   const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
     bodyAssertionCall,
     queryAssertionCall: queryAssertionCalls[idx],
     jsonBodyAssertionCall: jsonBodyAssertionCalls[idx],
     headersAssertionCall: headersAssertionCalls[idx],
+    hashAssertionCall: hashAssertionCalls[idx],
   }));
 
   const { isNot } = this;
@@ -27,6 +29,7 @@ export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
       let isJsonBodyMatch = true;
       let isQueryMatch = true;
       let isHeadersMatch = true;
+      let isHashMatch = true;
 
       if ("jsonBody" in expected) {
         isJsonBodyMatch = equals(
@@ -47,7 +50,17 @@ export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
         isHeadersMatch = equals(expected.headers, call.headersAssertionCall[0]);
       }
 
-      return isBodyMatch && isJsonBodyMatch && isQueryMatch && isHeadersMatch;
+      if ("hash" in expected) {
+        isHashMatch = equals(expected.hash, call.hashAssertionCall[0]);
+      }
+
+      return (
+        isBodyMatch &&
+        isJsonBodyMatch &&
+        isQueryMatch &&
+        isHeadersMatch &&
+        isHashMatch
+      );
     }),
     // TODO: message_call
     message: () => `${received} is${isNot ? " not" : ""} foo`,

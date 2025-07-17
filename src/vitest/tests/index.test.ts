@@ -61,4 +61,10 @@ describe("test", () => {
     });
     expect(myHandler).toHaveBeenRequestedWithQuery(`?foo=bar`);
   });
+
+  it("with hash", async () => {
+    await wretch("http://127.0.0.1").url("/foo#test-hash").post("HELLO").json();
+
+    expect(myHandler).toHaveBeenRequestedWithHash("#test-hash");
+  });
 });

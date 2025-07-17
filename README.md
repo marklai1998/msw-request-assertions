@@ -2,13 +2,14 @@
 
 ## TODO
 
-- [] Handle `expect.any`
-- [] Error message
-- [] Separate partial matcher and full match
+- [ ] Handle `expect.any`
+- [ ] Error message
+- [ ] Input checks and types
+- [ ] Readme
 
 ### Matchers
 
-- [] Gql
-- [] Called with hash
-- [] Called times
-- [] Nth called with
+- [ ] Gql
+- [x] Called with hash
+- [ ] Called times
+- [ ] N-th called with

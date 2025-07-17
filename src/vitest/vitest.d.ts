@@ -6,6 +6,7 @@ interface CustomMatchers<R = unknown> {
   toHaveBeenRequestedWithHeaders: (payload: unknown) => R;
   toHaveBeenRequestedWithQuery: (payload: unknown) => R;
   toHaveBeenRequestedWith: (payload: unknown) => R;
+  toHaveBeenRequestedWithHash: (payload: unknown) => R;
 }
 
 declare module "vitest" {

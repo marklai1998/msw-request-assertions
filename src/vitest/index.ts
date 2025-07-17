@@ -7,6 +7,10 @@ import {
   toHaveBeenRequestedWithBody,
 } from "../assertions/toHaveBeenRequestedWithBody.js";
 import {
+  initToHaveBeenRequestedWithHash,
+  toHaveBeenRequestedWithHash,
+} from "../assertions/toHaveBeenRequestedWithHash.js";
+import {
   initToHaveBeenRequestedWithHeader,
   toHaveBeenRequestedWithHeaders,
 } from "../assertions/toHaveBeenRequestedWithHeaders.js";
@@ -34,6 +38,7 @@ for (const key in http) {
     initToHaveBeenRequestedWithJsonBody,
     initToHaveBeenRequestedWithHeader,
     initToHaveBeenRequestedWithQuery,
+    initToHaveBeenRequestedWithHash,
   )(original);
 }
 
@@ -43,4 +48,5 @@ expect.extend({
   toHaveBeenRequestedWithHeaders,
   toHaveBeenRequestedWithQuery,
   toHaveBeenRequestedWith,
+  toHaveBeenRequestedWithHash,
 });

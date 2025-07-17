@@ -13,6 +13,6 @@
 
 - [ ] Gql
 - [x] Called with hash
-- [ ] Called
-- [ ] Called times
+- [x] Called
+- [x] Called times
 - [ ] N-th called with

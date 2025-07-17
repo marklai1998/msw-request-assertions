@@ -4,6 +4,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    mockReset: true,
     coverage: {
       provider: "v8",
       reporter: ["lcov", "text"],

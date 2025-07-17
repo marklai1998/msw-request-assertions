@@ -1,6 +1,11 @@
 import { http } from "msw";
 import { compose } from "ramda";
 import { expect, type Mock } from "vitest";
+import {
+  initToHaveBeenCalled,
+  toHaveBeenCalled,
+} from "../assertions/toHaveBeenCalled.js";
+import { toHaveBeenCalledTimes } from "../assertions/toHaveBeenCalledTimes.js";
 import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith.js";
 import {
   initToHaveBeenRequestedWithBody,
@@ -34,6 +39,7 @@ declare module "msw" {
 for (const key in http) {
   const original = http[key as keyof typeof http];
   http[key as keyof typeof http] = compose(
+    initToHaveBeenCalled,
     initToHaveBeenRequestedWithBody,
     initToHaveBeenRequestedWithJsonBody,
     initToHaveBeenRequestedWithHeader,
@@ -43,6 +49,8 @@ for (const key in http) {
 }
 
 expect.extend({
+  toHaveBeenCalled,
+  toHaveBeenCalledTimes,
   toHaveBeenRequestedWithBody,
   toHaveBeenRequestedWithJsonBody,
   toHaveBeenRequestedWithHeaders,

@@ -50,13 +50,13 @@
     "url": "git+https://github.com/marklai1998/msw-request-assertion"
   },
   "keywords": [
-    "pino",
-    "datadog",
-    "transport",
-    "logging",
-    "winston",
-    "bunyan",
-    "consola"
+    "msw",
+    "vitest",
+    "vitest-plugin",
+    "api",
+    "mock",
+    "mocking",
+    "testing"
   ],
   "license": "MIT",
   "bugs": {

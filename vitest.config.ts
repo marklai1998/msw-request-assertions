@@ -10,5 +10,6 @@ export default defineConfig({
       include: ["src"],
       exclude: ["**/tests/**", "**/*.d.ts"],
     },
+    setupFiles: ["./testHelpers/testSetup.js"],
   },
 });

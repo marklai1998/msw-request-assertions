@@ -13,6 +13,7 @@ export const initToHaveBeenRequestedWithQuery =
   (original: HttpRequestHandler): HttpRequestHandler =>
   (path, resolver, options, ...rest) => {
     const queryAssertion = vi.fn();
+    queryAssertion.mockName(typeof path === "string" ? path : path.source);
 
     const newResolver: typeof resolver = async (info, ...args) => {
       const { request } = info;
@@ -48,7 +49,7 @@ export const toHaveBeenRequestedWithQuery: assertFn = function (
   return {
     // TODO: expect.any handling
     pass: calls.some((call) => equals(call[0], expected)),
-    // TODO: message
-    message: () => `${received} is${isNot ? " not" : ""} foo`,
+    message: () =>
+      `Expected ${received.queryAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with query ${this.utils.printExpected(expected)}`,
   };
 };

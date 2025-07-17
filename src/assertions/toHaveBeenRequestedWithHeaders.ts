@@ -13,6 +13,7 @@ export const initToHaveBeenRequestedWithHeader =
   (original: HttpRequestHandler): HttpRequestHandler =>
   (path, resolver, options, ...rest) => {
     const headersAssertion = vi.fn();
+    headersAssertion.mockName(typeof path === "string" ? path : path.source);
 
     const newResolver: typeof resolver = async (info, ...args) => {
       const { request } = info;
@@ -46,7 +47,7 @@ export const toHaveBeenRequestedWithHeaders: assertFn = function (
   return {
     // TODO: expect.any handling
     pass: calls.some((call) => equals(call[0], expected)),
-    // TODO: message
-    message: () => `${received} is${isNot ? " not" : ""} foo`,
+    message: () =>
+      `Expected ${received.headersAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with headers ${this.utils.printExpected(JSON.stringify(expected))}`,
   };
 };

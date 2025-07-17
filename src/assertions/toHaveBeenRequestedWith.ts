@@ -62,7 +62,7 @@ export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
         isHashMatch
       );
     }),
-    // TODO: message_call
-    message: () => `${received} is${isNot ? " not" : ""} foo`,
+    message: () =>
+      `Expected ${received.bodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
   };
 };

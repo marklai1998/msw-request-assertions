@@ -13,6 +13,7 @@ export const initToHaveBeenRequestedWithHash =
   (original: HttpRequestHandler): HttpRequestHandler =>
   (path, resolver, options, ...rest) => {
     const hashAssertion = vi.fn();
+    hashAssertion.mockName(typeof path === "string" ? path : path.source);
 
     const newResolver: typeof resolver = async (info, ...args) => {
       const { request } = info;
@@ -48,7 +49,7 @@ export const toHaveBeenRequestedWithHash: assertFn = function (
   return {
     // TODO: expect.any handling
     pass: calls.some((call) => equals(call[0], expected)),
-    // TODO: message
-    message: () => `${received} is${isNot ? " not" : ""} foo`,
+    message: () =>
+      `Expected ${received.hashAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
   };
 };

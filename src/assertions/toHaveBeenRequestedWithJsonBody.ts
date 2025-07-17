@@ -13,6 +13,7 @@ export const initToHaveBeenRequestedWithJsonBody =
   (original: HttpRequestHandler): HttpRequestHandler =>
   (path, resolver, options, ...rest) => {
     const jsonBodyAssertion = vi.fn();
+    jsonBodyAssertion.mockName(typeof path === "string" ? path : path.source);
 
     const newResolver: typeof resolver = async (info, ...args) => {
       const { request } = info;
@@ -51,7 +52,7 @@ export const toHaveBeenRequestedWithJsonBody: assertFn = function (
   return {
     // TODO: expect.any handling
     pass: calls.some((call) => equals(call[0], expected)),
-    // TODO: message
-    message: () => `${received} is${isNot ? " not" : ""} foo`,
+    message: () =>
+      `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with json body ${this.utils.printExpected(JSON.stringify(expected))}`,
   };
 };

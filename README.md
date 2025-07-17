@@ -3,9 +3,11 @@
 ## TODO
 
 - [ ] Handle `expect.any`
-- [ ] Error message
+- [x] Error message
+- [x] Detailed Error message
 - [ ] Input checks and types
 - [ ] Readme
+- [ ] Proper testing
 
 ### Matchers
 

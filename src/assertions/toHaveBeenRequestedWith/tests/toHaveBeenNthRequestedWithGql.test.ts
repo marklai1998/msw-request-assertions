@@ -78,10 +78,10 @@ describe("toHaveBeenNthRequestedWith - GraphQL", () => {
     );
 
     expect(createUserMutation).toHaveBeenNthRequestedWith(1, {
-      variables: firstVariables,
+      gqlVariables: firstVariables,
     });
     expect(createUserMutation).toHaveBeenNthRequestedWith(2, {
-      variables: secondVariables,
+      gqlVariables: secondVariables,
     });
   });
 
@@ -97,7 +97,7 @@ describe("toHaveBeenNthRequestedWith - GraphQL", () => {
 
     expect(() => {
       expect(getUserQuery).toHaveBeenNthRequestedWith(2, {
-        variables: { userId: "999" },
+        gqlVariables: { userId: "999" },
       });
     }).toThrow();
   });
@@ -110,7 +110,7 @@ describe("toHaveBeenNthRequestedWith - GraphQL", () => {
 
     expect(() => {
       expect(getUserQuery).toHaveBeenNthRequestedWith(2, {
-        variables: { userId: "123" },
+        gqlVariables: { userId: "123" },
       });
     }).toThrow();
   });
@@ -126,10 +126,48 @@ describe("toHaveBeenNthRequestedWith - GraphQL", () => {
     );
 
     expect(getUserQuery).not.toHaveBeenNthRequestedWith(1, {
-      variables: { userId: "999" },
+      gqlVariables: { userId: "999" },
     });
     expect(getUserQuery).not.toHaveBeenNthRequestedWith(2, {
-      variables: { userId: "999" },
+      gqlVariables: { userId: "999" },
+    });
+  });
+
+  it("should match nth request with expected GraphQL query", async () => {
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "123" },
+    );
+    await executeGraphQL(
+      `mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name } }`,
+      { input: { name: "John Doe", email: "john@example.com" } },
+    );
+
+    expect(getUserQuery).toHaveBeenNthRequestedWith(1, {
+      gqlQuery: `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+    });
+    expect(createUserMutation).toHaveBeenNthRequestedWith(1, {
+      gqlQuery: `mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name } }`,
+    });
+  });
+
+  it("should match nth request with both gqlVariables and gqlQuery", async () => {
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "123" },
+    );
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "456" },
+    );
+
+    expect(getUserQuery).toHaveBeenNthRequestedWith(1, {
+      gqlVariables: { userId: "123" },
+      gqlQuery: `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+    });
+    expect(getUserQuery).toHaveBeenNthRequestedWith(2, {
+      gqlVariables: { userId: "456" },
+      gqlQuery: `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
     });
   });
 });

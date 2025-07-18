@@ -1,8 +1,8 @@
 import type { Assertion } from "../../types";
 import { checkEquality, checkMockedGraphQLHandler } from "../../utils";
 
-export const toHaveBeenCalledNthWithVariables: Assertion = {
-  name: "toHaveBeenCalledNthWithVariables",
+export const toHaveBeenNthRequestedWithGqlVariables: Assertion = {
+  name: "toHaveBeenNthRequestedWithGqlVariables",
   interceptGql: (original) => original,
   assert: function (received, time, expected) {
     checkMockedGraphQLHandler(received);
@@ -16,7 +16,7 @@ export const toHaveBeenCalledNthWithVariables: Assertion = {
     return {
       pass: isMatch,
       message: () =>
-        `Expected ${received.variablesAssertion.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with variables ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(nthCall?.[0]))}`,
+        `Expected ${received.variablesAssertion.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(nthCall?.[0]))}`,
     };
   },
 };

@@ -26,51 +26,29 @@ async function executeGraphQL(query: string, variables?: unknown) {
   return response.json();
 }
 
-describe("toHaveBeenCalledNthWithVariables", () => {
+describe("toHaveBeenRequestedWithGqlVariables", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
-  it("should match specific call position", async () => {
+  it("should match when requested with expected variables", async () => {
     await executeGraphQL(
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "123" },
     );
-    await executeGraphQL(
-      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
-      { userId: "456" },
-    );
 
-    expect(getUserQuery).toHaveBeenCalledNthWithVariables(1, { userId: "123" });
-    expect(getUserQuery).toHaveBeenCalledNthWithVariables(2, { userId: "456" });
+    expect(getUserQuery).toHaveBeenRequestedWithGqlVariables({ userId: "123" });
   });
 
-  it("should fail when call position variables don't match", async () => {
-    await executeGraphQL(
-      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
-      { userId: "123" },
-    );
-    await executeGraphQL(
-      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
-      { userId: "456" },
-    );
-
-    expect(() => {
-      expect(getUserQuery).toHaveBeenCalledNthWithVariables(2, {
-        userId: "999",
-      });
-    }).toThrow();
-  });
-
-  it("should fail when call position is out of bounds", async () => {
+  it("should fail when variables don't match", async () => {
     await executeGraphQL(
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "123" },
     );
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenCalledNthWithVariables(2, {
-        userId: "123",
+      expect(getUserQuery).toHaveBeenRequestedWithGqlVariables({
+        userId: "456",
       });
     }).toThrow();
   });
@@ -80,26 +58,19 @@ describe("toHaveBeenCalledNthWithVariables", () => {
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "123" },
     );
-    await executeGraphQL(
-      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
-      { userId: "456" },
-    );
 
-    expect(getUserQuery).not.toHaveBeenCalledNthWithVariables(1, {
-      userId: "999",
-    });
-    expect(getUserQuery).not.toHaveBeenCalledNthWithVariables(2, {
-      userId: "999",
+    expect(getUserQuery).not.toHaveBeenRequestedWithGqlVariables({
+      userId: "456",
     });
   });
 
-  it("should handle complex variables at specific positions", async () => {
+  it("should handle complex variables", async () => {
     await executeGraphQL(
       `mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name } }`,
       {
         input: {
-          name: "Jane Doe",
-          email: "jane@example.com",
+          name: "John Doe",
+          email: "john@example.com",
           metadata: { department: "engineering", level: 5 },
           tags: ["admin", "user"],
           isActive: true,
@@ -107,31 +78,30 @@ describe("toHaveBeenCalledNthWithVariables", () => {
         },
       },
     );
-    await executeGraphQL(
-      `mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name } }`,
-      {
-        input: {
-          name: "John Smith",
-          email: "john@example.com",
-        },
-      },
-    );
 
-    expect(createUserMutation).toHaveBeenCalledNthWithVariables(1, {
+    expect(createUserMutation).toHaveBeenRequestedWithGqlVariables({
       input: {
-        name: "Jane Doe",
-        email: "jane@example.com",
+        name: "John Doe",
+        email: "john@example.com",
         metadata: { department: "engineering", level: 5 },
         tags: ["admin", "user"],
         isActive: true,
         score: 4.5,
       },
     });
-    expect(createUserMutation).toHaveBeenCalledNthWithVariables(2, {
-      input: {
-        name: "John Smith",
-        email: "john@example.com",
-      },
-    });
+  });
+
+  it("should match any call when multiple calls made", async () => {
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "123" },
+    );
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "456" },
+    );
+
+    expect(getUserQuery).toHaveBeenRequestedWithGqlVariables({ userId: "123" });
+    expect(getUserQuery).toHaveBeenRequestedWithGqlVariables({ userId: "456" });
   });
 });

@@ -27,13 +27,13 @@ interface CustomMatchers<R = unknown> {
     nthCall: number,
     queryString: string,
   ) => R;
-  toHaveBeenCalledWithVariables: (variables: Record<string, any>) => R;
-  toHaveBeenCalledNthWithVariables: (
+  toHaveBeenRequestedWithGqlVariables: (variables: Record<string, any>) => R;
+  toHaveBeenNthRequestedWithGqlVariables: (
     nthCall: number,
     variables: Record<string, any>,
   ) => R;
-  toHaveBeenCalledWithQuery: (query: string) => R;
-  toHaveBeenCalledNthWithQuery: (nthCall: number, query: string) => R;
+  toHaveBeenRequestedWithGqlQuery: (query: string) => R;
+  toHaveBeenNthRequestedWithGqlQuery: (nthCall: number, query: string) => R;
 }
 
 declare module "vitest" {
@@ -66,12 +66,17 @@ declare module "vitest" {
   }
 
   interface Assertion<GraphQLHandler> {
-    toHaveBeenCalledWithVariables: (variables: Record<string, any>) => void;
-    toHaveBeenCalledNthWithVariables: (
+    toHaveBeenRequestedWithGqlVariables: (
+      variables: Record<string, any>,
+    ) => void;
+    toHaveBeenNthRequestedWithGqlVariables: (
       nthCall: number,
       variables: Record<string, any>,
     ) => void;
-    toHaveBeenCalledWithQuery: (query: string) => void;
-    toHaveBeenCalledNthWithQuery: (nthCall: number, query: string) => void;
+    toHaveBeenRequestedWithGqlQuery: (query: string) => void;
+    toHaveBeenNthRequestedWithGqlQuery: (
+      nthCall: number,
+      query: string,
+    ) => void;
   }
 }

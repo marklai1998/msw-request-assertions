@@ -17,9 +17,13 @@ export const toHaveBeenRequestedWith: Assertion = {
     const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
     const headersAssertionCalls = received.headersAssertion.mock.calls;
     const hashAssertionCalls = received.hashAssertion.mock.calls;
-    const variablesAssertionCalls =
+    const gqlVariablesAssertionCalls =
       received instanceof GraphQLHandler
         ? received.variablesAssertion.mock.calls
+        : [];
+    const gqlQueryAssertionCalls =
+      received instanceof GraphQLHandler
+        ? received.gqlQueryAssertion.mock.calls
         : [];
 
     const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
@@ -28,7 +32,8 @@ export const toHaveBeenRequestedWith: Assertion = {
       jsonBodyAssertionCall: jsonBodyAssertionCalls[idx],
       headersAssertionCall: headersAssertionCalls[idx],
       hashAssertionCall: hashAssertionCalls[idx],
-      variablesAssertionCall: variablesAssertionCalls[idx],
+      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[idx],
+      gqlQueryAssertionCall: gqlQueryAssertionCalls[idx],
     }));
 
     return {
@@ -38,7 +43,8 @@ export const toHaveBeenRequestedWith: Assertion = {
         let isQueryStringMatch = true;
         let isHeadersMatch = true;
         let isHashMatch = true;
-        let isVariablesMatch = true;
+        let isGqlVariablesMatch = true;
+        let isGqlQueryMatch = true;
 
         if ("jsonBody" in expected) {
           isJsonBodyMatch = checkEquality(
@@ -69,10 +75,17 @@ export const toHaveBeenRequestedWith: Assertion = {
           isHashMatch = checkEquality(expected.hash, call.hashAssertionCall[0]);
         }
 
-        if ("variables" in expected) {
-          isVariablesMatch = checkEquality(
-            expected.variables,
-            call.variablesAssertionCall[0],
+        if ("gqlVariables" in expected) {
+          isGqlVariablesMatch = checkEquality(
+            expected.gqlVariables,
+            call.gqlVariablesAssertionCall[0],
+          );
+        }
+
+        if ("gqlQuery" in expected) {
+          isGqlQueryMatch = checkEquality(
+            expected.gqlQuery,
+            call.gqlQueryAssertionCall[0],
           );
         }
 
@@ -82,7 +95,8 @@ export const toHaveBeenRequestedWith: Assertion = {
           isQueryStringMatch &&
           isHeadersMatch &&
           isHashMatch &&
-          isVariablesMatch
+          isGqlVariablesMatch &&
+          isGqlQueryMatch
         );
       }),
       message: () =>

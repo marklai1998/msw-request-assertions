@@ -38,7 +38,7 @@ describe("toHaveBeenRequestedWith - GraphQL", () => {
     );
 
     expect(getUserQuery).toHaveBeenRequestedWith({
-      variables: { userId: "123" },
+      gqlVariables: { userId: "123" },
     });
   });
 
@@ -59,7 +59,9 @@ describe("toHaveBeenRequestedWith - GraphQL", () => {
       variables,
     );
 
-    expect(createUserMutation).toHaveBeenRequestedWith({ variables });
+    expect(createUserMutation).toHaveBeenRequestedWith({
+      gqlVariables: variables,
+    });
   });
 
   it("should fail when variables don't match", async () => {
@@ -70,7 +72,7 @@ describe("toHaveBeenRequestedWith - GraphQL", () => {
 
     expect(() => {
       expect(getUserQuery).toHaveBeenRequestedWith({
-        variables: { userId: "456" },
+        gqlVariables: { userId: "456" },
       });
     }).toThrow();
   });
@@ -82,7 +84,7 @@ describe("toHaveBeenRequestedWith - GraphQL", () => {
     );
 
     expect(getUserQuery).not.toHaveBeenRequestedWith({
-      variables: { userId: "456" },
+      gqlVariables: { userId: "456" },
     });
   });
 
@@ -97,10 +99,46 @@ describe("toHaveBeenRequestedWith - GraphQL", () => {
     );
 
     expect(getUserQuery).toHaveBeenRequestedWith({
-      variables: { userId: "123" },
+      gqlVariables: { userId: "123" },
     });
     expect(getUserQuery).toHaveBeenRequestedWith({
-      variables: { userId: "456" },
+      gqlVariables: { userId: "456" },
+    });
+  });
+
+  it("should match when called with expected GraphQL query", async () => {
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "123" },
+    );
+
+    expect(getUserQuery).toHaveBeenRequestedWith({
+      gqlQuery: `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+    });
+  });
+
+  it("should fail when GraphQL query doesn't match", async () => {
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "123" },
+    );
+
+    expect(() => {
+      expect(getUserQuery).toHaveBeenRequestedWith({
+        gqlQuery: `query GetUser($id: ID!) { user(id: $id) { name } }`,
+      });
+    }).toThrow();
+  });
+
+  it("should match when called with both gqlVariables and gqlQuery", async () => {
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "123" },
+    );
+
+    expect(getUserQuery).toHaveBeenRequestedWith({
+      gqlVariables: { userId: "123" },
+      gqlQuery: `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
     });
   });
 });

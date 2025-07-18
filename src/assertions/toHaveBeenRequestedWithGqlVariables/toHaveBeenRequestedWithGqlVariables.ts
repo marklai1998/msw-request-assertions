@@ -4,45 +4,45 @@ import { checkEquality, checkMockedGraphQLHandler } from "../../utils";
 
 declare module "msw" {
   interface GraphQLHandler {
-    gqlQueryAssertion: Mock;
+    variablesAssertion: Mock;
   }
 }
 
-export const toHaveBeenCalledWithQuery: Assertion = {
-  name: "toHaveBeenCalledWithQuery",
+export const toHaveBeenRequestedWithGqlVariables: Assertion = {
+  name: "toHaveBeenRequestedWithGqlVariables",
   interceptGql:
     (original) =>
     (operationName, resolver, options, ...rest) => {
-      const gqlQueryAssertion = vi.fn();
-      gqlQueryAssertion.mockName(
+      const variablesAssertion = vi.fn();
+      variablesAssertion.mockName(
         typeof operationName === "string"
           ? operationName
           : operationName.toString(),
       );
 
       const newResolver: typeof resolver = (info, ...args) => {
-        const { query } = info;
-        gqlQueryAssertion(query);
+        const { variables } = info;
+        variablesAssertion(variables);
 
         return resolver(info, ...args);
       };
 
       const handler = original(operationName, newResolver, options, ...rest);
 
-      handler.gqlQueryAssertion = gqlQueryAssertion;
+      handler.variablesAssertion = variablesAssertion;
 
       return handler;
     },
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
 
-    const calls = received.gqlQueryAssertion.mock.calls;
+    const calls = received.variablesAssertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.gqlQueryAssertion.getMockName()} to${isNot ? " not" : ""} have been called with query ${this.utils.printExpected(expected)}`,
+        `Expected ${received.variablesAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
     };
   },
 };

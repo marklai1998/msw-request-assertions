@@ -17,9 +17,13 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
     const headersAssertionCalls = received.headersAssertion.mock.calls;
     const hashAssertionCalls = received.hashAssertion.mock.calls;
-    const variablesAssertionCalls =
+    const gqlVariablesAssertionCalls =
       received instanceof GraphQLHandler
         ? received.variablesAssertion.mock.calls
+        : [];
+    const gqlQueryAssertionCalls =
+      received instanceof GraphQLHandler
+        ? received.gqlQueryAssertion.mock.calls
         : [];
 
     const nthCall = {
@@ -28,7 +32,8 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       jsonBodyAssertionCall: jsonBodyAssertionCalls[time - 1],
       headersAssertionCall: headersAssertionCalls[time - 1],
       hashAssertionCall: hashAssertionCalls[time - 1],
-      variablesAssertionCall: variablesAssertionCalls[time - 1],
+      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[time - 1],
+      gqlQueryAssertionCall: gqlQueryAssertionCalls[time - 1],
     };
 
     let isBodyMatch = true;
@@ -36,7 +41,8 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     let isQueryStringMatch = true;
     let isHeadersMatch = true;
     let isHashMatch = true;
-    let isVariablesMatch = true;
+    let isGqlVariablesMatch = true;
+    let isGqlQueryMatch = true;
 
     if ("jsonBody" in expected) {
       isJsonBodyMatch = checkEquality(
@@ -73,10 +79,17 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       );
     }
 
-    if ("variables" in expected) {
-      isVariablesMatch = checkEquality(
-        expected.variables,
-        nthCall.variablesAssertionCall?.[0],
+    if ("gqlVariables" in expected) {
+      isGqlVariablesMatch = checkEquality(
+        expected.gqlVariables,
+        nthCall.gqlVariablesAssertionCall?.[0],
+      );
+    }
+
+    if ("gqlQuery" in expected) {
+      isGqlQueryMatch = checkEquality(
+        expected.gqlQuery,
+        nthCall.gqlQueryAssertionCall?.[0],
       );
     }
 
@@ -86,7 +99,8 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       isQueryStringMatch &&
       isHeadersMatch &&
       isHashMatch &&
-      isVariablesMatch;
+      isGqlVariablesMatch &&
+      isGqlQueryMatch;
 
     const actual: any = {};
     if ("jsonBody" in expected) {
@@ -105,8 +119,12 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       actual.hash = nthCall.hashAssertionCall?.[0];
     }
 
-    if ("variables" in expected) {
-      actual.variables = nthCall.variablesAssertionCall?.[0];
+    if ("gqlVariables" in expected) {
+      actual.gqlVariables = nthCall.gqlVariablesAssertionCall?.[0];
+    }
+
+    if ("gqlQuery" in expected) {
+      actual.gqlQuery = nthCall.gqlQueryAssertionCall?.[0];
     }
 
     return {

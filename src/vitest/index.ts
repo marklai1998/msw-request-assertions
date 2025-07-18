@@ -1,15 +1,15 @@
 import { graphql, http } from "msw";
 import { expect } from "vitest";
-import { toHaveBeenCalledNthWithQuery } from "../assertions/toHaveBeenCalledWithQuery/toHaveBeenCalledNthWithQuery.js";
-import { toHaveBeenCalledWithQuery } from "../assertions/toHaveBeenCalledWithQuery/toHaveBeenCalledWithQuery.js";
-import { toHaveBeenCalledNthWithVariables } from "../assertions/toHaveBeenCalledWithVariables/toHaveBeenCalledNthWithVariables.js";
-import { toHaveBeenCalledWithVariables } from "../assertions/toHaveBeenCalledWithVariables/toHaveBeenCalledWithVariables.js";
 import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested.js";
 import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequested/toHaveBeenRequestedTimes.js";
 import { toHaveBeenNthRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenNthRequestedWith.js";
 import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenRequestedWith.js";
 import { toHaveBeenNthRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenNthRequestedWithBody.js";
 import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenRequestedWithBody.js";
+import { toHaveBeenNthRequestedWithGqlQuery } from "../assertions/toHaveBeenRequestedWithGqlQuery/toHaveBeenNthRequestedWithGqlQuery.js";
+import { toHaveBeenRequestedWithGqlQuery } from "../assertions/toHaveBeenRequestedWithGqlQuery/toHaveBeenRequestedWithGqlQuery.js";
+import { toHaveBeenNthRequestedWithGqlVariables } from "../assertions/toHaveBeenRequestedWithGqlVariables/toHaveBeenNthRequestedWithGqlVariables.js";
+import { toHaveBeenRequestedWithGqlVariables } from "../assertions/toHaveBeenRequestedWithGqlVariables/toHaveBeenRequestedWithGqlVariables.js";
 import { toHaveBeenNthRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenNthRequestedWithHash.js";
 import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash.js";
 import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders.js";
@@ -21,10 +21,10 @@ import { toHaveBeenRequestedWithQueryString } from "../assertions/toHaveBeenRequ
 import type { AssertFn } from "../types";
 
 const graphqlOnlyAssertions = [
-  toHaveBeenCalledWithVariables,
-  toHaveBeenCalledNthWithVariables,
-  toHaveBeenCalledWithQuery,
-  toHaveBeenCalledNthWithQuery,
+  toHaveBeenRequestedWithGqlVariables,
+  toHaveBeenNthRequestedWithGqlVariables,
+  toHaveBeenRequestedWithGqlQuery,
+  toHaveBeenNthRequestedWithGqlQuery,
 ];
 
 const assertions = [

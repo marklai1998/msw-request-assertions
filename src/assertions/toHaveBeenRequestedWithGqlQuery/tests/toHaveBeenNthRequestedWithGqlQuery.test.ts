@@ -26,20 +26,20 @@ async function executeGraphQL(query: string, variables?: unknown) {
   return response.json();
 }
 
-describe("toHaveBeenCalledNthWithQuery", () => {
+describe("toHaveBeenNthRequestedWithGqlQuery", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
-  it("should match specific call position", async () => {
+  it("should match specific request position", async () => {
     const query1 = `query GetUser($userId: ID!) { user(id: $userId) { id name } }`;
     const query2 = `query GetUser($userId: ID!) { user(id: $userId) { id name email } }`;
 
     await executeGraphQL(query1, { userId: "123" });
     await executeGraphQL(query2, { userId: "456" });
 
-    expect(getUserQuery).toHaveBeenCalledNthWithQuery(1, query1);
-    expect(getUserQuery).toHaveBeenCalledNthWithQuery(2, query2);
+    expect(getUserQuery).toHaveBeenNthRequestedWithGqlQuery(1, query1);
+    expect(getUserQuery).toHaveBeenNthRequestedWithGqlQuery(2, query2);
   });
 
   it("should match nth request with complex queries", async () => {
@@ -53,8 +53,8 @@ describe("toHaveBeenCalledNthWithQuery", () => {
       input: { name: "John Smith", email: "john@example.com" },
     });
 
-    expect(createUserMutation).toHaveBeenCalledNthWithQuery(1, mutation1);
-    expect(createUserMutation).toHaveBeenCalledNthWithQuery(2, mutation2);
+    expect(createUserMutation).toHaveBeenNthRequestedWithGqlQuery(1, mutation1);
+    expect(createUserMutation).toHaveBeenNthRequestedWithGqlQuery(2, mutation2);
   });
 
   it("should match with different query structures at specific positions", async () => {
@@ -73,11 +73,11 @@ describe("toHaveBeenCalledNthWithQuery", () => {
     await executeGraphQL(simpleQuery, { userId: "123" });
     await executeGraphQL(complexQuery, { userId: "456" });
 
-    expect(getUserQuery).toHaveBeenCalledNthWithQuery(1, simpleQuery);
-    expect(getUserQuery).toHaveBeenCalledNthWithQuery(2, complexQuery);
+    expect(getUserQuery).toHaveBeenNthRequestedWithGqlQuery(1, simpleQuery);
+    expect(getUserQuery).toHaveBeenNthRequestedWithGqlQuery(2, complexQuery);
   });
 
-  it("should fail when nth call doesn't match", async () => {
+  it("should fail when nth request doesn't match", async () => {
     const query1 = `query GetUser($userId: ID!) { user(id: $userId) { id name } }`;
     const query2 = `query GetUser($userId: ID!) { user(id: $userId) { id name email } }`;
 
@@ -85,16 +85,16 @@ describe("toHaveBeenCalledNthWithQuery", () => {
     await executeGraphQL(query2, { userId: "456" });
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenCalledNthWithQuery(2, "wrong query");
+      expect(getUserQuery).toHaveBeenNthRequestedWithGqlQuery(2, "wrong query");
     }).toThrow();
   });
 
-  it("should fail when call index is out of bounds", async () => {
+  it("should fail when request index is out of bounds", async () => {
     const queryString = `query GetUser($userId: ID!) { user(id: $userId) { id name } }`;
     await executeGraphQL(queryString, { userId: "123" });
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenCalledNthWithQuery(2, queryString);
+      expect(getUserQuery).toHaveBeenNthRequestedWithGqlQuery(2, queryString);
     }).toThrow();
   });
 
@@ -105,7 +105,13 @@ describe("toHaveBeenCalledNthWithQuery", () => {
     await executeGraphQL(query1, { userId: "123" });
     await executeGraphQL(query2, { userId: "456" });
 
-    expect(getUserQuery).not.toHaveBeenCalledNthWithQuery(1, "wrong query");
-    expect(getUserQuery).not.toHaveBeenCalledNthWithQuery(2, "wrong query");
+    expect(getUserQuery).not.toHaveBeenNthRequestedWithGqlQuery(
+      1,
+      "wrong query",
+    );
+    expect(getUserQuery).not.toHaveBeenNthRequestedWithGqlQuery(
+      2,
+      "wrong query",
+    );
   });
 });

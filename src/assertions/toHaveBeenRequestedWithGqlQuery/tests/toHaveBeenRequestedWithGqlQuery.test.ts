@@ -26,16 +26,16 @@ async function executeGraphQL(query: string, variables?: unknown) {
   return response.json();
 }
 
-describe("toHaveBeenCalledWithQuery", () => {
+describe("toHaveBeenRequestedWithGqlQuery", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
-  it("should match when called with expected query", async () => {
+  it("should match when requested with expected query", async () => {
     const queryString = `query GetUser($userId: ID!) { user(id: $userId) { id name } }`;
     await executeGraphQL(queryString, { userId: "123" });
 
-    expect(getUserQuery).toHaveBeenCalledWithQuery(queryString);
+    expect(getUserQuery).toHaveBeenRequestedWithGqlQuery(queryString);
   });
 
   it("should match mutation query", async () => {
@@ -44,7 +44,7 @@ describe("toHaveBeenCalledWithQuery", () => {
       input: { name: "John Doe", email: "john@example.com" },
     });
 
-    expect(createUserMutation).toHaveBeenCalledWithQuery(mutationString);
+    expect(createUserMutation).toHaveBeenRequestedWithGqlQuery(mutationString);
   });
 
   it("should match with complex nested query", async () => {
@@ -60,7 +60,7 @@ describe("toHaveBeenCalledWithQuery", () => {
     }`;
     await executeGraphQL(complexQuery, { userId: "123" });
 
-    expect(getUserQuery).toHaveBeenCalledWithQuery(complexQuery);
+    expect(getUserQuery).toHaveBeenRequestedWithGqlQuery(complexQuery);
   });
 
   it("should fail when query doesn't match", async () => {
@@ -68,7 +68,7 @@ describe("toHaveBeenCalledWithQuery", () => {
     await executeGraphQL(queryString, { userId: "123" });
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenCalledWithQuery(
+      expect(getUserQuery).toHaveBeenRequestedWithGqlQuery(
         `query GetUser($userId: ID!) { user(id: $userId) { id } }`,
       );
     }).toThrow();
@@ -78,7 +78,7 @@ describe("toHaveBeenCalledWithQuery", () => {
     const queryString = `query GetUser($userId: ID!) { user(id: $userId) { id name } }`;
     await executeGraphQL(queryString, { userId: "123" });
 
-    expect(getUserQuery).not.toHaveBeenCalledWithQuery(
+    expect(getUserQuery).not.toHaveBeenRequestedWithGqlQuery(
       `query GetUser($userId: ID!) { user(id: $userId) { id } }`,
     );
   });
@@ -90,7 +90,7 @@ describe("toHaveBeenCalledWithQuery", () => {
     await executeGraphQL(query1, { userId: "123" });
     await executeGraphQL(query2, { userId: "456" });
 
-    expect(getUserQuery).toHaveBeenCalledWithQuery(query1);
-    expect(getUserQuery).toHaveBeenCalledWithQuery(query2);
+    expect(getUserQuery).toHaveBeenRequestedWithGqlQuery(query1);
+    expect(getUserQuery).toHaveBeenRequestedWithGqlQuery(query2);
   });
 });

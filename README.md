@@ -13,8 +13,8 @@
 ### Matchers
 
 - [x] Gql
-  - [ ] Called with query
-  - [ ] http matcher
+  - [x] Called with query
+  - [x] http matcher
 - [x] Called with hash
 - [x] Called
 - [x] Called times

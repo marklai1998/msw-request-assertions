@@ -1,6 +1,6 @@
 import { HttpHandler } from "msw";
-import { equals } from "ramda";
 import type { assertFn } from "../types/index.js";
+import { checkEquality } from "../utils/index.js";
 
 export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
   if (!(received instanceof HttpHandler)) {
@@ -32,26 +32,32 @@ export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
       let isHashMatch = true;
 
       if ("jsonBody" in expected) {
-        isJsonBodyMatch = equals(
+        isJsonBodyMatch = checkEquality(
           expected.jsonBody,
           call.jsonBodyAssertionCall[0],
         );
       }
 
       if ("body" in expected) {
-        isBodyMatch = equals(expected.body, call.bodyAssertionCall[0]);
+        isBodyMatch = checkEquality(expected.body, call.bodyAssertionCall[0]);
       }
 
       if ("query" in expected) {
-        isQueryMatch = equals(expected.query, call.queryAssertionCall[0]);
+        isQueryMatch = checkEquality(
+          expected.query,
+          call.queryAssertionCall[0],
+        );
       }
 
       if ("headers" in expected) {
-        isHeadersMatch = equals(expected.headers, call.headersAssertionCall[0]);
+        isHeadersMatch = checkEquality(
+          expected.headers,
+          call.headersAssertionCall[0],
+        );
       }
 
       if ("hash" in expected) {
-        isHashMatch = equals(expected.hash, call.hashAssertionCall[0]);
+        isHashMatch = checkEquality(expected.hash, call.hashAssertionCall[0]);
       }
 
       return (

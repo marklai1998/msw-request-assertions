@@ -1,7 +1,7 @@
 import { HttpHandler, type HttpRequestHandler } from "msw";
-import { equals } from "ramda";
 import type { Mock } from "vitest";
 import type { assertFn } from "../types/index.js";
+import { checkEquality } from "../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -47,8 +47,7 @@ export const toHaveBeenRequestedWithHash: assertFn = function (
 
   const { isNot } = this;
   return {
-    // TODO: expect.any handling
-    pass: calls.some((call) => equals(call[0], expected)),
+    pass: calls.some((call) => checkEquality(call[0], expected)),
     message: () =>
       `Expected ${received.hashAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
   };

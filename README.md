@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] Handle `expect.any`
+- [X] Handle `expect.any`
 - [x] Error message
 - [x] Detailed Error message
 - [ ] Input checks and types

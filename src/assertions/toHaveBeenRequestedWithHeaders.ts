@@ -1,6 +1,7 @@
-import { HttpHandler, type HttpRequestHandler } from "msw";
+import type { HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
 import type { AssertFn } from "../types/index.js";
+import { checkMockedHttpHandler } from "../utils/checkMockedHttpHandler.js";
 import { checkEquality } from "../utils/index.js";
 
 declare module "msw" {
@@ -35,11 +36,7 @@ export const toHaveBeenRequestedWithHeaders: AssertFn = function (
   received,
   expected,
 ) {
-  if (!(received instanceof HttpHandler)) {
-    throw new Error("Expected a HttpHandler");
-  }
-  if (!received.headersAssertion)
-    throw new Error("HttpHandler is not intercepted");
+  checkMockedHttpHandler(received);
 
   const calls = received.headersAssertion.mock.calls;
 

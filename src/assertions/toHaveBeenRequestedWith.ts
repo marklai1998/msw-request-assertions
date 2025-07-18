@@ -1,11 +1,9 @@
-import { HttpHandler } from "msw";
 import type { AssertFn } from "../types/index.js";
+import { checkMockedHttpHandler } from "../utils/checkMockedHttpHandler.js";
 import { checkEquality } from "../utils/index.js";
 
 export const toHaveBeenRequestedWith: AssertFn = function (received, expected) {
-  if (!(received instanceof HttpHandler)) {
-    throw new Error("Expected a HttpHandler");
-  }
+  checkMockedHttpHandler(received);
 
   const bodyAssertionCalls = received.bodyAssertion.mock.calls;
   const queryAssertionCalls = received.queryAssertion.mock.calls;

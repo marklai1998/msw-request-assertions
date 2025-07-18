@@ -1,16 +1,11 @@
-import { HttpHandler } from "msw";
 import type { AssertFn } from "../types/index.js";
+import { checkMockedHttpHandler } from "../utils/checkMockedHttpHandler.js";
 
 export const toHaveBeenRequestedTimes: AssertFn = function (
   received,
   expectedTimes,
 ) {
-  if (!(received instanceof HttpHandler)) {
-    throw new Error("Expected a HttpHandler");
-  }
-  if (!received.requestedAssertion) {
-    throw new Error("HttpHandler is not intercepted");
-  }
+  checkMockedHttpHandler(received);
 
   const calls = received.requestedAssertion.mock.calls;
   const actualTimes = calls.length;

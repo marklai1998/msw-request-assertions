@@ -2,8 +2,11 @@ import { http } from "msw";
 import { expect } from "vitest";
 import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested";
 import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes/toHaveBeenRequestedTimes";
+import { toHaveBeenNthRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenNthRequestedWith";
 import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenRequestedWith";
+import { toHaveBeenNthRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenNthRequestedWithBody";
 import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenRequestedWithBody";
+import { toHaveBeenNthRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenNthRequestedWithHash";
 import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash";
 import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders";
 import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders";
@@ -16,7 +19,9 @@ const httpAssertions = [
   toHaveBeenRequested,
   toHaveBeenRequestedTimes,
   toHaveBeenRequestedWith,
+  toHaveBeenNthRequestedWith,
   toHaveBeenRequestedWithBody,
+  toHaveBeenNthRequestedWithBody,
   toHaveBeenRequestedWithJsonBody,
   toHaveBeenNthRequestedWithJsonBody,
   toHaveBeenRequestedWithHeaders,
@@ -24,6 +29,7 @@ const httpAssertions = [
   toHaveBeenNthRequestedWithQuery,
   toHaveBeenRequestedWithQuery,
   toHaveBeenRequestedWithHash,
+  toHaveBeenNthRequestedWithHash,
 ];
 
 for (const key in http) {

@@ -15,4 +15,4 @@
 - [x] Called with hash
 - [x] Called
 - [x] Called times
-- [ ] N-th called with
+- [x] N-th called with

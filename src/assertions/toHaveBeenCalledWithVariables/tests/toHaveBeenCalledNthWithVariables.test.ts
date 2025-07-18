@@ -17,7 +17,7 @@ const createUserMutation = graphql.mutation("CreateUser", ({ variables }) => {
 
 const server = setupServer(getUserQuery, createUserMutation);
 
-async function executeGraphQL(query: string, variables?: any) {
+async function executeGraphQL(query: string, variables?: unknown) {
   const response = await fetch("http://localhost/graphql", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

@@ -20,8 +20,6 @@ import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequest
 import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery.js";
 import type { AssertFn } from "../types";
 
-const httpOnlyAssertions = [];
-
 const graphqlOnlyAssertions = [
   toHaveBeenCalledWithVariables,
   toHaveBeenCalledNthWithVariables,
@@ -29,7 +27,7 @@ const graphqlOnlyAssertions = [
   toHaveBeenCalledNthWithQuery,
 ];
 
-const hybridAssertions = [
+const assertions = [
   toHaveBeenRequested,
   toHaveBeenRequestedTimes,
   toHaveBeenRequestedWith,
@@ -46,8 +44,8 @@ const hybridAssertions = [
   toHaveBeenNthRequestedWithQuery,
 ];
 
-const httpAssertions = [...hybridAssertions];
-const graphqlAssertions = [...graphqlOnlyAssertions, ...hybridAssertions];
+const httpAssertions = [...assertions];
+const graphqlAssertions = [...graphqlOnlyAssertions, ...assertions];
 
 for (const key in http) {
   const original = http[key as keyof typeof http];

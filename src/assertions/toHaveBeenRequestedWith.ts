@@ -21,7 +21,6 @@ export const toHaveBeenRequestedWith: AssertFn = function (received, expected) {
 
   const { isNot } = this;
   return {
-    // TODO: expect.any handling
     pass: calls.some((call) => {
       let isBodyMatch = true;
       let isJsonBodyMatch = true;

@@ -5,10 +5,10 @@ import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    queryStringAssertion: Mock;
+    queryStringAssertion?: Mock;
   }
   interface GraphQLHandler {
-    queryStringAssertion: Mock;
+    queryStringAssertion?: Mock;
   }
 }
 
@@ -66,6 +66,8 @@ export const toHaveBeenRequestedWithQueryString: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.queryStringAssertion)
+      throw new Error("No query string assertion found");
 
     const calls = received.queryStringAssertion.mock.calls;
 
@@ -73,7 +75,7 @@ export const toHaveBeenRequestedWithQueryString: Assertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.queryStringAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with query string ${this.utils.printExpected(expected)}`,
+        `Expected ${received.queryStringAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with query string ${this.utils.printExpected(expected)}`,
     };
   },
 };

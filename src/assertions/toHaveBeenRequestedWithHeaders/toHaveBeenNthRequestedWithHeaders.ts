@@ -8,6 +8,8 @@ export const toHaveBeenNthRequestedWithHeaders: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedHandler(received);
+    if (!received.headersAssertion)
+      throw new Error("No headers assertion found");
 
     const calls = received.headersAssertion.mock.calls;
     const actualHeaders = calls[time - 1]?.[0];
@@ -16,7 +18,7 @@ export const toHaveBeenNthRequestedWithHeaders: Assertion = {
     return {
       pass: checkEquality(actualHeaders, expected),
       message: () =>
-        `Expected ${received.headersAssertion.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with headers ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualHeaders))}`,
+        `Expected ${received.headersAssertion?.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with headers ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualHeaders))}`,
     };
   },
 };

@@ -6,10 +6,10 @@ import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    jsonBodyAssertion: Mock;
+    jsonBodyAssertion?: Mock;
   }
   interface GraphQLHandler {
-    jsonBodyAssertion: Mock;
+    jsonBodyAssertion?: Mock;
   }
 }
 
@@ -71,6 +71,8 @@ export const toHaveBeenRequestedWithJsonBody: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.jsonBodyAssertion)
+      throw new Error("No JSON body assertion found");
 
     const calls = received.jsonBodyAssertion.mock.calls;
 
@@ -78,7 +80,7 @@ export const toHaveBeenRequestedWithJsonBody: Assertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with JSON body ${this.utils.printExpected(JSON.stringify(expected))}`,
+        `Expected ${received.jsonBodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with JSON body ${this.utils.printExpected(JSON.stringify(expected))}`,
     };
   },
 };

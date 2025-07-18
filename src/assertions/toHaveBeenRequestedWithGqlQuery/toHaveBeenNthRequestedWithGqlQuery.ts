@@ -6,6 +6,8 @@ export const toHaveBeenNthRequestedWithGqlQuery: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedGraphQLHandler(received);
+    if (!received.gqlQueryAssertion)
+      throw new Error("No GraphQL query assertion found");
 
     const calls = received.gqlQueryAssertion.mock.calls;
     const actualQuery = calls[time - 1]?.[0];
@@ -14,7 +16,7 @@ export const toHaveBeenNthRequestedWithGqlQuery: Assertion = {
     return {
       pass: checkEquality(actualQuery, expected),
       message: () =>
-        `Expected ${received.gqlQueryAssertion.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with GraphQL query ${this.utils.printExpected(expected)}, but it was requested with ${this.utils.printReceived(actualQuery)}`,
+        `Expected ${received.gqlQueryAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with GraphQL query ${this.utils.printExpected(expected)}, but it was requested with ${this.utils.printReceived(actualQuery)}`,
     };
   },
 };

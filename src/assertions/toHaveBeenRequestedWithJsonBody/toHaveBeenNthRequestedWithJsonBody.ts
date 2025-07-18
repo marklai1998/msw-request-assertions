@@ -8,6 +8,8 @@ export const toHaveBeenNthRequestedWithJsonBody: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedHandler(received);
+    if (!received.jsonBodyAssertion)
+      throw new Error("No JSON body assertion found");
 
     const calls = received.jsonBodyAssertion.mock.calls;
     const actualJsonBody = calls[time - 1]?.[0];
@@ -16,7 +18,7 @@ export const toHaveBeenNthRequestedWithJsonBody: Assertion = {
     return {
       pass: checkEquality(actualJsonBody, expected),
       message: () =>
-        `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
+        `Expected ${received.jsonBodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
     };
   },
 };

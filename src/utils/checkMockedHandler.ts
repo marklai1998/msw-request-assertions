@@ -9,9 +9,4 @@ export function checkMockedHandler(
   if (!isHttpHandler && !isGraphQLHandler) {
     throw new Error("Expected a HttpHandler or GraphQLHandler");
   }
-
-  if (!("requestedAssertion" in input) || !input.requestedAssertion) {
-    const handlerType = isHttpHandler ? "HttpHandler" : "GraphQLHandler";
-    throw new Error(`${handlerType} is not intercepted`);
-  }
 }

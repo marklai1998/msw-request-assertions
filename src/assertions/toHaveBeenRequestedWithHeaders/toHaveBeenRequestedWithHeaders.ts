@@ -5,10 +5,10 @@ import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    headersAssertion: Mock;
+    headersAssertion?: Mock;
   }
   interface GraphQLHandler {
-    headersAssertion: Mock;
+    headersAssertion?: Mock;
   }
 }
 
@@ -62,6 +62,8 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.headersAssertion)
+      throw new Error("No headers assertion found");
 
     const calls = received.headersAssertion.mock.calls;
 
@@ -69,7 +71,7 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.headersAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with headers ${this.utils.printExpected(JSON.stringify(expected))}`,
+        `Expected ${received.headersAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with headers ${this.utils.printExpected(JSON.stringify(expected))}`,
     };
   },
 };

@@ -5,10 +5,10 @@ import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    bodyAssertion: Mock;
+    bodyAssertion?: Mock;
   }
   interface GraphQLHandler {
-    bodyAssertion: Mock;
+    bodyAssertion?: Mock;
   }
 }
 
@@ -64,6 +64,7 @@ export const toHaveBeenRequestedWithBody: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.bodyAssertion) throw new Error("No body assertion found");
 
     const calls = received.bodyAssertion.mock.calls;
 
@@ -71,7 +72,7 @@ export const toHaveBeenRequestedWithBody: Assertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.bodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(expected)}`,
+        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(expected)}`,
     };
   },
 };

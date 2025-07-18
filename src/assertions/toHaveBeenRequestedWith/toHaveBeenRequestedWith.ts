@@ -12,20 +12,21 @@ export const toHaveBeenRequestedWith: Assertion = {
 
     const { isNot } = this;
 
-    const bodyAssertionCalls = received.bodyAssertion.mock.calls;
-    const queryStringAssertionCalls = received.queryStringAssertion.mock.calls;
-    const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
-    const headersAssertionCalls = received.headersAssertion.mock.calls;
-    const hashAssertionCalls = received.hashAssertion.mock.calls;
+    const bodyAssertionCalls = received.bodyAssertion?.mock.calls ?? [];
+    const queryStringAssertionCalls =
+      received.queryStringAssertion?.mock.calls ?? [];
+    const jsonBodyAssertionCalls = received.jsonBodyAssertion?.mock.calls ?? [];
+    const headersAssertionCalls = received.headersAssertion?.mock.calls ?? [];
+    const hashAssertionCalls = received.hashAssertion?.mock.calls ?? [];
     const pathParametersAssertionCalls =
-      received.pathParametersAssertion.mock.calls;
+      received.pathParametersAssertion?.mock.calls ?? [];
     const gqlVariablesAssertionCalls =
       received instanceof GraphQLHandler
-        ? received.variablesAssertion.mock.calls
+        ? (received.gqlVariablesAssertion?.mock.calls ?? [])
         : [];
     const gqlQueryAssertionCalls =
       received instanceof GraphQLHandler
-        ? received.gqlQueryAssertion.mock.calls
+        ? (received.gqlQueryAssertion?.mock.calls ?? [])
         : [];
 
     const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
@@ -112,7 +113,7 @@ export const toHaveBeenRequestedWith: Assertion = {
         );
       }),
       message: () =>
-        `Expected ${received.bodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
+        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
     };
   },
 };

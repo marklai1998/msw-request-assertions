@@ -5,10 +5,10 @@ import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    hashAssertion: Mock;
+    hashAssertion?: Mock;
   }
   interface GraphQLHandler {
-    hashAssertion: Mock;
+    hashAssertion?: Mock;
   }
 }
 
@@ -64,6 +64,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.hashAssertion) throw new Error("No hash assertion found");
 
     const calls = received.hashAssertion.mock.calls;
 
@@ -71,7 +72,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.hashAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
+        `Expected ${received.hashAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
     };
   },
 };

@@ -4,11 +4,11 @@ import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
 
 declare module "msw" {
   interface HttpHandler {
-    requestedAssertion: Mock;
+    requestedAssertion?: Mock;
   }
 
   interface GraphQLHandler {
-    requestedAssertion: Mock;
+    requestedAssertion?: Mock;
   }
 }
 
@@ -60,6 +60,8 @@ export const toHaveBeenRequested: Assertion = {
     },
   assert: function (received) {
     checkMockedHandler(received);
+    if (!received.requestedAssertion)
+      throw new Error("No request assertion found");
 
     const calls = received.requestedAssertion.mock.calls;
 
@@ -67,7 +69,7 @@ export const toHaveBeenRequested: Assertion = {
     return {
       pass: calls.length > 0,
       message: () =>
-        `Expected ${received.requestedAssertion.getMockName()} to${isNot ? " not" : ""} have been requested`,
+        `Expected ${received.requestedAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested`,
     };
   },
 };

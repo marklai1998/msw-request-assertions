@@ -4,7 +4,7 @@ import { checkEquality, checkMockedGraphQLHandler } from "../../utils/index.js";
 
 declare module "msw" {
   interface GraphQLHandler {
-    gqlQueryAssertion: Mock;
+    gqlQueryAssertion?: Mock;
   }
 }
 
@@ -35,6 +35,8 @@ export const toHaveBeenRequestedWithGqlQuery: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
+    if (!received.gqlQueryAssertion)
+      throw new Error("No GraphQL query assertion found");
 
     const calls = received.gqlQueryAssertion.mock.calls;
 
@@ -42,7 +44,7 @@ export const toHaveBeenRequestedWithGqlQuery: Assertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.gqlQueryAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL query ${this.utils.printExpected(expected)}`,
+        `Expected ${received.gqlQueryAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL query ${this.utils.printExpected(expected)}`,
     };
   },
 };

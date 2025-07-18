@@ -4,7 +4,7 @@ import { checkEquality, checkMockedGraphQLHandler } from "../../utils/index.js";
 
 declare module "msw" {
   interface GraphQLHandler {
-    variablesAssertion: Mock;
+    gqlVariablesAssertion?: Mock;
   }
 }
 
@@ -13,8 +13,8 @@ export const toHaveBeenRequestedWithGqlVariables: Assertion = {
   interceptGql:
     (mockFn, original) =>
     (operationName, resolver, options, ...rest) => {
-      const variablesAssertion = mockFn();
-      variablesAssertion.mockName(
+      const gqlVariablesAssertion = mockFn();
+      gqlVariablesAssertion.mockName(
         typeof operationName === "string"
           ? operationName
           : operationName.toString(),
@@ -22,27 +22,29 @@ export const toHaveBeenRequestedWithGqlVariables: Assertion = {
 
       const newResolver: typeof resolver = (info, ...args) => {
         const { variables } = info;
-        variablesAssertion(variables);
+        gqlVariablesAssertion(variables);
 
         return resolver(info, ...args);
       };
 
       const handler = original(operationName, newResolver, options, ...rest);
 
-      handler.variablesAssertion = variablesAssertion;
+      handler.gqlVariablesAssertion = gqlVariablesAssertion;
 
       return handler;
     },
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
+    if (!received.gqlVariablesAssertion)
+      throw new Error("No GraphQL variables assertion found");
 
-    const calls = received.variablesAssertion.mock.calls;
+    const calls = received.gqlVariablesAssertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.variablesAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
+        `Expected ${received.gqlVariablesAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
     };
   },
 };

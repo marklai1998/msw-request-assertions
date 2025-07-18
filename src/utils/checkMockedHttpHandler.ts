@@ -6,7 +6,4 @@ export function checkMockedHttpHandler(
   if (!(input instanceof HttpHandler)) {
     throw new Error("Expected a HttpHandler");
   }
-  if (!input.requestedAssertion) {
-    throw new Error("HttpHandler is not intercepted");
-  }
 }

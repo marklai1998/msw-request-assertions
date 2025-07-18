@@ -5,10 +5,10 @@ import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    pathParametersAssertion: Mock;
+    pathParametersAssertion?: Mock;
   }
   interface GraphQLHandler {
-    pathParametersAssertion: Mock;
+    pathParametersAssertion?: Mock;
   }
 }
 
@@ -64,6 +64,8 @@ export const toHaveBeenRequestedWithPathParameters: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.pathParametersAssertion)
+      throw new Error("No path parameters assertion found");
 
     const calls = received.pathParametersAssertion?.mock.calls || [];
 

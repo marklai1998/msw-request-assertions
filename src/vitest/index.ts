@@ -1,5 +1,4 @@
 import { http } from "msw";
-import { compose } from "ramda";
 import { expect, type Mock } from "vitest";
 import {
   initToHaveBeenCalled,
@@ -38,14 +37,14 @@ declare module "msw" {
 
 for (const key in http) {
   const original = http[key as keyof typeof http];
-  http[key as keyof typeof http] = compose(
+  http[key as keyof typeof http] = [
     initToHaveBeenCalled,
     initToHaveBeenRequestedWithBody,
     initToHaveBeenRequestedWithJsonBody,
     initToHaveBeenRequestedWithHeader,
     initToHaveBeenRequestedWithQuery,
     initToHaveBeenRequestedWithHash,
-  )(original);
+  ].reduce((fn, init) => init(fn), original);
 }
 
 expect.extend({

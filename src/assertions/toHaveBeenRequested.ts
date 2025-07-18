@@ -1,6 +1,6 @@
 import { HttpHandler, type HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
-import type { assertFn } from "../types/index.js";
+import type { AssertFn } from "../types/index.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -27,7 +27,7 @@ export const initToHaveBeenRequested =
     return handler;
   };
 
-export const toHaveBeenRequested: assertFn = function (received) {
+export const toHaveBeenRequested: AssertFn = function (received) {
   if (!(received instanceof HttpHandler)) {
     throw new Error("Expected a HttpHandler");
   }

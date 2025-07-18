@@ -1,6 +1,6 @@
 import { HttpHandler, type HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
-import type { assertFn } from "../types/index.js";
+import type { AssertFn } from "../types/index.js";
 import { checkEquality } from "../utils/index.js";
 
 declare module "msw" {
@@ -32,7 +32,7 @@ export const initToHaveBeenRequestedWithQuery =
     return handler;
   };
 
-export const toHaveBeenRequestedWithQuery: assertFn = function (
+export const toHaveBeenRequestedWithQuery: AssertFn = function (
   received,
   expected,
 ) {

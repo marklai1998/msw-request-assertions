@@ -1,3 +1,3 @@
 import type { expect } from "vitest";
 
-export type assertFn = Parameters<typeof expect.extend>[0][string];
+export type AssertFn = Parameters<typeof expect.extend>[0][string];

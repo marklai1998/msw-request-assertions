@@ -1,6 +1,6 @@
 import { HttpHandler, type HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
-import type { assertFn } from "../types/index.js";
+import type { AssertFn } from "../types/index.js";
 import { checkEquality } from "../utils/index.js";
 
 declare module "msw" {
@@ -31,7 +31,7 @@ export const initToHaveBeenRequestedWithHeader =
     return handler;
   };
 
-export const toHaveBeenRequestedWithHeaders: assertFn = function (
+export const toHaveBeenRequestedWithHeaders: AssertFn = function (
   received,
   expected,
 ) {

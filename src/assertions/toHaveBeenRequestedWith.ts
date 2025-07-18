@@ -1,8 +1,8 @@
 import { HttpHandler } from "msw";
-import type { assertFn } from "../types/index.js";
+import type { AssertFn } from "../types/index.js";
 import { checkEquality } from "../utils/index.js";
 
-export const toHaveBeenRequestedWith: assertFn = function (received, expected) {
+export const toHaveBeenRequestedWith: AssertFn = function (received, expected) {
   if (!(received instanceof HttpHandler)) {
     throw new Error("Expected a HttpHandler");
   }

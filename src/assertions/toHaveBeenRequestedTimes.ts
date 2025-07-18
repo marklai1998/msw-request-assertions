@@ -1,7 +1,7 @@
 import { HttpHandler } from "msw";
-import type { assertFn } from "../types/index.js";
+import type { AssertFn } from "../types/index.js";
 
-export const toHaveBeenRequestedTimes: assertFn = function (
+export const toHaveBeenRequestedTimes: AssertFn = function (
   received,
   expectedTimes,
 ) {

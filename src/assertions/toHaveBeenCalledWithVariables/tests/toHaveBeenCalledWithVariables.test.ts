@@ -40,7 +40,7 @@ const restHandlers = [getUserQuery, createUserMutation, searchQuery];
 const server = setupServer(...restHandlers);
 
 // Mock GraphQL client for testing
-async function executeGraphQL(query: string, variables?: any) {
+async function executeGraphQL(query: string, variables?: unknown) {
   const response = await fetch("http://localhost/graphql", {
     method: "POST",
     headers: {

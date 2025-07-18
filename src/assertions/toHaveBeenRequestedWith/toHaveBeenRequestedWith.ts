@@ -1,7 +1,7 @@
 import { GraphQLHandler } from "msw";
 import type { Assertion } from "../../types/index.js";
+import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
-import { checkEquality } from "../../utils/index.js";
 
 export const toHaveBeenRequestedWith: Assertion = {
   name: "toHaveBeenRequestedWith",

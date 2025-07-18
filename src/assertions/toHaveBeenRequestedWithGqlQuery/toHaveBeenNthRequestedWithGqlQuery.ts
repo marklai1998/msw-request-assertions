@@ -1,5 +1,6 @@
 import type { Assertion } from "../../types/index.js";
-import { checkEquality, checkMockedGraphQLHandler } from "../../utils/index.js";
+import { checkEquality } from "../../utils/checkEquality.js";
+import { checkMockedGraphQLHandler } from "../../utils/checkMockedGraphQLHandler.js";
 
 export const toHaveBeenNthRequestedWithGqlQuery: Assertion = {
   name: "toHaveBeenNthRequestedWithGqlQuery",

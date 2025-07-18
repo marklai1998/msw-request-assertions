@@ -4,28 +4,36 @@
 import type { HttpHandler, GraphQLHandler } from "msw";
 
 interface CustomMatchers<R = unknown> {
-  toHaveBeenRequestedWithJsonBody: (payload: unknown) => R;
-  toHaveBeenNthRequestedWithJsonBody: (
-    callIndex: number,
-    payload: unknown,
-  ) => R;
-  toHaveBeenRequestedWithBody: (payload: unknown) => R;
-  toHaveBeenNthRequestedWithBody: (callIndex: number, payload: unknown) => R;
-  toHaveBeenRequestedWithHeaders: (payload: unknown) => R;
-  toHaveBeenNthRequestedWithHeaders: (callIndex: number, payload: unknown) => R;
-  toHaveBeenRequestedWithQuery: (payload: unknown) => R;
-  toHaveBeenNthRequestedWithQuery: (callIndex: number, payload: unknown) => R;
-  toHaveBeenRequestedWith: (payload: unknown) => R;
-  toHaveBeenNthRequestedWith: (callIndex: number, payload: unknown) => R;
-  toHaveBeenRequestedWithHash: (payload: unknown) => R;
-  toHaveBeenNthRequestedWithHash: (callIndex: number, payload: unknown) => R;
   toHaveBeenRequested: () => R;
   toHaveBeenRequestedTimes: (times: number) => R;
-  toHaveBeenCalledWithVariables: (variables: unknown) => R;
-  toHaveBeenCalledNthWithVariables: (
-    callIndex: number,
-    variables: unknown,
+  toHaveBeenRequestedWith: (options: Record<string, any>) => R;
+  toHaveBeenNthRequestedWith: (
+    nthCall: number,
+    options: Record<string, any>,
   ) => R;
+  toHaveBeenRequestedWithBody: (body: any) => R;
+  toHaveBeenNthRequestedWithBody: (nthCall: number, body: any) => R;
+  toHaveBeenRequestedWithHash: (hash: string) => R;
+  toHaveBeenNthRequestedWithHash: (nthCall: number, hash: string) => R;
+  toHaveBeenRequestedWithHeaders: (headers: Record<string, any>) => R;
+  toHaveBeenNthRequestedWithHeaders: (
+    nthCall: number,
+    headers: Record<string, any>,
+  ) => R;
+  toHaveBeenRequestedWithJsonBody: (body: any) => R;
+  toHaveBeenNthRequestedWithJsonBody: (nthCall: number, body: any) => R;
+  toHaveBeenRequestedWithQueryString: (queryString: string) => R;
+  toHaveBeenNthRequestedWithQueryString: (
+    nthCall: number,
+    queryString: string,
+  ) => R;
+  toHaveBeenCalledWithVariables: (variables: Record<string, any>) => R;
+  toHaveBeenCalledNthWithVariables: (
+    nthCall: number,
+    variables: Record<string, any>,
+  ) => R;
+  toHaveBeenCalledWithQuery: (query: string) => R;
+  toHaveBeenCalledNthWithQuery: (nthCall: number, query: string) => R;
 }
 
 declare module "vitest" {
@@ -50,8 +58,11 @@ declare module "vitest" {
     ) => void;
     toHaveBeenRequestedWithJsonBody: (body: any) => void;
     toHaveBeenNthRequestedWithJsonBody: (nthCall: number, body: any) => void;
-    toHaveBeenRequestedWithQuery: (query: string) => void;
-    toHaveBeenNthRequestedWithQuery: (nthCall: number, query: string) => void;
+    toHaveBeenRequestedWithQueryString: (queryString: string) => void;
+    toHaveBeenNthRequestedWithQueryString: (
+      nthCall: number,
+      queryString: string,
+    ) => void;
   }
 
   interface Assertion<GraphQLHandler> {

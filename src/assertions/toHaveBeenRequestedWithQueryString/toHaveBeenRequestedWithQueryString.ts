@@ -5,42 +5,44 @@ import { checkMockedHandler } from "../../utils/checkMockedHandler";
 
 declare module "msw" {
   interface HttpHandler {
-    queryAssertion: Mock;
+    queryStringAssertion: Mock;
   }
   interface GraphQLHandler {
-    queryAssertion: Mock;
+    queryStringAssertion: Mock;
   }
 }
 
-export const toHaveBeenRequestedWithQuery: Assertion = {
-  name: "toHaveBeenRequestedWithQuery",
+export const toHaveBeenRequestedWithQueryString: Assertion = {
+  name: "toHaveBeenRequestedWithQueryString",
   interceptHttp:
     (original) =>
     (path, resolver, options, ...rest) => {
-      const queryAssertion = vi.fn();
-      queryAssertion.mockName(typeof path === "string" ? path : path.source);
+      const queryStringAssertion = vi.fn();
+      queryStringAssertion.mockName(
+        typeof path === "string" ? path : path.source,
+      );
 
       const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;
         const clone = request.clone();
         const search = new URL(clone.url).search;
 
-        queryAssertion(search);
+        queryStringAssertion(search);
 
         return resolver(info, ...args);
       };
 
       const handler = original(path, newResolver, options, ...rest);
 
-      handler.queryAssertion = queryAssertion;
+      handler.queryStringAssertion = queryStringAssertion;
 
       return handler;
     },
   interceptGql:
     (original) =>
     (operationName, resolver, options, ...rest) => {
-      const queryAssertion = vi.fn();
-      queryAssertion.mockName(
+      const queryStringAssertion = vi.fn();
+      queryStringAssertion.mockName(
         typeof operationName === "string"
           ? operationName
           : operationName.toString(),
@@ -51,27 +53,27 @@ export const toHaveBeenRequestedWithQuery: Assertion = {
         const clone = request.clone();
         const search = new URL(clone.url).search;
 
-        queryAssertion(search);
+        queryStringAssertion(search);
 
         return resolver(info, ...args);
       };
 
       const handler = original(operationName, newResolver, options, ...rest);
 
-      handler.queryAssertion = queryAssertion;
+      handler.queryStringAssertion = queryStringAssertion;
 
       return handler;
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
 
-    const calls = received.queryAssertion.mock.calls;
+    const calls = received.queryStringAssertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.queryAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with query ${this.utils.printExpected(expected)}`,
+        `Expected ${received.queryStringAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with query string ${this.utils.printExpected(expected)}`,
     };
   },
 };

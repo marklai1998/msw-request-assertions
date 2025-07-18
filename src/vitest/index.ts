@@ -4,20 +4,20 @@ import { toHaveBeenCalledNthWithQuery } from "../assertions/toHaveBeenCalledWith
 import { toHaveBeenCalledWithQuery } from "../assertions/toHaveBeenCalledWithQuery/toHaveBeenCalledWithQuery.js";
 import { toHaveBeenCalledNthWithVariables } from "../assertions/toHaveBeenCalledWithVariables/toHaveBeenCalledNthWithVariables.js";
 import { toHaveBeenCalledWithVariables } from "../assertions/toHaveBeenCalledWithVariables/toHaveBeenCalledWithVariables.js";
-import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested";
-import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequested/toHaveBeenRequestedTimes";
-import { toHaveBeenNthRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenNthRequestedWith";
-import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenRequestedWith";
-import { toHaveBeenNthRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenNthRequestedWithBody";
-import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenRequestedWithBody";
-import { toHaveBeenNthRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenNthRequestedWithHash";
-import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash";
-import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders";
-import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders";
-import { toHaveBeenNthRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody";
-import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenRequestedWithJsonBody";
-import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenNthRequestedWithQuery.js";
-import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery.js";
+import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested.js";
+import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequested/toHaveBeenRequestedTimes.js";
+import { toHaveBeenNthRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenNthRequestedWith.js";
+import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenRequestedWith.js";
+import { toHaveBeenNthRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenNthRequestedWithBody.js";
+import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenRequestedWithBody.js";
+import { toHaveBeenNthRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenNthRequestedWithHash.js";
+import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash.js";
+import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders.js";
+import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders.js";
+import { toHaveBeenNthRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody.js";
+import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenRequestedWithJsonBody.js";
+import { toHaveBeenNthRequestedWithQueryString } from "../assertions/toHaveBeenRequestedWithQueryString/toHaveBeenNthRequestedWithQueryString.js";
+import { toHaveBeenRequestedWithQueryString } from "../assertions/toHaveBeenRequestedWithQueryString/toHaveBeenRequestedWithQueryString.js";
 import type { AssertFn } from "../types";
 
 const graphqlOnlyAssertions = [
@@ -40,8 +40,8 @@ const assertions = [
   toHaveBeenNthRequestedWithHeaders,
   toHaveBeenRequestedWithJsonBody,
   toHaveBeenNthRequestedWithJsonBody,
-  toHaveBeenRequestedWithQuery,
-  toHaveBeenNthRequestedWithQuery,
+  toHaveBeenRequestedWithQueryString,
+  toHaveBeenNthRequestedWithQueryString,
 ];
 
 const httpAssertions = [...assertions];

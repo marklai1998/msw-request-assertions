@@ -13,7 +13,7 @@ export const toHaveBeenRequestedWith: Assertion = {
     const { isNot } = this;
 
     const bodyAssertionCalls = received.bodyAssertion.mock.calls;
-    const queryAssertionCalls = received.queryAssertion.mock.calls;
+    const queryStringAssertionCalls = received.queryStringAssertion.mock.calls;
     const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
     const headersAssertionCalls = received.headersAssertion.mock.calls;
     const hashAssertionCalls = received.hashAssertion.mock.calls;
@@ -24,7 +24,7 @@ export const toHaveBeenRequestedWith: Assertion = {
 
     const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
       bodyAssertionCall,
-      queryAssertionCall: queryAssertionCalls[idx],
+      queryStringAssertionCall: queryStringAssertionCalls[idx],
       jsonBodyAssertionCall: jsonBodyAssertionCalls[idx],
       headersAssertionCall: headersAssertionCalls[idx],
       hashAssertionCall: hashAssertionCalls[idx],
@@ -35,7 +35,7 @@ export const toHaveBeenRequestedWith: Assertion = {
       pass: calls.some((call) => {
         let isBodyMatch = true;
         let isJsonBodyMatch = true;
-        let isQueryMatch = true;
+        let isQueryStringMatch = true;
         let isHeadersMatch = true;
         let isHashMatch = true;
         let isVariablesMatch = true;
@@ -51,10 +51,10 @@ export const toHaveBeenRequestedWith: Assertion = {
           isBodyMatch = checkEquality(expected.body, call.bodyAssertionCall[0]);
         }
 
-        if ("query" in expected) {
-          isQueryMatch = checkEquality(
-            expected.query,
-            call.queryAssertionCall[0],
+        if ("queryString" in expected) {
+          isQueryStringMatch = checkEquality(
+            expected.queryString,
+            call.queryStringAssertionCall[0],
           );
         }
 
@@ -79,7 +79,7 @@ export const toHaveBeenRequestedWith: Assertion = {
         return (
           isBodyMatch &&
           isJsonBodyMatch &&
-          isQueryMatch &&
+          isQueryStringMatch &&
           isHeadersMatch &&
           isHashMatch &&
           isVariablesMatch

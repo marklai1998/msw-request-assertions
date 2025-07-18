@@ -42,7 +42,7 @@ describe("toHaveBeenNthRequestedWith", () => {
 
     expect(usersHandler).toHaveBeenNthRequestedWith(1, {
       jsonBody: { name: "John" },
-      query: "?page=1",
+      queryString: "?page=1",
       hash: "#section1",
       headers: {
         authorization: "Bearer token123",
@@ -52,7 +52,7 @@ describe("toHaveBeenNthRequestedWith", () => {
 
     expect(usersHandler).toHaveBeenNthRequestedWith(2, {
       body: "name=Jane&email=jane@example.com",
-      query: "?page=2",
+      queryString: "?page=2",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
       },

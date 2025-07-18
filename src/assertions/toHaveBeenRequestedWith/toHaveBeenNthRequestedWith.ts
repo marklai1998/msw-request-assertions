@@ -13,7 +13,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     const { isNot } = this;
 
     const bodyAssertionCalls = received.bodyAssertion.mock.calls;
-    const queryAssertionCalls = received.queryAssertion.mock.calls;
+    const queryStringAssertionCalls = received.queryStringAssertion.mock.calls;
     const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
     const headersAssertionCalls = received.headersAssertion.mock.calls;
     const hashAssertionCalls = received.hashAssertion.mock.calls;
@@ -24,7 +24,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
 
     const nthCall = {
       bodyAssertionCall: bodyAssertionCalls[time - 1],
-      queryAssertionCall: queryAssertionCalls[time - 1],
+      queryStringAssertionCall: queryStringAssertionCalls[time - 1],
       jsonBodyAssertionCall: jsonBodyAssertionCalls[time - 1],
       headersAssertionCall: headersAssertionCalls[time - 1],
       hashAssertionCall: hashAssertionCalls[time - 1],
@@ -33,7 +33,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
 
     let isBodyMatch = true;
     let isJsonBodyMatch = true;
-    let isQueryMatch = true;
+    let isQueryStringMatch = true;
     let isHeadersMatch = true;
     let isHashMatch = true;
     let isVariablesMatch = true;
@@ -52,10 +52,10 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       );
     }
 
-    if ("query" in expected) {
-      isQueryMatch = checkEquality(
-        expected.query,
-        nthCall.queryAssertionCall?.[0],
+    if ("queryString" in expected) {
+      isQueryStringMatch = checkEquality(
+        expected.queryString,
+        nthCall.queryStringAssertionCall?.[0],
       );
     }
 
@@ -83,7 +83,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     const allMatch =
       isBodyMatch &&
       isJsonBodyMatch &&
-      isQueryMatch &&
+      isQueryStringMatch &&
       isHeadersMatch &&
       isHashMatch &&
       isVariablesMatch;
@@ -95,8 +95,8 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     if ("body" in expected) {
       actual.body = nthCall.bodyAssertionCall?.[0];
     }
-    if ("query" in expected) {
-      actual.query = nthCall.queryAssertionCall?.[0];
+    if ("queryString" in expected) {
+      actual.queryString = nthCall.queryStringAssertionCall?.[0];
     }
     if ("headers" in expected) {
       actual.headers = nthCall.headersAssertionCall?.[0];

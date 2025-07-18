@@ -11,7 +11,7 @@
 
 ### Matchers
 
-- [ ] Gql
+- [x] Gql
 - [x] Called with hash
 - [x] Called
 - [x] Called times

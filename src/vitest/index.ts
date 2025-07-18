@@ -19,8 +19,6 @@ import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedW
 import type { AssertFn } from "../types";
 
 const httpOnlyAssertions = [
-  toHaveBeenRequestedWith,
-  toHaveBeenNthRequestedWith,
   toHaveBeenRequestedWithBody,
   toHaveBeenNthRequestedWithBody,
   toHaveBeenRequestedWithJsonBody,
@@ -38,7 +36,12 @@ const graphqlOnlyAssertions = [
   toHaveBeenCalledNthWithVariables,
 ];
 
-const hybridAssertions = [toHaveBeenRequested, toHaveBeenRequestedTimes];
+const hybridAssertions = [
+  toHaveBeenRequested,
+  toHaveBeenRequestedTimes,
+  toHaveBeenRequestedWith,
+  toHaveBeenNthRequestedWith,
+];
 
 const httpAssertions = [...httpOnlyAssertions, ...hybridAssertions];
 const graphqlAssertions = [...graphqlOnlyAssertions, ...hybridAssertions];

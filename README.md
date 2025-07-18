@@ -19,3 +19,4 @@
 - [x] Called
 - [x] Called times
 - [x] N-th called with
+- [x] Path param support

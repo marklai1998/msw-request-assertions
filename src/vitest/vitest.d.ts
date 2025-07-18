@@ -25,6 +25,11 @@ interface CustomMatchers<R = unknown> {
   ) => R;
   toHaveBeenRequestedWithGqlQuery: (query: string) => R;
   toHaveBeenNthRequestedWithGqlQuery: (nthCall: number, query: string) => R;
+  toHaveBeenRequestedWithPathParameters: (params: unknown) => R;
+  toHaveBeenNthRequestedWithPathParameters: (
+    nthCall: number,
+    params: unknown,
+  ) => R;
 }
 
 declare module "vitest" {

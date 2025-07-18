@@ -14,6 +14,8 @@ import { toHaveBeenNthRequestedWithHeaders } from "./toHaveBeenRequestedWithHead
 import { toHaveBeenRequestedWithHeaders } from "./toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders.js";
 import { toHaveBeenNthRequestedWithJsonBody } from "./toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody.js";
 import { toHaveBeenRequestedWithJsonBody } from "./toHaveBeenRequestedWithJsonBody/toHaveBeenRequestedWithJsonBody.js";
+import { toHaveBeenNthRequestedWithPathParameters } from "./toHaveBeenRequestedWithPathParameters/toHaveBeenNthRequestedWithPathParameters.js";
+import { toHaveBeenRequestedWithPathParameters } from "./toHaveBeenRequestedWithPathParameters/toHaveBeenRequestedWithPathParameters.js";
 import { toHaveBeenNthRequestedWithQueryString } from "./toHaveBeenRequestedWithQueryString/toHaveBeenNthRequestedWithQueryString.js";
 import { toHaveBeenRequestedWithQueryString } from "./toHaveBeenRequestedWithQueryString/toHaveBeenRequestedWithQueryString.js";
 
@@ -39,6 +41,8 @@ export const assertions = [
   toHaveBeenNthRequestedWithJsonBody,
   toHaveBeenRequestedWithQueryString,
   toHaveBeenNthRequestedWithQueryString,
+  toHaveBeenRequestedWithPathParameters,
+  toHaveBeenNthRequestedWithPathParameters,
 ];
 
 export const httpAssertions = [...assertions];

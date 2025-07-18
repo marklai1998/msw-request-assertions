@@ -17,6 +17,8 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
     const headersAssertionCalls = received.headersAssertion.mock.calls;
     const hashAssertionCalls = received.hashAssertion.mock.calls;
+    const pathParametersAssertionCalls =
+      received.pathParametersAssertion?.mock.calls || [];
     const gqlVariablesAssertionCalls =
       received instanceof GraphQLHandler
         ? received.variablesAssertion.mock.calls
@@ -32,6 +34,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       jsonBodyAssertionCall: jsonBodyAssertionCalls[time - 1],
       headersAssertionCall: headersAssertionCalls[time - 1],
       hashAssertionCall: hashAssertionCalls[time - 1],
+      pathParametersAssertionCall: pathParametersAssertionCalls[time - 1],
       gqlVariablesAssertionCall: gqlVariablesAssertionCalls[time - 1],
       gqlQueryAssertionCall: gqlQueryAssertionCalls[time - 1],
     };
@@ -41,6 +44,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     let isQueryStringMatch = true;
     let isHeadersMatch = true;
     let isHashMatch = true;
+    let isPathParametersMatch = true;
     let isGqlVariablesMatch = true;
     let isGqlQueryMatch = true;
 
@@ -79,6 +83,13 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       );
     }
 
+    if ("pathParameters" in expected) {
+      isPathParametersMatch = checkEquality(
+        expected.pathParameters,
+        nthCall.pathParametersAssertionCall?.[0],
+      );
+    }
+
     if ("gqlVariables" in expected) {
       isGqlVariablesMatch = checkEquality(
         expected.gqlVariables,
@@ -99,6 +110,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
       isQueryStringMatch &&
       isHeadersMatch &&
       isHashMatch &&
+      isPathParametersMatch &&
       isGqlVariablesMatch &&
       isGqlQueryMatch;
 
@@ -117,6 +129,10 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     }
     if ("hash" in expected) {
       actual.hash = nthCall.hashAssertionCall?.[0];
+    }
+
+    if ("pathParameters" in expected) {
+      actual.pathParameters = nthCall.pathParametersAssertionCall?.[0];
     }
 
     if ("gqlVariables" in expected) {

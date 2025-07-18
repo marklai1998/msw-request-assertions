@@ -17,6 +17,8 @@ export const toHaveBeenRequestedWith: Assertion = {
     const jsonBodyAssertionCalls = received.jsonBodyAssertion.mock.calls;
     const headersAssertionCalls = received.headersAssertion.mock.calls;
     const hashAssertionCalls = received.hashAssertion.mock.calls;
+    const pathParametersAssertionCalls =
+      received.pathParametersAssertion.mock.calls;
     const gqlVariablesAssertionCalls =
       received instanceof GraphQLHandler
         ? received.variablesAssertion.mock.calls
@@ -32,6 +34,7 @@ export const toHaveBeenRequestedWith: Assertion = {
       jsonBodyAssertionCall: jsonBodyAssertionCalls[idx],
       headersAssertionCall: headersAssertionCalls[idx],
       hashAssertionCall: hashAssertionCalls[idx],
+      pathParametersAssertionCall: pathParametersAssertionCalls[idx],
       gqlVariablesAssertionCall: gqlVariablesAssertionCalls[idx],
       gqlQueryAssertionCall: gqlQueryAssertionCalls[idx],
     }));
@@ -43,6 +46,7 @@ export const toHaveBeenRequestedWith: Assertion = {
         let isQueryStringMatch = true;
         let isHeadersMatch = true;
         let isHashMatch = true;
+        let isPathParametersMatch = true;
         let isGqlVariablesMatch = true;
         let isGqlQueryMatch = true;
 
@@ -75,6 +79,13 @@ export const toHaveBeenRequestedWith: Assertion = {
           isHashMatch = checkEquality(expected.hash, call.hashAssertionCall[0]);
         }
 
+        if ("pathParameters" in expected) {
+          isPathParametersMatch = checkEquality(
+            expected.pathParameters,
+            call.pathParametersAssertionCall[0],
+          );
+        }
+
         if ("gqlVariables" in expected) {
           isGqlVariablesMatch = checkEquality(
             expected.gqlVariables,
@@ -95,6 +106,7 @@ export const toHaveBeenRequestedWith: Assertion = {
           isQueryStringMatch &&
           isHeadersMatch &&
           isHashMatch &&
+          isPathParametersMatch &&
           isGqlVariablesMatch &&
           isGqlQueryMatch
         );

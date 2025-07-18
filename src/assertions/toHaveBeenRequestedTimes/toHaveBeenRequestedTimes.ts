@@ -1,9 +1,9 @@
-import type { HttpAssertion } from "../../types";
+import type { Assertion } from "../../types";
 import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
 
-export const toHaveBeenRequestedTimes: HttpAssertion = {
+export const toHaveBeenRequestedTimes: Assertion = {
   name: "toHaveBeenRequestedTimes",
-  intercept: (original) => original,
+  interceptHttp: (original) => original,
   assert: function (received, expectedTimes) {
     checkMockedHttpHandler(received);
 

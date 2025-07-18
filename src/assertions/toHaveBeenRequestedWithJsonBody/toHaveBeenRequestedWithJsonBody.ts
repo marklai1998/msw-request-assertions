@@ -1,6 +1,6 @@
 import type { HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
-import type { HttpAssertion } from "../../types/index.js";
+import type { Assertion } from "../../types/index.js";
 import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler.js";
 import { checkEquality } from "../../utils/index.js";
 
@@ -10,9 +10,9 @@ declare module "msw" {
   }
 }
 
-export const toHaveBeenRequestedWithJsonBody: HttpAssertion = {
+export const toHaveBeenRequestedWithJsonBody: Assertion = {
   name: "toHaveBeenRequestedWithJsonBody",
-  intercept:
+  interceptHttp:
     (original: HttpRequestHandler): HttpRequestHandler =>
     (path, resolver, options, ...rest) => {
       const jsonBodyAssertion = vi.fn();

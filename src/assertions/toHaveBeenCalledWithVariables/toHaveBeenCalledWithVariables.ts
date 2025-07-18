@@ -1,5 +1,5 @@
 import type { Mock } from "vitest";
-import type { GraphQLAssertion } from "../../types";
+import type { Assertion } from "../../types";
 import { checkEquality, checkMockedGraphQLHandler } from "../../utils";
 
 declare module "msw" {
@@ -8,9 +8,9 @@ declare module "msw" {
   }
 }
 
-export const toHaveBeenCalledWithVariables: GraphQLAssertion = {
+export const toHaveBeenCalledWithVariables: Assertion = {
   name: "toHaveBeenCalledWithVariables",
-  intercept:
+  interceptGql:
     (original) =>
     (operationName, resolver, options, ...rest) => {
       const variablesAssertion = vi.fn();

@@ -43,7 +43,7 @@ const graphqlAssertions = [
 for (const key in http) {
   const original = http[key as keyof typeof http];
   http[key as keyof typeof http] = httpAssertions.reduce(
-    (fn, { intercept }) => intercept(fn),
+    (fn, { interceptHttp }) => (interceptHttp ? interceptHttp(fn) : fn),
     original,
   );
 }
@@ -52,12 +52,12 @@ const originalQuery = graphql.query;
 const originalMutation = graphql.mutation;
 
 graphql.query = graphqlAssertions.reduce(
-  (fn, { intercept }) => intercept(fn),
+  (fn, { interceptGql }) => (interceptGql ? interceptGql(fn) : fn),
   originalQuery,
 );
 
 graphql.mutation = graphqlAssertions.reduce(
-  (fn, { intercept }) => intercept(fn),
+  (fn, { interceptGql }) => (interceptGql ? interceptGql(fn) : fn),
   originalMutation,
 );
 

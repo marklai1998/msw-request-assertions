@@ -1,5 +1,5 @@
 import type { Mock } from "vitest";
-import type { HttpAssertion } from "../../types";
+import type { Assertion } from "../../types";
 import { checkEquality } from "../../utils";
 import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
 
@@ -9,9 +9,9 @@ declare module "msw" {
   }
 }
 
-export const toHaveBeenRequestedWithHeaders: HttpAssertion = {
+export const toHaveBeenRequestedWithHeaders: Assertion = {
   name: "toHaveBeenRequestedWithHeaders",
-  intercept:
+  interceptHttp:
     (original) =>
     (path, resolver, options, ...rest) => {
       const headersAssertion = vi.fn();

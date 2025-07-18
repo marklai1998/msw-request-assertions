@@ -1,9 +1,9 @@
-import type { GraphQLAssertion } from "../../types";
+import type { Assertion } from "../../types";
 import { checkEquality, checkMockedGraphQLHandler } from "../../utils";
 
-export const toHaveBeenCalledNthWithVariables: GraphQLAssertion = {
+export const toHaveBeenCalledNthWithVariables: Assertion = {
   name: "toHaveBeenCalledNthWithVariables",
-  intercept: (original) => original,
+  interceptGql: (original) => original,
   assert: function (received, time, expected) {
     checkMockedGraphQLHandler(received);
 

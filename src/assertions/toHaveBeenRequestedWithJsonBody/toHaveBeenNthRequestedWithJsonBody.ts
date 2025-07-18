@@ -1,10 +1,10 @@
-import type { HttpAssertion } from "../../types";
+import type { Assertion } from "../../types";
 import { checkEquality } from "../../utils";
 import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
 
-export const toHaveBeenNthRequestedWithJsonBody: HttpAssertion = {
+export const toHaveBeenNthRequestedWithJsonBody: Assertion = {
   name: "toHaveBeenNthRequestedWithJsonBody",
-  intercept: (original) => original,
+  interceptHttp: (original) => original,
   assert: function (received, time, expected) {
     checkMockedHttpHandler(received);
 

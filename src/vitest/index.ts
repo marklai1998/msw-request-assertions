@@ -7,7 +7,8 @@ import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWi
 import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash.js";
 import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders.js";
 import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody.js";
-import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery.js";
+import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenNthRequestedWithQuery";
+import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery";
 
 const httpAssertions = [
   toHaveBeenRequested,
@@ -16,6 +17,7 @@ const httpAssertions = [
   toHaveBeenRequestedWithBody,
   toHaveBeenRequestedWithJsonBody,
   toHaveBeenRequestedWithHeaders,
+  toHaveBeenNthRequestedWithQuery,
   toHaveBeenRequestedWithQuery,
   toHaveBeenRequestedWithHash,
 ];

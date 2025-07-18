@@ -5,6 +5,7 @@ interface CustomMatchers<R = unknown> {
   toHaveBeenRequestedWithBody: (payload: unknown) => R;
   toHaveBeenRequestedWithHeaders: (payload: unknown) => R;
   toHaveBeenRequestedWithQuery: (payload: unknown) => R;
+  toHaveBeenNthRequestedWithQuery: (callIndex: number, payload: unknown) => R;
   toHaveBeenRequestedWith: (payload: unknown) => R;
   toHaveBeenRequestedWithHash: (payload: unknown) => R;
   toHaveBeenRequested: () => R;

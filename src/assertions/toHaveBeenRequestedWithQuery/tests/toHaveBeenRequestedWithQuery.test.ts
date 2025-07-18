@@ -3,7 +3,7 @@ import { setupServer } from "msw/node";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import wretch from "wretch";
 import QueryStringAddon from "wretch/addons/queryString";
-import "../../../vitest/index.js";
+import "../../../vitest";
 
 const w = wretch().addon(QueryStringAddon);
 

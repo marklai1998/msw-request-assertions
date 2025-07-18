@@ -2,6 +2,10 @@ import "vitest";
 
 interface CustomMatchers<R = unknown> {
   toHaveBeenRequestedWithJsonBody: (payload: unknown) => R;
+  toHaveBeenNthRequestedWithJsonBody: (
+    callIndex: number,
+    payload: unknown,
+  ) => R;
   toHaveBeenRequestedWithBody: (payload: unknown) => R;
   toHaveBeenRequestedWithHeaders: (payload: unknown) => R;
   toHaveBeenRequestedWithQuery: (payload: unknown) => R;

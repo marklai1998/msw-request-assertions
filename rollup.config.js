@@ -32,14 +32,7 @@ export default [
   },
   {
     input,
-    plugins: [
-      dts({
-        compilerOptions: {
-          // https://github.com/Swatinem/rollup-plugin-dts/issues/143
-          preserveSymlinks: false,
-        },
-      }),
-    ],
+    plugins: [dts()],
     output: [
       {
         dir: "dist/esm",

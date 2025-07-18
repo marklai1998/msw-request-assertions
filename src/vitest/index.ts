@@ -2,6 +2,7 @@ import { graphql, http } from "msw";
 import { expect } from "vitest";
 import { graphqlAssertions, httpAssertions } from "../assertions/index.js";
 import type { AssertFn } from "../types/index.js";
+import "./vitest.d.ts";
 
 for (const key in http) {
   const original = http[key as keyof typeof http];

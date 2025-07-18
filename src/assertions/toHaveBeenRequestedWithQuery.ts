@@ -17,7 +17,7 @@ export const toHaveBeenRequestedWithQuery: HttpAssertion = {
       const queryAssertion = vi.fn();
       queryAssertion.mockName(typeof path === "string" ? path : path.source);
 
-      const newResolver: typeof resolver = async (info, ...args) => {
+      const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;
         const clone = request.clone();
         const search = new URL(clone.url).search;

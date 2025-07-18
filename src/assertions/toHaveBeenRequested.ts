@@ -19,7 +19,7 @@ export const toHaveBeenRequested: HttpAssertion = {
         typeof path === "string" ? path : path.source,
       );
 
-      const newResolver: typeof resolver = async (info, ...args) => {
+      const newResolver: typeof resolver = (info, ...args) => {
         requestedAssertion();
 
         return resolver(info, ...args);

@@ -17,7 +17,7 @@ export const toHaveBeenRequestedWithHeaders: HttpAssertion = {
       const headersAssertion = vi.fn();
       headersAssertion.mockName(typeof path === "string" ? path : path.source);
 
-      const newResolver: typeof resolver = async (info, ...args) => {
+      const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;
         const clone = request.clone();
 

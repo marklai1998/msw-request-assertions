@@ -17,7 +17,7 @@ export const toHaveBeenRequestedWithHash: HttpAssertion = {
       const hashAssertion = vi.fn();
       hashAssertion.mockName(typeof path === "string" ? path : path.source);
 
-      const newResolver: typeof resolver = async (info, ...args) => {
+      const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;
         const clone = request.clone();
         const hash = new URL(clone.url).hash;

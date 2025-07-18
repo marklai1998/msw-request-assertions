@@ -1,59 +1,36 @@
 import { http } from "msw";
-import { expect, type Mock } from "vitest";
-import {
-  initToHaveBeenRequested,
-  toHaveBeenRequested,
-} from "../assertions/toHaveBeenRequested.js";
+import { expect } from "vitest";
+import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested.js";
 import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes.js";
 import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith.js";
-import {
-  initToHaveBeenRequestedWithBody,
-  toHaveBeenRequestedWithBody,
-} from "../assertions/toHaveBeenRequestedWithBody.js";
-import {
-  initToHaveBeenRequestedWithHash,
-  toHaveBeenRequestedWithHash,
-} from "../assertions/toHaveBeenRequestedWithHash.js";
-import {
-  initToHaveBeenRequestedWithHeader,
-  toHaveBeenRequestedWithHeaders,
-} from "../assertions/toHaveBeenRequestedWithHeaders.js";
-import {
-  initToHaveBeenRequestedWithJsonBody,
-  toHaveBeenRequestedWithJsonBody,
-} from "../assertions/toHaveBeenRequestedWithJsonBody.js";
-import {
-  initToHaveBeenRequestedWithQuery,
-  toHaveBeenRequestedWithQuery,
-} from "../assertions/toHaveBeenRequestedWithQuery.js";
+import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody.js";
+import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash.js";
+import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders.js";
+import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody.js";
+import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery.js";
 
-declare module "msw" {
-  interface HttpHandler {
-    assertions: {
-      headersAssertion: Mock;
-    };
-  }
-}
+const httpAssertions = [
+  toHaveBeenRequested,
+  toHaveBeenRequestedTimes,
+  toHaveBeenRequestedWith,
+  toHaveBeenRequestedWithBody,
+  toHaveBeenRequestedWithJsonBody,
+  toHaveBeenRequestedWithHeaders,
+  toHaveBeenRequestedWithQuery,
+  toHaveBeenRequestedWithHash,
+];
 
 for (const key in http) {
   const original = http[key as keyof typeof http];
-  http[key as keyof typeof http] = [
-    initToHaveBeenRequested,
-    initToHaveBeenRequestedWithBody,
-    initToHaveBeenRequestedWithJsonBody,
-    initToHaveBeenRequestedWithHeader,
-    initToHaveBeenRequestedWithQuery,
-    initToHaveBeenRequestedWithHash,
-  ].reduce((fn, init) => init(fn), original);
+  http[key as keyof typeof http] = httpAssertions.reduce(
+    (fn, { intercept }) => intercept(fn),
+    original,
+  );
 }
 
-expect.extend({
-  toHaveBeenRequested,
-  toHaveBeenRequestedTimes,
-  toHaveBeenRequestedWithBody,
-  toHaveBeenRequestedWithJsonBody,
-  toHaveBeenRequestedWithHeaders,
-  toHaveBeenRequestedWithQuery,
-  toHaveBeenRequestedWith,
-  toHaveBeenRequestedWithHash,
-});
+expect.extend(
+  httpAssertions.reduce(
+    (acc, { name, assert }) => ({ ...acc, [name]: assert }),
+    {},
+  ),
+);

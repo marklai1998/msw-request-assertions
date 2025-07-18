@@ -1,6 +1,6 @@
 import type { HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
-import type { AssertFn } from "../types/index.js";
+import type { HttpAssertion } from "../types/index.js";
 import { checkMockedHttpHandler } from "../utils/checkMockedHttpHandler.js";
 
 declare module "msw" {
@@ -9,34 +9,38 @@ declare module "msw" {
   }
 }
 
-export const initToHaveBeenRequested =
-  (original: HttpRequestHandler): HttpRequestHandler =>
-  (path, resolver, options, ...rest) => {
-    const requestedAssertion = vi.fn();
-    requestedAssertion.mockName(typeof path === "string" ? path : path.source);
+export const toHaveBeenRequested: HttpAssertion = {
+  name: "toHaveBeenRequested",
+  intercept:
+    (original: HttpRequestHandler): HttpRequestHandler =>
+    (path, resolver, options, ...rest) => {
+      const requestedAssertion = vi.fn();
+      requestedAssertion.mockName(
+        typeof path === "string" ? path : path.source,
+      );
 
-    const newResolver: typeof resolver = async (info, ...args) => {
-      requestedAssertion();
+      const newResolver: typeof resolver = async (info, ...args) => {
+        requestedAssertion();
 
-      return resolver(info, ...args);
+        return resolver(info, ...args);
+      };
+
+      const handler = original(path, newResolver, options, ...rest);
+
+      handler.requestedAssertion = requestedAssertion;
+
+      return handler;
+    },
+  assert: function (received) {
+    checkMockedHttpHandler(received);
+
+    const calls = received.requestedAssertion.mock.calls;
+
+    const { isNot } = this;
+    return {
+      pass: calls.length > 0,
+      message: () =>
+        `Expected ${received.requestedAssertion.getMockName()} to${isNot ? " not" : ""} have been requested`,
     };
-
-    const handler = original(path, newResolver, options, ...rest);
-
-    handler.requestedAssertion = requestedAssertion;
-
-    return handler;
-  };
-
-export const toHaveBeenRequested: AssertFn = function (received) {
-  checkMockedHttpHandler(received);
-
-  const calls = received.requestedAssertion.mock.calls;
-
-  const { isNot } = this;
-  return {
-    pass: calls.length > 0,
-    message: () =>
-      `Expected ${received.requestedAssertion.getMockName()} to${isNot ? " not" : ""} have been requested`,
-  };
+  },
 };

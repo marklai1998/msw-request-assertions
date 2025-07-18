@@ -4,7 +4,7 @@
 
 - [X] Handle `expect.any`
 - [x] Error message
-- [ ] Detailed Error message
+- [x] Detailed Error message
 - [ ] Input checks and types
 - [ ] Readme
 - [ ] Proper testing

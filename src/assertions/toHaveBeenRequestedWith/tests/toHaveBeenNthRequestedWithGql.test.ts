@@ -42,10 +42,10 @@ describe("toHaveBeenNthRequestedWith - GraphQL", () => {
     );
 
     expect(getUserQuery).toHaveBeenNthRequestedWith(1, {
-      variables: { userId: "123" },
+      gqlVariables: { userId: "123" },
     });
     expect(getUserQuery).toHaveBeenNthRequestedWith(2, {
-      variables: { userId: "456" },
+      gqlVariables: { userId: "456" },
     });
   });
 

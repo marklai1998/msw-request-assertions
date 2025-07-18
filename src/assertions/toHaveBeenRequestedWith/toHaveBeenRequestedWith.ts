@@ -31,95 +31,47 @@ export const toHaveBeenRequestedWith: Assertion = {
         ? (received.gqlQueryAssertion?.mock.calls ?? [])
         : [];
 
-    const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
-      bodyAssertionCall: bodyAssertionCall?.[0],
-      queryStringAssertionCall: queryStringAssertionCalls[idx]?.[0],
-      jsonBodyAssertionCall: jsonBodyAssertionCalls[idx]?.[0],
-      headersAssertionCall: headersAssertionCalls[idx]?.[0],
-      hashAssertionCall: hashAssertionCalls[idx]?.[0],
-      pathParametersAssertionCall: pathParametersAssertionCalls[idx]?.[0],
-      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[idx]?.[0],
-      gqlQueryAssertionCall: gqlQueryAssertionCalls[idx]?.[0],
-    }));
+    const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => {
+      const call: { [key: string]: unknown } = {};
+
+      if ("jsonBody" in expected) {
+        call.jsonBody = jsonBodyAssertionCalls[idx]?.[0];
+      }
+      if ("body" in expected) {
+        call.body = bodyAssertionCall?.[0];
+      }
+      if ("queryString" in expected) {
+        call.queryString = queryStringAssertionCalls[idx]?.[0];
+      }
+      if ("headers" in expected) {
+        call.headers = headersAssertionCalls[idx]?.[0];
+      }
+      if ("hash" in expected) {
+        call.hash = hashAssertionCalls[idx]?.[0];
+      }
+
+      if ("pathParameters" in expected) {
+        call.pathParameters = pathParametersAssertionCalls[idx]?.[0];
+      }
+
+      if ("gqlVariables" in expected) {
+        call.gqlVariables = gqlVariablesAssertionCalls[idx]?.[0];
+      }
+
+      if ("gqlQuery" in expected) {
+        call.gqlQuery = gqlQueryAssertionCalls[idx]?.[0];
+      }
+
+      return call;
+    });
 
     const name = received.requestedAssertion.getMockName();
 
     return {
-      pass: calls.some((call) => {
-        let isBodyMatch = true;
-        let isJsonBodyMatch = true;
-        let isQueryStringMatch = true;
-        let isHeadersMatch = true;
-        let isHashMatch = true;
-        let isPathParametersMatch = true;
-        let isGqlVariablesMatch = true;
-        let isGqlQueryMatch = true;
-
-        if ("jsonBody" in expected) {
-          isJsonBodyMatch = checkEquality(
-            expected.jsonBody,
-            call.jsonBodyAssertionCall,
-          );
-        }
-
-        if ("body" in expected) {
-          isBodyMatch = checkEquality(expected.body, call.bodyAssertionCall);
-        }
-
-        if ("queryString" in expected) {
-          isQueryStringMatch = checkEquality(
-            expected.queryString,
-            call.queryStringAssertionCall,
-          );
-        }
-
-        if ("headers" in expected) {
-          isHeadersMatch = checkEquality(
-            expected.headers,
-            call.headersAssertionCall,
-          );
-        }
-
-        if ("hash" in expected) {
-          isHashMatch = checkEquality(expected.hash, call.hashAssertionCall);
-        }
-
-        if ("pathParameters" in expected) {
-          isPathParametersMatch = checkEquality(
-            expected.pathParameters,
-            call.pathParametersAssertionCall,
-          );
-        }
-
-        if ("gqlVariables" in expected) {
-          isGqlVariablesMatch = checkEquality(
-            expected.gqlVariables,
-            call.gqlVariablesAssertionCall,
-          );
-        }
-
-        if ("gqlQuery" in expected) {
-          isGqlQueryMatch = checkEquality(
-            expected.gqlQuery,
-            call.gqlQueryAssertionCall,
-          );
-        }
-
-        return (
-          isBodyMatch &&
-          isJsonBodyMatch &&
-          isQueryStringMatch &&
-          isHeadersMatch &&
-          isHashMatch &&
-          isPathParametersMatch &&
-          isGqlVariablesMatch &&
-          isGqlQueryMatch
-        );
-      }),
+      pass: calls.some((call) => checkEquality(expected, call)),
       message: () =>
         formatMockCalls(
           name,
-          // TODO: filter
           calls.map((call) => [call]),
           `Expected ${name} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
         ),

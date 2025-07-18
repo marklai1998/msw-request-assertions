@@ -18,6 +18,11 @@ interface CustomMatchers<R = unknown> {
   toHaveBeenNthRequestedWithHash: (callIndex: number, payload: unknown) => R;
   toHaveBeenRequested: () => R;
   toHaveBeenRequestedTimes: (times: number) => R;
+  toHaveBeenCalledWithVariables: (variables: unknown) => R;
+  toHaveBeenCalledNthWithVariables: (
+    callIndex: number,
+    variables: unknown,
+  ) => R;
 }
 
 declare module "vitest" {

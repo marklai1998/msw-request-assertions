@@ -1,5 +1,7 @@
-import { http } from "msw";
+import { graphql, http } from "msw";
 import { expect } from "vitest";
+import { toHaveBeenCalledNthWithVariables } from "../assertions/toHaveBeenCalledWithVariables/toHaveBeenCalledNthWithVariables.js";
+import { toHaveBeenCalledWithVariables } from "../assertions/toHaveBeenCalledWithVariables/toHaveBeenCalledWithVariables.js";
 import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested";
 import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes/toHaveBeenRequestedTimes";
 import { toHaveBeenNthRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenNthRequestedWith";
@@ -33,6 +35,11 @@ const httpAssertions = [
   toHaveBeenNthRequestedWithHash,
 ];
 
+const graphqlAssertions = [
+  toHaveBeenCalledWithVariables,
+  toHaveBeenCalledNthWithVariables,
+];
+
 for (const key in http) {
   const original = http[key as keyof typeof http];
   http[key as keyof typeof http] = httpAssertions.reduce(
@@ -41,9 +48,25 @@ for (const key in http) {
   );
 }
 
+const originalQuery = graphql.query;
+const originalMutation = graphql.mutation;
+
+graphql.query = graphqlAssertions.reduce(
+  (fn, { intercept }) => intercept(fn),
+  originalQuery,
+);
+
+graphql.mutation = graphqlAssertions.reduce(
+  (fn, { intercept }) => intercept(fn),
+  originalMutation,
+);
+
 expect.extend(
-  httpAssertions.reduce<Record<string, AssertFn>>((acc, { name, assert }) => {
-    acc[name] = assert;
-    return acc;
-  }, {}),
+  [...httpAssertions, ...graphqlAssertions].reduce<Record<string, AssertFn>>(
+    (acc, { name, assert }) => {
+      acc[name] = assert;
+      return acc;
+    },
+    {},
+  ),
 );

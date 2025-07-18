@@ -1,5 +1,5 @@
-import type { HttpAssertion } from "../types/index.js";
-import { checkMockedHttpHandler } from "../utils/checkMockedHttpHandler.js";
+import type { HttpAssertion } from "../../types";
+import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
 
 export const toHaveBeenRequestedTimes: HttpAssertion = {
   name: "toHaveBeenRequestedTimes",

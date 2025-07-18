@@ -1,7 +1,7 @@
 import type { HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
-import type { HttpAssertion } from "../types/index.js";
-import { checkMockedHttpHandler } from "../utils/checkMockedHttpHandler.js";
+import type { HttpAssertion } from "../../types";
+import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
 
 declare module "msw" {
   interface HttpHandler {

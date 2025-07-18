@@ -1,10 +1,10 @@
 import { http } from "msw";
 import { expect } from "vitest";
-import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested.js";
-import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes.js";
-import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith.js";
-import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody.js";
-import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash.js";
+import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested";
+import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes/toHaveBeenRequestedTimes";
+import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenRequestedWith";
+import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenRequestedWithBody";
+import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash";
 import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders";
 import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders";
 import { toHaveBeenNthRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody";

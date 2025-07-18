@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -64,15 +65,21 @@ export const toHaveBeenRequestedWithHash: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
-    if (!received.hashAssertion) throw new Error("No hash assertion found");
+    const assertion = received.hashAssertion;
+    if (!assertion) throw new Error("No hash assertion found");
 
-    const calls = received.hashAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.hashAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
+        ),
     };
   },
 };

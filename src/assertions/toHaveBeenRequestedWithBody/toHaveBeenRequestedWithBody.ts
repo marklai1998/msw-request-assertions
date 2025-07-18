@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -64,15 +65,21 @@ export const toHaveBeenRequestedWithBody: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
-    if (!received.bodyAssertion) throw new Error("No body assertion found");
+    const assertion = received.bodyAssertion;
+    if (!assertion) throw new Error("No body assertion found");
 
-    const calls = received.bodyAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(expected)}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${assertion?.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(expected)}`,
+        ),
     };
   },
 };

@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -62,16 +63,21 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
-    if (!received.headersAssertion)
-      throw new Error("No headers assertion found");
+    const assertion = received.headersAssertion;
+    if (!assertion) throw new Error("No headers assertion found");
 
-    const calls = received.headersAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.headersAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with headers ${this.utils.printExpected(JSON.stringify(expected))}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested with headers ${this.utils.printExpected(JSON.stringify(expected))}`,
+        ),
     };
   },
 };

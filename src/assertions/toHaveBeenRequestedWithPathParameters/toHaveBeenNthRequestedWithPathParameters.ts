@@ -1,6 +1,7 @@
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls, ordinalOf } from "../../utils/formatMockCalls.js";
 
 export const toHaveBeenNthRequestedWithPathParameters: Assertion = {
   name: "toHaveBeenNthRequestedWithPathParameters",
@@ -8,19 +9,11 @@ export const toHaveBeenNthRequestedWithPathParameters: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedHandler(received);
-    if (!received.pathParametersAssertion)
-      throw new Error("No path parameters assertion found");
+    const assertion = received.pathParametersAssertion;
+    if (!assertion) throw new Error("No path parameters assertion found");
 
-    const calls = received.pathParametersAssertion.mock.calls;
-
-    if (calls.length < time) {
-      const { isNot } = this;
-      return {
-        pass: false,
-        message: () =>
-          `Expected ${received.pathParametersAssertion?.getMockName() || "handler"} to${isNot ? " not" : ""} have been requested a ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time, but it was requested ${calls.length} times`,
-      };
-    }
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const nthCall = calls[time - 1];
     const actualParams = nthCall?.[0];
@@ -29,7 +22,11 @@ export const toHaveBeenNthRequestedWithPathParameters: Assertion = {
     return {
       pass: checkEquality(actualParams, expected),
       message: () =>
-        `Expected ${received.pathParametersAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with path parameters ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualParams))}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with path parameters ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualParams))}`,
+        ),
     };
   },
 };

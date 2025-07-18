@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedGraphQLHandler } from "../../utils/checkMockedGraphQLHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface GraphQLHandler {
@@ -36,16 +37,21 @@ export const toHaveBeenRequestedWithGqlVariables: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
-    if (!received.gqlVariablesAssertion)
-      throw new Error("No GraphQL variables assertion found");
+    const assertion = received.gqlVariablesAssertion;
+    if (!assertion) throw new Error("No GraphQL variables assertion found");
 
-    const calls = received.gqlVariablesAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.gqlVariablesAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${received.gqlVariablesAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
+        ),
     };
   },
 };

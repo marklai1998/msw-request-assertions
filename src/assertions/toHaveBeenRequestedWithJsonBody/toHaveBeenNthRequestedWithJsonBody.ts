@@ -1,6 +1,7 @@
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls, ordinalOf } from "../../utils/formatMockCalls.js";
 
 export const toHaveBeenNthRequestedWithJsonBody: Assertion = {
   name: "toHaveBeenNthRequestedWithJsonBody",
@@ -8,17 +9,22 @@ export const toHaveBeenNthRequestedWithJsonBody: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedHandler(received);
-    if (!received.jsonBodyAssertion)
-      throw new Error("No JSON body assertion found");
+    const assertion = received.jsonBodyAssertion;
+    if (!assertion) throw new Error("No JSON body assertion found");
 
-    const calls = received.jsonBodyAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
     const actualJsonBody = calls[time - 1]?.[0];
 
     const { isNot } = this;
     return {
       pass: checkEquality(actualJsonBody, expected),
       message: () =>
-        `Expected ${received.jsonBodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
+        ),
     };
   },
 };

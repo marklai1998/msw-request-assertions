@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -66,16 +67,21 @@ export const toHaveBeenRequestedWithQueryString: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
-    if (!received.queryStringAssertion)
-      throw new Error("No query string assertion found");
+    const assertion = received.queryStringAssertion;
+    if (!assertion) throw new Error("No query string assertion found");
 
-    const calls = received.queryStringAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.queryStringAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with query string ${this.utils.printExpected(expected)}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested with query string ${this.utils.printExpected(expected)}`,
+        ),
     };
   },
 };

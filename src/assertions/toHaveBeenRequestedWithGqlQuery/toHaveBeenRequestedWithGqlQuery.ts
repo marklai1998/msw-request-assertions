@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedGraphQLHandler } from "../../utils/checkMockedGraphQLHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface GraphQLHandler {
@@ -36,16 +37,21 @@ export const toHaveBeenRequestedWithGqlQuery: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
-    if (!received.gqlQueryAssertion)
-      throw new Error("No GraphQL query assertion found");
+    const assertion = received.gqlQueryAssertion;
+    if (!assertion) throw new Error("No GraphQL query assertion found");
 
-    const calls = received.gqlQueryAssertion.mock.calls;
+    const name = assertion.getMockName();
+    const calls = assertion.mock.calls;
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.gqlQueryAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL query ${this.utils.printExpected(expected)}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${assertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL query ${this.utils.printExpected(expected)}`,
+        ),
     };
   },
 };

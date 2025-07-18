@@ -2,6 +2,7 @@ import { GraphQLHandler } from "msw";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls, ordinalOf } from "../../utils/formatMockCalls.js";
 
 export const toHaveBeenNthRequestedWith: Assertion = {
   name: "toHaveBeenNthRequestedWith",
@@ -9,6 +10,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedHandler(received);
+    if (!received.requestedAssertion) throw new Error("No assertion found");
 
     const { isNot } = this;
 
@@ -29,16 +31,19 @@ export const toHaveBeenNthRequestedWith: Assertion = {
         ? (received.gqlQueryAssertion?.mock.calls ?? [])
         : [];
 
-    const nthCall = {
-      bodyAssertionCall: bodyAssertionCalls[time - 1],
-      queryStringAssertionCall: queryStringAssertionCalls[time - 1],
-      jsonBodyAssertionCall: jsonBodyAssertionCalls[time - 1],
-      headersAssertionCall: headersAssertionCalls[time - 1],
-      hashAssertionCall: hashAssertionCalls[time - 1],
-      pathParametersAssertionCall: pathParametersAssertionCalls[time - 1],
-      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[time - 1],
-      gqlQueryAssertionCall: gqlQueryAssertionCalls[time - 1],
-    };
+    const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
+      bodyAssertionCall: bodyAssertionCall?.[0],
+      queryStringAssertionCall: queryStringAssertionCalls[idx]?.[0],
+      jsonBodyAssertionCall: jsonBodyAssertionCalls[idx]?.[0],
+      headersAssertionCall: headersAssertionCalls[idx]?.[0],
+      hashAssertionCall: hashAssertionCalls[idx]?.[0],
+      pathParametersAssertionCall: pathParametersAssertionCalls[idx]?.[0],
+      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[idx]?.[0],
+      gqlQueryAssertionCall: gqlQueryAssertionCalls[idx]?.[0],
+    }));
+    const name = received.requestedAssertion.getMockName();
+
+    const nthCall = calls[time - 1];
 
     let isBodyMatch = true;
     let isJsonBodyMatch = true;
@@ -52,56 +57,50 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     if ("jsonBody" in expected) {
       isJsonBodyMatch = checkEquality(
         expected.jsonBody,
-        nthCall.jsonBodyAssertionCall?.[0],
+        nthCall.jsonBodyAssertionCall,
       );
     }
 
     if ("body" in expected) {
-      isBodyMatch = checkEquality(
-        expected.body,
-        nthCall.bodyAssertionCall?.[0],
-      );
+      isBodyMatch = checkEquality(expected.body, nthCall.bodyAssertionCall);
     }
 
     if ("queryString" in expected) {
       isQueryStringMatch = checkEquality(
         expected.queryString,
-        nthCall.queryStringAssertionCall?.[0],
+        nthCall.queryStringAssertionCall,
       );
     }
 
     if ("headers" in expected) {
       isHeadersMatch = checkEquality(
         expected.headers,
-        nthCall.headersAssertionCall?.[0],
+        nthCall.headersAssertionCall,
       );
     }
 
     if ("hash" in expected) {
-      isHashMatch = checkEquality(
-        expected.hash,
-        nthCall.hashAssertionCall?.[0],
-      );
+      isHashMatch = checkEquality(expected.hash, nthCall.hashAssertionCall);
     }
 
     if ("pathParameters" in expected) {
       isPathParametersMatch = checkEquality(
         expected.pathParameters,
-        nthCall.pathParametersAssertionCall?.[0],
+        nthCall.pathParametersAssertionCall,
       );
     }
 
     if ("gqlVariables" in expected) {
       isGqlVariablesMatch = checkEquality(
         expected.gqlVariables,
-        nthCall.gqlVariablesAssertionCall?.[0],
+        nthCall.gqlVariablesAssertionCall,
       );
     }
 
     if ("gqlQuery" in expected) {
       isGqlQueryMatch = checkEquality(
         expected.gqlQuery,
-        nthCall.gqlQueryAssertionCall?.[0],
+        nthCall.gqlQueryAssertionCall,
       );
     }
 
@@ -117,37 +116,42 @@ export const toHaveBeenNthRequestedWith: Assertion = {
 
     const actual: any = {};
     if ("jsonBody" in expected) {
-      actual.jsonBody = nthCall.jsonBodyAssertionCall?.[0];
+      actual.jsonBody = nthCall.jsonBodyAssertionCall;
     }
     if ("body" in expected) {
-      actual.body = nthCall.bodyAssertionCall?.[0];
+      actual.body = nthCall.bodyAssertionCall;
     }
     if ("queryString" in expected) {
-      actual.queryString = nthCall.queryStringAssertionCall?.[0];
+      actual.queryString = nthCall.queryStringAssertionCall;
     }
     if ("headers" in expected) {
-      actual.headers = nthCall.headersAssertionCall?.[0];
+      actual.headers = nthCall.headersAssertionCall;
     }
     if ("hash" in expected) {
-      actual.hash = nthCall.hashAssertionCall?.[0];
+      actual.hash = nthCall.hashAssertionCall;
     }
 
     if ("pathParameters" in expected) {
-      actual.pathParameters = nthCall.pathParametersAssertionCall?.[0];
+      actual.pathParameters = nthCall.pathParametersAssertionCall;
     }
 
     if ("gqlVariables" in expected) {
-      actual.gqlVariables = nthCall.gqlVariablesAssertionCall?.[0];
+      actual.gqlVariables = nthCall.gqlVariablesAssertionCall;
     }
 
     if ("gqlQuery" in expected) {
-      actual.gqlQuery = nthCall.gqlQueryAssertionCall?.[0];
+      actual.gqlQuery = nthCall.gqlQueryAssertionCall;
     }
 
     return {
       pass: allMatch,
       message: () =>
-        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with request matching ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actual))}`,
+        formatMockCalls(
+          name,
+          // TODO: filter
+          calls.map((call) => [call]),
+          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with request matching ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actual))}`,
+        ),
     };
   },
 };

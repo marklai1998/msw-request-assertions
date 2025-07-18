@@ -2,6 +2,7 @@ import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -64,16 +65,21 @@ export const toHaveBeenRequestedWithPathParameters: Assertion = {
     },
   assert: function (received, expected) {
     checkMockedHandler(received);
-    if (!received.pathParametersAssertion)
-      throw new Error("No path parameters assertion found");
+    const assertion = received.pathParametersAssertion;
+    if (!assertion) throw new Error("No path parameters assertion found");
 
-    const calls = received.pathParametersAssertion?.mock.calls || [];
+    const name = assertion.getMockName();
+    const calls = assertion?.mock.calls || [];
 
     const { isNot } = this;
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.pathParametersAssertion?.getMockName() || "handler"} to${isNot ? " not" : ""} have been requested with path parameters ${this.utils.printExpected(JSON.stringify(expected))}`,
+        formatMockCalls(
+          name,
+          calls,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested with path parameters ${this.utils.printExpected(JSON.stringify(expected))}`,
+        ),
     };
   },
 };

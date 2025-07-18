@@ -2,6 +2,7 @@ import { GraphQLHandler } from "msw";
 import type { Assertion } from "../../types/index.js";
 import { checkEquality } from "../../utils/checkEquality.js";
 import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { formatMockCalls } from "../../utils/formatMockCalls.js";
 
 export const toHaveBeenRequestedWith: Assertion = {
   name: "toHaveBeenRequestedWith",
@@ -9,6 +10,7 @@ export const toHaveBeenRequestedWith: Assertion = {
   interceptGql: (_mockFn, original) => original,
   assert: function (received, expected) {
     checkMockedHandler(received);
+    if (!received.requestedAssertion) throw new Error("No assertion found");
 
     const { isNot } = this;
 
@@ -30,15 +32,17 @@ export const toHaveBeenRequestedWith: Assertion = {
         : [];
 
     const calls = bodyAssertionCalls.map((bodyAssertionCall, idx) => ({
-      bodyAssertionCall,
-      queryStringAssertionCall: queryStringAssertionCalls[idx],
-      jsonBodyAssertionCall: jsonBodyAssertionCalls[idx],
-      headersAssertionCall: headersAssertionCalls[idx],
-      hashAssertionCall: hashAssertionCalls[idx],
-      pathParametersAssertionCall: pathParametersAssertionCalls[idx],
-      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[idx],
-      gqlQueryAssertionCall: gqlQueryAssertionCalls[idx],
+      bodyAssertionCall: bodyAssertionCall?.[0],
+      queryStringAssertionCall: queryStringAssertionCalls[idx]?.[0],
+      jsonBodyAssertionCall: jsonBodyAssertionCalls[idx]?.[0],
+      headersAssertionCall: headersAssertionCalls[idx]?.[0],
+      hashAssertionCall: hashAssertionCalls[idx]?.[0],
+      pathParametersAssertionCall: pathParametersAssertionCalls[idx]?.[0],
+      gqlVariablesAssertionCall: gqlVariablesAssertionCalls[idx]?.[0],
+      gqlQueryAssertionCall: gqlQueryAssertionCalls[idx]?.[0],
     }));
+
+    const name = received.requestedAssertion.getMockName();
 
     return {
       pass: calls.some((call) => {
@@ -54,50 +58,50 @@ export const toHaveBeenRequestedWith: Assertion = {
         if ("jsonBody" in expected) {
           isJsonBodyMatch = checkEquality(
             expected.jsonBody,
-            call.jsonBodyAssertionCall[0],
+            call.jsonBodyAssertionCall,
           );
         }
 
         if ("body" in expected) {
-          isBodyMatch = checkEquality(expected.body, call.bodyAssertionCall[0]);
+          isBodyMatch = checkEquality(expected.body, call.bodyAssertionCall);
         }
 
         if ("queryString" in expected) {
           isQueryStringMatch = checkEquality(
             expected.queryString,
-            call.queryStringAssertionCall[0],
+            call.queryStringAssertionCall,
           );
         }
 
         if ("headers" in expected) {
           isHeadersMatch = checkEquality(
             expected.headers,
-            call.headersAssertionCall[0],
+            call.headersAssertionCall,
           );
         }
 
         if ("hash" in expected) {
-          isHashMatch = checkEquality(expected.hash, call.hashAssertionCall[0]);
+          isHashMatch = checkEquality(expected.hash, call.hashAssertionCall);
         }
 
         if ("pathParameters" in expected) {
           isPathParametersMatch = checkEquality(
             expected.pathParameters,
-            call.pathParametersAssertionCall[0],
+            call.pathParametersAssertionCall,
           );
         }
 
         if ("gqlVariables" in expected) {
           isGqlVariablesMatch = checkEquality(
             expected.gqlVariables,
-            call.gqlVariablesAssertionCall[0],
+            call.gqlVariablesAssertionCall,
           );
         }
 
         if ("gqlQuery" in expected) {
           isGqlQueryMatch = checkEquality(
             expected.gqlQuery,
-            call.gqlQueryAssertionCall[0],
+            call.gqlQueryAssertionCall,
           );
         }
 
@@ -113,7 +117,12 @@ export const toHaveBeenRequestedWith: Assertion = {
         );
       }),
       message: () =>
-        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
+        formatMockCalls(
+          name,
+          // TODO: filter
+          calls.map((call) => [call]),
+          `Expected ${name} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
+        ),
     };
   },
 };

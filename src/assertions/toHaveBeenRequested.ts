@@ -4,43 +4,43 @@ import type { assertFn } from "../types/index.js";
 
 declare module "msw" {
   interface HttpHandler {
-    calledAssertion: Mock;
+    requestedAssertion: Mock;
   }
 }
 
-export const initToHaveBeenCalled =
+export const initToHaveBeenRequested =
   (original: HttpRequestHandler): HttpRequestHandler =>
   (path, resolver, options, ...rest) => {
-    const calledAssertion = vi.fn();
-    calledAssertion.mockName(typeof path === "string" ? path : path.source);
+    const requestedAssertion = vi.fn();
+    requestedAssertion.mockName(typeof path === "string" ? path : path.source);
 
     const newResolver: typeof resolver = async (info, ...args) => {
-      calledAssertion();
+      requestedAssertion();
 
       return resolver(info, ...args);
     };
 
     const handler = original(path, newResolver, options, ...rest);
 
-    handler.calledAssertion = calledAssertion;
+    handler.requestedAssertion = requestedAssertion;
 
     return handler;
   };
 
-export const toHaveBeenCalled: assertFn = function (received) {
+export const toHaveBeenRequested: assertFn = function (received) {
   if (!(received instanceof HttpHandler)) {
     throw new Error("Expected a HttpHandler");
   }
-  if (!received.calledAssertion) {
+  if (!received.requestedAssertion) {
     throw new Error("HttpHandler is not intercepted");
   }
 
-  const calls = received.calledAssertion.mock.calls;
+  const calls = received.requestedAssertion.mock.calls;
 
   const { isNot } = this;
   return {
     pass: calls.length > 0,
     message: () =>
-      `Expected ${received.calledAssertion.getMockName()} to${isNot ? " not" : ""} have been called`,
+      `Expected ${received.requestedAssertion.getMockName()} to${isNot ? " not" : ""} have been requested`,
   };
 };

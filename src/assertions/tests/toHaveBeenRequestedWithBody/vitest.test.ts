@@ -13,7 +13,7 @@ const restHandlers = [myHandler];
 
 const server = setupServer(...restHandlers);
 
-describe("toHaveBeenCalledWithHash", () => {
+describe("toHaveBeenRequestedWithBody", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
   afterAll(() => server.close());
@@ -21,8 +21,8 @@ describe("toHaveBeenCalledWithHash", () => {
   afterEach(() => server.resetHandlers());
 
   it("with hash", async () => {
-    await wretch("http://127.0.0.1").url("/foo#test-hash").post("HELLO").json();
+    await wretch("http://127.0.0.1").url("/foo").post({ a: "b" }).json();
 
-    expect(myHandler).toHaveBeenRequestedWithHash("#test-hash");
+    expect(myHandler).toHaveBeenRequestedWithBody(JSON.stringify({ a: "b" }));
   });
 });

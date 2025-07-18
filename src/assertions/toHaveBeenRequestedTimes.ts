@@ -1,24 +1,24 @@
 import { HttpHandler } from "msw";
 import type { assertFn } from "../types/index.js";
 
-export const toHaveBeenCalledTimes: assertFn = function (
+export const toHaveBeenRequestedTimes: assertFn = function (
   received,
   expectedTimes,
 ) {
   if (!(received instanceof HttpHandler)) {
     throw new Error("Expected a HttpHandler");
   }
-  if (!received.calledAssertion) {
+  if (!received.requestedAssertion) {
     throw new Error("HttpHandler is not intercepted");
   }
 
-  const calls = received.calledAssertion.mock.calls;
+  const calls = received.requestedAssertion.mock.calls;
   const actualTimes = calls.length;
 
   const { isNot } = this;
   return {
     pass: actualTimes === expectedTimes,
     message: () =>
-      `Expected ${received.calledAssertion.getMockName()} to${isNot ? " not" : ""} have been called ${expectedTimes} times, but it was called ${actualTimes} times`,
+      `Expected ${received.requestedAssertion.getMockName()} to${isNot ? " not" : ""} have been requested ${expectedTimes} times, but it was requested ${actualTimes} times`,
   };
 };

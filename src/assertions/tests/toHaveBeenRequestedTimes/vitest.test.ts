@@ -17,7 +17,7 @@ const apiHandler = http.post("http://127.0.0.1/api/data", () => {
 const restHandlers = [usersHandler, apiHandler];
 const server = setupServer(...restHandlers);
 
-describe("toHaveBeenCalledTimes", () => {
+describe("toHaveBeenRequestedTimes", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 
   afterAll(() => server.close());
@@ -29,25 +29,25 @@ describe("toHaveBeenCalledTimes", () => {
     await wretch("http://127.0.0.1/users").get().json();
     await wretch("http://127.0.0.1/users").get().json();
 
-    expect(usersHandler).toHaveBeenCalledTimes(3);
+    expect(usersHandler).toHaveBeenRequestedTimes(3);
   });
 
   it("should pass when handler has been called once", async () => {
     await wretch("http://127.0.0.1/users").get().json();
 
-    expect(usersHandler).toHaveBeenCalledTimes(1);
+    expect(usersHandler).toHaveBeenRequestedTimes(1);
   });
 
   it("should pass when handler has not been called", async () => {
     // Don't make any requests
-    expect(usersHandler).toHaveBeenCalledTimes(0);
+    expect(usersHandler).toHaveBeenRequestedTimes(0);
   });
 
   it("should fail when call count doesn't match", async () => {
     await wretch("http://127.0.0.1/users").get().json();
 
     expect(() => {
-      expect(usersHandler).toHaveBeenCalledTimes(2);
+      expect(usersHandler).toHaveBeenRequestedTimes(2);
     }).toThrow();
   });
 
@@ -55,7 +55,7 @@ describe("toHaveBeenCalledTimes", () => {
     await wretch("http://127.0.0.1/users").get().json();
     await wretch("http://127.0.0.1/users").get().json();
 
-    expect(usersHandler).not.toHaveBeenCalledTimes(1);
-    expect(usersHandler).not.toHaveBeenCalledTimes(3);
+    expect(usersHandler).not.toHaveBeenRequestedTimes(1);
+    expect(usersHandler).not.toHaveBeenRequestedTimes(3);
   });
 });

@@ -1,10 +1,10 @@
 import { http } from "msw";
 import { expect, type Mock } from "vitest";
 import {
-  initToHaveBeenCalled,
-  toHaveBeenCalled,
-} from "../assertions/toHaveBeenCalled.js";
-import { toHaveBeenCalledTimes } from "../assertions/toHaveBeenCalledTimes.js";
+  initToHaveBeenRequested,
+  toHaveBeenRequested,
+} from "../assertions/toHaveBeenRequested.js";
+import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes.js";
 import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith.js";
 import {
   initToHaveBeenRequestedWithBody,
@@ -38,7 +38,7 @@ declare module "msw" {
 for (const key in http) {
   const original = http[key as keyof typeof http];
   http[key as keyof typeof http] = [
-    initToHaveBeenCalled,
+    initToHaveBeenRequested,
     initToHaveBeenRequestedWithBody,
     initToHaveBeenRequestedWithJsonBody,
     initToHaveBeenRequestedWithHeader,
@@ -48,8 +48,8 @@ for (const key in http) {
 }
 
 expect.extend({
-  toHaveBeenCalled,
-  toHaveBeenCalledTimes,
+  toHaveBeenRequested,
+  toHaveBeenRequestedTimes,
   toHaveBeenRequestedWithBody,
   toHaveBeenRequestedWithJsonBody,
   toHaveBeenRequestedWithHeaders,

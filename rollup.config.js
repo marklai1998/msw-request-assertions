@@ -6,6 +6,7 @@ import peerDepsExternal from "rollup-plugin-peer-deps-external";
 const input = {
   index: "src/index.ts",
   "vitest/index": "src/vitest/index.ts",
+  "jest/index": "src/jest/index.ts",
 };
 
 export default [

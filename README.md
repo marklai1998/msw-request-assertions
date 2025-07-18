@@ -8,7 +8,7 @@
 - [x] Input types
 - [ ] Readme
 - [x] Proper testing
-- [ ] Jest support
+- [x] Jest support
 
 ### Matchers
 

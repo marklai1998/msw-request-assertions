@@ -14,18 +14,16 @@ export const toHaveBeenNthRequestedWithPathParameters: Assertion = {
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
-
-    const nthCall = calls[time - 1];
-    const actualParams = nthCall?.[0];
+    const nthCall = calls[time - 1]?.[0];
 
     const { isNot } = this;
     return {
-      pass: checkEquality(actualParams, expected),
+      pass: checkEquality(nthCall, expected),
       message: () =>
         formatMockCalls(
           name,
           calls,
-          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with path parameters ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualParams))}`,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with path parameters ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(nthCall))}`,
         ),
     };
   },

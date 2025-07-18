@@ -14,16 +14,16 @@ export const toHaveBeenNthRequestedWithHeaders: Assertion = {
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
-    const actualHeaders = calls[time - 1]?.[0];
+    const nthCall = calls[time - 1]?.[0];
 
     const { isNot } = this;
     return {
-      pass: checkEquality(actualHeaders, expected),
+      pass: checkEquality(nthCall, expected),
       message: () =>
         formatMockCalls(
           name,
           calls,
-          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with headers ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualHeaders))}`,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with headers ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(nthCall))}`,
         ),
     };
   },

@@ -14,16 +14,16 @@ export const toHaveBeenNthRequestedWithJsonBody: Assertion = {
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
-    const actualJsonBody = calls[time - 1]?.[0];
+    const nthCall = calls[time - 1]?.[0];
 
     const { isNot } = this;
     return {
-      pass: checkEquality(actualJsonBody, expected),
+      pass: checkEquality(nthCall, expected),
       message: () =>
         formatMockCalls(
           name,
           calls,
-          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
+          `Expected ${name} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(nthCall))}`,
         ),
     };
   },

@@ -13,16 +13,16 @@ export const toHaveBeenNthRequestedWithQueryString: Assertion = {
     if (!assertion) throw new Error("No query string assertion found");
 
     const calls = assertion.mock.calls;
-    const actualQuery = calls[time - 1]?.[0];
+    const nthCall = calls[time - 1]?.[0];
 
     const { isNot } = this;
     return {
-      pass: checkEquality(actualQuery, expected),
+      pass: checkEquality(nthCall, expected),
       message: () =>
         formatMockCalls(
           assertion.getMockName(),
           calls,
-          `Expected ${assertion.getMockName()} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with query string ${this.utils.printExpected(expected)}, but it was requested with ${this.utils.printReceived(actualQuery)}`,
+          `Expected ${assertion.getMockName()} to${isNot ? " not" : ""} have been requested the ${ordinalOf(time)} time with query string ${this.utils.printExpected(expected)}, but it was requested with ${this.utils.printReceived(nthCall)}`,
         ),
     };
   },

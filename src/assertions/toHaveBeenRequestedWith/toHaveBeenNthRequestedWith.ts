@@ -147,7 +147,7 @@ export const toHaveBeenNthRequestedWith: Assertion = {
     return {
       pass: allMatch,
       message: () =>
-        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with request matching ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actual))}`,
+        `Expected ${received.bodyAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with request matching ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actual))}`,
     };
   },
 };

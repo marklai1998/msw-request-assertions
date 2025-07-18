@@ -18,7 +18,7 @@ export const toHaveBeenNthRequestedWithQueryString: Assertion = {
     return {
       pass: checkEquality(actualQuery, expected),
       message: () =>
-        `Expected ${received.queryStringAssertion?.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with query string ${this.utils.printExpected(expected)}, but it was called with ${this.utils.printReceived(actualQuery)}`,
+        `Expected ${received.queryStringAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with query string ${this.utils.printExpected(expected)}, but it was requested with ${this.utils.printReceived(actualQuery)}`,
     };
   },
 };

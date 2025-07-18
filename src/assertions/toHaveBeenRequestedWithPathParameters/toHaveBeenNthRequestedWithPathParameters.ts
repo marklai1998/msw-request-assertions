@@ -13,6 +13,15 @@ export const toHaveBeenNthRequestedWithPathParameters: Assertion = {
 
     const calls = received.pathParametersAssertion.mock.calls;
 
+    if (calls.length < time) {
+      const { isNot } = this;
+      return {
+        pass: false,
+        message: () =>
+          `Expected ${received.pathParametersAssertion?.getMockName() || "handler"} to${isNot ? " not" : ""} have been requested a ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time, but it was requested ${calls.length} times`,
+      };
+    }
+
     const nthCall = calls[time - 1];
     const actualParams = nthCall?.[0];
 
@@ -20,7 +29,7 @@ export const toHaveBeenNthRequestedWithPathParameters: Assertion = {
     return {
       pass: checkEquality(actualParams, expected),
       message: () =>
-        `Expected ${received.pathParametersAssertion?.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with path parameters ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualParams))}`,
+        `Expected ${received.pathParametersAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with path parameters ${this.utils.printExpected(JSON.stringify(expected))}, but it was requested with ${this.utils.printReceived(JSON.stringify(actualParams))}`,
     };
   },
 };

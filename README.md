@@ -5,9 +5,9 @@
 - [X] Handle `expect.any`
 - [x] Error message
 - [x] Detailed Error message
-- [ ] Input checks and types
+- [x] Input types
 - [ ] Readme
-- [ ] Proper testing
+- [x] Proper testing
 - [ ] Jest support
 
 ### Matchers

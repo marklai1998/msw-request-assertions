@@ -15,7 +15,7 @@ export const toHaveBeenNthRequestedWithJsonBody: HttpAssertion = {
     return {
       pass: checkEquality(actualJsonBody, expected),
       message: () =>
-        `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with json body ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
+        `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been called the ${time}${time === 1 ? "st" : time === 2 ? "nd" : time === 3 ? "rd" : "th"} time with JSON body ${this.utils.printExpected(JSON.stringify(expected))}, but it was called with ${this.utils.printReceived(JSON.stringify(actualJsonBody))}`,
     };
   },
 };

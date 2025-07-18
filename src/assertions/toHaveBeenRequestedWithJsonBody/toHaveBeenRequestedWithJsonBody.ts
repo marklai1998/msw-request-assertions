@@ -46,7 +46,7 @@ export const toHaveBeenRequestedWithJsonBody: HttpAssertion = {
     return {
       pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
-        `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with json body ${this.utils.printExpected(JSON.stringify(expected))}`,
+        `Expected ${received.jsonBodyAssertion.getMockName()} to${isNot ? " not" : ""} have been requested with JSON body ${this.utils.printExpected(JSON.stringify(expected))}`,
     };
   },
 };

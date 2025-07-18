@@ -5,11 +5,12 @@ import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequestedTimes
 import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith.js";
 import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody.js";
 import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash.js";
-import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders.js";
+import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders";
+import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders";
 import { toHaveBeenNthRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody";
 import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenRequestedWithJsonBody";
-import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenNthRequestedWithQuery";
-import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery";
+import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenNthRequestedWithQuery.js";
+import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery.js";
 
 const httpAssertions = [
   toHaveBeenRequested,
@@ -19,6 +20,7 @@ const httpAssertions = [
   toHaveBeenRequestedWithJsonBody,
   toHaveBeenNthRequestedWithJsonBody,
   toHaveBeenRequestedWithHeaders,
+  toHaveBeenNthRequestedWithHeaders,
   toHaveBeenNthRequestedWithQuery,
   toHaveBeenRequestedWithQuery,
   toHaveBeenRequestedWithHash,

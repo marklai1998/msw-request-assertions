@@ -8,6 +8,7 @@ interface CustomMatchers<R = unknown> {
   ) => R;
   toHaveBeenRequestedWithBody: (payload: unknown) => R;
   toHaveBeenRequestedWithHeaders: (payload: unknown) => R;
+  toHaveBeenNthRequestedWithHeaders: (callIndex: number, payload: unknown) => R;
   toHaveBeenRequestedWithQuery: (payload: unknown) => R;
   toHaveBeenNthRequestedWithQuery: (callIndex: number, payload: unknown) => R;
   toHaveBeenRequestedWith: (payload: unknown) => R;

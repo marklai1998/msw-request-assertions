@@ -26,28 +26,35 @@ async function executeGraphQL(query: string, variables?: any) {
   return response.json();
 }
 
-describe("toHaveBeenCalledWithVariables", () => {
+describe("toHaveBeenRequestedTimes - GraphQL", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
-  it("should match when called with expected variables", async () => {
+  it("should count exact number of calls", async () => {
+    expect(getUserQuery).toHaveBeenRequestedTimes(0);
+
     await executeGraphQL(
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "123" },
     );
+    expect(getUserQuery).toHaveBeenRequestedTimes(1);
 
-    expect(getUserQuery).toHaveBeenCalledWithVariables({ userId: "123" });
+    await executeGraphQL(
+      `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
+      { userId: "456" },
+    );
+    expect(getUserQuery).toHaveBeenRequestedTimes(2);
   });
 
-  it("should fail when variables don't match", async () => {
+  it("should fail when count doesn't match", async () => {
     await executeGraphQL(
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "123" },
     );
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenCalledWithVariables({ userId: "456" });
+      expect(getUserQuery).toHaveBeenRequestedTimes(2);
     }).toThrow();
   });
 
@@ -57,37 +64,11 @@ describe("toHaveBeenCalledWithVariables", () => {
       { userId: "123" },
     );
 
-    expect(getUserQuery).not.toHaveBeenCalledWithVariables({ userId: "456" });
+    expect(getUserQuery).not.toHaveBeenRequestedTimes(0);
+    expect(getUserQuery).not.toHaveBeenRequestedTimes(2);
   });
 
-  it("should handle complex variables", async () => {
-    await executeGraphQL(
-      `mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name } }`,
-      {
-        input: {
-          name: "John Doe",
-          email: "john@example.com",
-          metadata: { department: "engineering", level: 5 },
-          tags: ["admin", "user"],
-          isActive: true,
-          score: 4.5,
-        },
-      },
-    );
-
-    expect(createUserMutation).toHaveBeenCalledWithVariables({
-      input: {
-        name: "John Doe",
-        email: "john@example.com",
-        metadata: { department: "engineering", level: 5 },
-        tags: ["admin", "user"],
-        isActive: true,
-        score: 4.5,
-      },
-    });
-  });
-
-  it("should match any call when multiple calls made", async () => {
+  it("should count calls separately for different handlers", async () => {
     await executeGraphQL(
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "123" },
@@ -96,8 +77,12 @@ describe("toHaveBeenCalledWithVariables", () => {
       `query GetUser($userId: ID!) { user(id: $userId) { id name } }`,
       { userId: "456" },
     );
+    await executeGraphQL(
+      `mutation CreateUser($input: CreateUserInput!) { createUser(input: $input) { id name } }`,
+      { input: { name: "Jane Doe" } },
+    );
 
-    expect(getUserQuery).toHaveBeenCalledWithVariables({ userId: "123" });
-    expect(getUserQuery).toHaveBeenCalledWithVariables({ userId: "456" });
+    expect(getUserQuery).toHaveBeenRequestedTimes(2);
+    expect(createUserMutation).toHaveBeenRequestedTimes(1);
   });
 });

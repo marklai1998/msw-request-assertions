@@ -1,0 +1,19 @@
+import { GraphQLHandler, HttpHandler } from "msw";
+
+export function checkMockedHandler(
+  input: unknown,
+): asserts input is (HttpHandler | GraphQLHandler) & {
+  requestedAssertion: any;
+} {
+  const isHttpHandler = input instanceof HttpHandler;
+  const isGraphQLHandler = input instanceof GraphQLHandler;
+
+  if (!isHttpHandler && !isGraphQLHandler) {
+    throw new Error("Expected a HttpHandler or GraphQLHandler");
+  }
+
+  if (!("requestedAssertion" in input) || !input.requestedAssertion) {
+    const handlerType = isHttpHandler ? "HttpHandler" : "GraphQLHandler";
+    throw new Error(`${handlerType} is not intercepted`);
+  }
+}

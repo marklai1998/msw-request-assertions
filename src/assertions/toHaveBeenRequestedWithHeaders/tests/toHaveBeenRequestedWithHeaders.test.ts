@@ -5,35 +5,25 @@ import wretch from "wretch";
 import "../../../vitest";
 
 const apiHandler = http.post("http://127.0.0.1/api/data", () => {
-  return HttpResponse.json({
-    success: true,
-  });
+  return HttpResponse.json({ success: true });
 });
 
-const authHandler = http.get("http://127.0.0.1/protected", () => {
-  return HttpResponse.json({
-    data: "protected content",
-  });
-});
-
-const restHandlers = [apiHandler, authHandler];
-const server = setupServer(...restHandlers);
+const server = setupServer(apiHandler);
 
 describe("toHaveBeenRequestedWithHeaders", () => {
   beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-
   afterAll(() => server.close());
-
   afterEach(() => server.resetHandlers());
 
   it("should match request with single header", async () => {
-    await wretch("http://127.0.0.1/protected")
+    await wretch("http://127.0.0.1/api/data")
       .headers({ Authorization: "Bearer token123" })
-      .get()
+      .post({ data: "test" })
       .json();
 
-    expect(authHandler).toHaveBeenRequestedWithHeaders({
+    expect(apiHandler).toHaveBeenRequestedWithHeaders({
       authorization: "Bearer token123",
+      "content-type": "application/json",
     });
   });
 
@@ -55,15 +45,26 @@ describe("toHaveBeenRequestedWithHeaders", () => {
   });
 
   it("should fail when headers don't match", async () => {
-    await wretch("http://127.0.0.1/protected")
+    await wretch("http://127.0.0.1/api/data")
       .headers({ Authorization: "Bearer token123" })
-      .get()
+      .post({ data: "test" })
       .json();
 
     expect(() => {
-      expect(authHandler).toHaveBeenRequestedWithHeaders({
+      expect(apiHandler).toHaveBeenRequestedWithHeaders({
         authorization: "Bearer different-token",
       });
     }).toThrow();
+  });
+
+  it("should work with not matcher", async () => {
+    await wretch("http://127.0.0.1/api/data")
+      .headers({ Authorization: "Bearer token123" })
+      .post({ data: "test" })
+      .json();
+
+    expect(apiHandler).not.toHaveBeenRequestedWithHeaders({
+      authorization: "Bearer different-token",
+    });
   });
 });

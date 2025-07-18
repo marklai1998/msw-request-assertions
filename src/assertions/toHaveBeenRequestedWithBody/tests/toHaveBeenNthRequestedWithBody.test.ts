@@ -248,8 +248,7 @@ describe("toHaveBeenNthRequestedWithBody", () => {
 
   it("should handle large text bodies", async () => {
     const firstBody = "short";
-    const secondBody =
-      "A".repeat(1000) + " with some text in between " + "B".repeat(1000);
+    const secondBody = `${"A".repeat(1000)} with some text in between ${"B".repeat(1000)}`;
 
     await wretch("http://127.0.0.1/upload").body(firstBody).put().json();
     await wretch("http://127.0.0.1/upload").body(secondBody).put().json();

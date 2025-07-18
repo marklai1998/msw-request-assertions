@@ -18,33 +18,30 @@ import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequest
 import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery.js";
 import type { AssertFn } from "../types";
 
-const httpOnlyAssertions = [
-  toHaveBeenRequestedWithBody,
-  toHaveBeenNthRequestedWithBody,
-  toHaveBeenRequestedWithJsonBody,
-  toHaveBeenNthRequestedWithJsonBody,
-  toHaveBeenRequestedWithHeaders,
-  toHaveBeenNthRequestedWithHeaders,
-  toHaveBeenNthRequestedWithQuery,
-  toHaveBeenRequestedWithQuery,
-  toHaveBeenRequestedWithHash,
-  toHaveBeenNthRequestedWithHash,
-];
-
 const graphqlOnlyAssertions = [
   toHaveBeenCalledWithVariables,
   toHaveBeenCalledNthWithVariables,
 ];
 
-const hybridAssertions = [
+const assertions = [
   toHaveBeenRequested,
   toHaveBeenRequestedTimes,
   toHaveBeenRequestedWith,
   toHaveBeenNthRequestedWith,
+  toHaveBeenRequestedWithBody,
+  toHaveBeenNthRequestedWithBody,
+  toHaveBeenRequestedWithHash,
+  toHaveBeenNthRequestedWithHash,
+  toHaveBeenRequestedWithHeaders,
+  toHaveBeenNthRequestedWithHeaders,
+  toHaveBeenRequestedWithJsonBody,
+  toHaveBeenNthRequestedWithJsonBody,
+  toHaveBeenRequestedWithQuery,
+  toHaveBeenNthRequestedWithQuery,
 ];
 
-const httpAssertions = [...httpOnlyAssertions, ...hybridAssertions];
-const graphqlAssertions = [...graphqlOnlyAssertions, ...hybridAssertions];
+const httpAssertions = [...assertions];
+const graphqlAssertions = [...graphqlOnlyAssertions, ...assertions];
 
 for (const key in http) {
   const original = http[key as keyof typeof http];

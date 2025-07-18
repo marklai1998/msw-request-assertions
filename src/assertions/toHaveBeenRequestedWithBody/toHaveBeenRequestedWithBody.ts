@@ -1,10 +1,13 @@
 import type { Mock } from "vitest";
 import type { Assertion } from "../../types";
 import { checkEquality } from "../../utils";
-import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
+import { checkMockedHandler } from "../../utils/checkMockedHandler";
 
 declare module "msw" {
   interface HttpHandler {
+    bodyAssertion: Mock;
+  }
+  interface GraphQLHandler {
     bodyAssertion: Mock;
   }
 }
@@ -33,8 +36,34 @@ export const toHaveBeenRequestedWithBody: Assertion = {
 
       return handler;
     },
+  interceptGql:
+    (original) =>
+    (operationName, resolver, options, ...rest) => {
+      const bodyAssertion = vi.fn();
+      bodyAssertion.mockName(
+        typeof operationName === "string"
+          ? operationName
+          : operationName.toString(),
+      );
+
+      const newResolver: typeof resolver = async (info, ...args) => {
+        const { request } = info;
+        const clone = request.clone();
+        const payload = await clone.text();
+
+        bodyAssertion(payload);
+
+        return resolver(info, ...args);
+      };
+
+      const handler = original(operationName, newResolver, options, ...rest);
+
+      handler.bodyAssertion = bodyAssertion;
+
+      return handler;
+    },
   assert: function (received, expected) {
-    checkMockedHttpHandler(received);
+    checkMockedHandler(received);
 
     const calls = received.bodyAssertion.mock.calls;
 

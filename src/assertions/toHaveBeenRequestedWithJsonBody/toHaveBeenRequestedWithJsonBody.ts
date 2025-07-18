@@ -1,11 +1,14 @@
 import type { HttpRequestHandler } from "msw";
 import type { Mock } from "vitest";
 import type { Assertion } from "../../types/index.js";
-import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler.js";
+import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
 import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
+    jsonBodyAssertion: Mock;
+  }
+  interface GraphQLHandler {
     jsonBodyAssertion: Mock;
   }
 }
@@ -37,8 +40,37 @@ export const toHaveBeenRequestedWithJsonBody: Assertion = {
 
       return handler;
     },
+  interceptGql:
+    (original) =>
+    (operationName, resolver, options, ...rest) => {
+      const jsonBodyAssertion = vi.fn();
+      jsonBodyAssertion.mockName(
+        typeof operationName === "string"
+          ? operationName
+          : operationName.toString(),
+      );
+
+      const newResolver: typeof resolver = async (info, ...args) => {
+        const { request } = info;
+        const clone = request.clone();
+        try {
+          const payload = await clone.json();
+          jsonBodyAssertion(payload);
+        } catch {
+          jsonBodyAssertion(undefined);
+        }
+
+        return resolver(info, ...args);
+      };
+
+      const handler = original(operationName, newResolver, options, ...rest);
+
+      handler.jsonBodyAssertion = jsonBodyAssertion;
+
+      return handler;
+    },
   assert: function (received, expected) {
-    checkMockedHttpHandler(received);
+    checkMockedHandler(received);
 
     const calls = received.jsonBodyAssertion.mock.calls;
 

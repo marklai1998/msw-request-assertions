@@ -1,10 +1,13 @@
 import type { Mock } from "vitest";
 import type { Assertion } from "../../types";
 import { checkEquality } from "../../utils";
-import { checkMockedHttpHandler } from "../../utils/checkMockedHttpHandler";
+import { checkMockedHandler } from "../../utils/checkMockedHandler";
 
 declare module "msw" {
   interface HttpHandler {
+    hashAssertion: Mock;
+  }
+  interface GraphQLHandler {
     hashAssertion: Mock;
   }
 }
@@ -33,8 +36,34 @@ export const toHaveBeenRequestedWithHash: Assertion = {
 
       return handler;
     },
+  interceptGql:
+    (original) =>
+    (operationName, resolver, options, ...rest) => {
+      const hashAssertion = vi.fn();
+      hashAssertion.mockName(
+        typeof operationName === "string"
+          ? operationName
+          : operationName.toString(),
+      );
+
+      const newResolver: typeof resolver = (info, ...args) => {
+        const { request } = info;
+        const clone = request.clone();
+        const hash = new URL(clone.url).hash;
+
+        hashAssertion(hash);
+
+        return resolver(info, ...args);
+      };
+
+      const handler = original(operationName, newResolver, options, ...rest);
+
+      handler.hashAssertion = hashAssertion;
+
+      return handler;
+    },
   assert: function (received, expected) {
-    checkMockedHttpHandler(received);
+    checkMockedHandler(received);
 
     const calls = received.hashAssertion.mock.calls;
 

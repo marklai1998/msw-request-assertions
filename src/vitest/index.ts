@@ -14,6 +14,7 @@ import { toHaveBeenNthRequestedWithJsonBody } from "../assertions/toHaveBeenRequ
 import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenRequestedWithJsonBody";
 import { toHaveBeenNthRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenNthRequestedWithQuery.js";
 import { toHaveBeenRequestedWithQuery } from "../assertions/toHaveBeenRequestedWithQuery/toHaveBeenRequestedWithQuery.js";
+import type { AssertFn } from "../types";
 
 const httpAssertions = [
   toHaveBeenRequested,
@@ -41,8 +42,8 @@ for (const key in http) {
 }
 
 expect.extend(
-  httpAssertions.reduce(
-    (acc, { name, assert }) => ({ ...acc, [name]: assert }),
-    {},
-  ),
+  httpAssertions.reduce<Record<string, AssertFn>>((acc, { name, assert }) => {
+    acc[name] = assert;
+    return acc;
+  }, {}),
 );

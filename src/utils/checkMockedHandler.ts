@@ -2,9 +2,7 @@ import { GraphQLHandler, HttpHandler } from "msw";
 
 export function checkMockedHandler(
   input: unknown,
-): asserts input is (HttpHandler | GraphQLHandler) & {
-  requestedAssertion: any;
-} {
+): asserts input is HttpHandler | GraphQLHandler {
   const isHttpHandler = input instanceof HttpHandler;
   const isGraphQLHandler = input instanceof GraphQLHandler;
 

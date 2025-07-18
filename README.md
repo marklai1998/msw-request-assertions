@@ -10,6 +10,9 @@ A powerful testing library that provides custom assertion matchers for [Mock Ser
 
 </div>
 
+> [!IMPORTANT]  
+> **Before using this library**, please read MSW's official guidance on [avoiding request assertions](https://mswjs.io/docs/best-practices/avoid-request-assertions). The MSW team recommends testing **how your application reacts** to requests rather than asserting on request details. This library should primarily be used for edge cases, like request details have no observable application behavior.
+
 ## ✨ Features
 
 - ✅ Assert on any aspect of HTTP and GraphQL requests

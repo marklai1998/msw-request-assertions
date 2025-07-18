@@ -1,10 +1,10 @@
-import type { Assertion } from "../../types";
-import { checkMockedHandler } from "../../utils/checkMockedHandler";
+import type { Assertion } from "../../types/index.js";
+import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
 
 export const toHaveBeenRequestedTimes: Assertion = {
   name: "toHaveBeenRequestedTimes",
-  interceptHttp: (original) => original,
-  interceptGql: (original) => original,
+  interceptHttp: (_mockFn, original) => original,
+  interceptGql: (_mockFn, original) => original,
   assert: function (received, expectedTimes) {
     checkMockedHandler(received);
     const calls = received.requestedAssertion.mock.calls;

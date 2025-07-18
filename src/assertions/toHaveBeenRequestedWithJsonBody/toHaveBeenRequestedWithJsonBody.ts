@@ -16,9 +16,9 @@ declare module "msw" {
 export const toHaveBeenRequestedWithJsonBody: Assertion = {
   name: "toHaveBeenRequestedWithJsonBody",
   interceptHttp:
-    (original: HttpRequestHandler): HttpRequestHandler =>
+    (mockFn, original: HttpRequestHandler): HttpRequestHandler =>
     (path, resolver, options, ...rest) => {
-      const jsonBodyAssertion = vi.fn();
+      const jsonBodyAssertion = mockFn();
       jsonBodyAssertion.mockName(typeof path === "string" ? path : path.source);
 
       const newResolver: typeof resolver = async (info, ...args) => {
@@ -41,9 +41,9 @@ export const toHaveBeenRequestedWithJsonBody: Assertion = {
       return handler;
     },
   interceptGql:
-    (original) =>
+    (mockFn, original) =>
     (operationName, resolver, options, ...rest) => {
-      const jsonBodyAssertion = vi.fn();
+      const jsonBodyAssertion = mockFn();
       jsonBodyAssertion.mockName(
         typeof operationName === "string"
           ? operationName

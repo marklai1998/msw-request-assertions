@@ -1,12 +1,12 @@
 import { GraphQLHandler } from "msw";
-import type { Assertion } from "../../types";
-import { checkEquality } from "../../utils";
-import { checkMockedHandler } from "../../utils/checkMockedHandler";
+import type { Assertion } from "../../types/index.js";
+import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { checkEquality } from "../../utils/index.js";
 
 export const toHaveBeenRequestedWith: Assertion = {
   name: "toHaveBeenRequestedWith",
-  interceptHttp: (original) => original,
-  interceptGql: (original) => original,
+  interceptHttp: (_mockFn, original) => original,
+  interceptGql: (_mockFn, original) => original,
   assert: function (received, expected) {
     checkMockedHandler(received);
 

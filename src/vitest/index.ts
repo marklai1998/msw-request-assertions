@@ -1,56 +1,12 @@
 import { graphql, http } from "msw";
 import { expect } from "vitest";
-import { toHaveBeenRequested } from "../assertions/toHaveBeenRequested/toHaveBeenRequested.js";
-import { toHaveBeenRequestedTimes } from "../assertions/toHaveBeenRequested/toHaveBeenRequestedTimes.js";
-import { toHaveBeenNthRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenNthRequestedWith.js";
-import { toHaveBeenRequestedWith } from "../assertions/toHaveBeenRequestedWith/toHaveBeenRequestedWith.js";
-import { toHaveBeenNthRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenNthRequestedWithBody.js";
-import { toHaveBeenRequestedWithBody } from "../assertions/toHaveBeenRequestedWithBody/toHaveBeenRequestedWithBody.js";
-import { toHaveBeenNthRequestedWithGqlQuery } from "../assertions/toHaveBeenRequestedWithGqlQuery/toHaveBeenNthRequestedWithGqlQuery.js";
-import { toHaveBeenRequestedWithGqlQuery } from "../assertions/toHaveBeenRequestedWithGqlQuery/toHaveBeenRequestedWithGqlQuery.js";
-import { toHaveBeenNthRequestedWithGqlVariables } from "../assertions/toHaveBeenRequestedWithGqlVariables/toHaveBeenNthRequestedWithGqlVariables.js";
-import { toHaveBeenRequestedWithGqlVariables } from "../assertions/toHaveBeenRequestedWithGqlVariables/toHaveBeenRequestedWithGqlVariables.js";
-import { toHaveBeenNthRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenNthRequestedWithHash.js";
-import { toHaveBeenRequestedWithHash } from "../assertions/toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash.js";
-import { toHaveBeenNthRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders.js";
-import { toHaveBeenRequestedWithHeaders } from "../assertions/toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders.js";
-import { toHaveBeenNthRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody.js";
-import { toHaveBeenRequestedWithJsonBody } from "../assertions/toHaveBeenRequestedWithJsonBody/toHaveBeenRequestedWithJsonBody.js";
-import { toHaveBeenNthRequestedWithQueryString } from "../assertions/toHaveBeenRequestedWithQueryString/toHaveBeenNthRequestedWithQueryString.js";
-import { toHaveBeenRequestedWithQueryString } from "../assertions/toHaveBeenRequestedWithQueryString/toHaveBeenRequestedWithQueryString.js";
-import type { AssertFn } from "../types";
-
-const graphqlOnlyAssertions = [
-  toHaveBeenRequestedWithGqlVariables,
-  toHaveBeenNthRequestedWithGqlVariables,
-  toHaveBeenRequestedWithGqlQuery,
-  toHaveBeenNthRequestedWithGqlQuery,
-];
-
-const assertions = [
-  toHaveBeenRequested,
-  toHaveBeenRequestedTimes,
-  toHaveBeenRequestedWith,
-  toHaveBeenNthRequestedWith,
-  toHaveBeenRequestedWithBody,
-  toHaveBeenNthRequestedWithBody,
-  toHaveBeenRequestedWithHash,
-  toHaveBeenNthRequestedWithHash,
-  toHaveBeenRequestedWithHeaders,
-  toHaveBeenNthRequestedWithHeaders,
-  toHaveBeenRequestedWithJsonBody,
-  toHaveBeenNthRequestedWithJsonBody,
-  toHaveBeenRequestedWithQueryString,
-  toHaveBeenNthRequestedWithQueryString,
-];
-
-const httpAssertions = [...assertions];
-const graphqlAssertions = [...graphqlOnlyAssertions, ...assertions];
+import { graphqlAssertions, httpAssertions } from "../assertions/index.js";
+import type { AssertFn } from "../types/index.js";
 
 for (const key in http) {
   const original = http[key as keyof typeof http];
   http[key as keyof typeof http] = httpAssertions.reduce(
-    (fn, { interceptHttp }) => (interceptHttp ? interceptHttp(fn) : fn),
+    (fn, { interceptHttp }) => (interceptHttp ? interceptHttp(vi.fn, fn) : fn),
     original,
   );
 }
@@ -59,12 +15,12 @@ const originalQuery = graphql.query;
 const originalMutation = graphql.mutation;
 
 graphql.query = graphqlAssertions.reduce(
-  (fn, { interceptGql }) => (interceptGql ? interceptGql(fn) : fn),
+  (fn, { interceptGql }) => (interceptGql ? interceptGql(vi.fn, fn) : fn),
   originalQuery,
 );
 
 graphql.mutation = graphqlAssertions.reduce(
-  (fn, { interceptGql }) => (interceptGql ? interceptGql(fn) : fn),
+  (fn, { interceptGql }) => (interceptGql ? interceptGql(vi.fn, fn) : fn),
   originalMutation,
 );
 

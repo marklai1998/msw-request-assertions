@@ -1,7 +1,7 @@
 import type { Mock } from "vitest";
-import type { Assertion } from "../../types";
-import { checkEquality } from "../../utils";
-import { checkMockedHandler } from "../../utils/checkMockedHandler";
+import type { Assertion } from "../../types/index.js";
+import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { checkEquality } from "../../utils/index.js";
 
 declare module "msw" {
   interface HttpHandler {
@@ -15,9 +15,9 @@ declare module "msw" {
 export const toHaveBeenRequestedWithHeaders: Assertion = {
   name: "toHaveBeenRequestedWithHeaders",
   interceptHttp:
-    (original) =>
+    (mockFn, original) =>
     (path, resolver, options, ...rest) => {
-      const headersAssertion = vi.fn();
+      const headersAssertion = mockFn();
       headersAssertion.mockName(typeof path === "string" ? path : path.source);
 
       const newResolver: typeof resolver = (info, ...args) => {
@@ -36,9 +36,9 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
       return handler;
     },
   interceptGql:
-    (original) =>
+    (mockFn, original) =>
     (operationName, resolver, options, ...rest) => {
-      const headersAssertion = vi.fn();
+      const headersAssertion = mockFn();
       headersAssertion.mockName(
         typeof operationName === "string"
           ? operationName

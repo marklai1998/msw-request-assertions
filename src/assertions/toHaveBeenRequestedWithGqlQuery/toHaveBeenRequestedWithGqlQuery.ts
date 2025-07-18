@@ -1,6 +1,6 @@
 import type { Mock } from "vitest";
-import type { Assertion } from "../../types";
-import { checkEquality, checkMockedGraphQLHandler } from "../../utils";
+import type { Assertion } from "../../types/index.js";
+import { checkEquality, checkMockedGraphQLHandler } from "../../utils/index.js";
 
 declare module "msw" {
   interface GraphQLHandler {
@@ -11,9 +11,9 @@ declare module "msw" {
 export const toHaveBeenRequestedWithGqlQuery: Assertion = {
   name: "toHaveBeenRequestedWithGqlQuery",
   interceptGql:
-    (original) =>
+    (mockFn, original) =>
     (operationName, resolver, options, ...rest) => {
-      const gqlQueryAssertion = vi.fn();
+      const gqlQueryAssertion = mockFn();
       gqlQueryAssertion.mockName(
         typeof operationName === "string"
           ? operationName

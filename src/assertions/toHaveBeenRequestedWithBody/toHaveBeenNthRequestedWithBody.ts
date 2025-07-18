@@ -1,11 +1,11 @@
-import type { Assertion } from "../../types";
-import { checkEquality } from "../../utils";
-import { checkMockedHandler } from "../../utils/checkMockedHandler";
+import type { Assertion } from "../../types/index.js";
+import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import { checkEquality } from "../../utils/index.js";
 
 export const toHaveBeenNthRequestedWithBody: Assertion = {
   name: "toHaveBeenNthRequestedWithBody",
-  interceptHttp: (original) => original,
-  interceptGql: (original) => original,
+  interceptHttp: (_mockFn, original) => original,
+  interceptGql: (_mockFn, original) => original,
   assert: function (received, time, expected) {
     checkMockedHandler(received);
 

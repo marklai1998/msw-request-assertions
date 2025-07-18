@@ -1,8 +1,6 @@
 /// <reference types="vitest" />
 /// <reference types="@vitest/expect" />
 
-import type { HttpHandler, GraphQLHandler } from "msw";
-
 interface CustomMatchers<R = unknown> {
   toHaveBeenRequested: () => R;
   toHaveBeenRequestedTimes: (times: number) => R;
@@ -39,7 +37,7 @@ interface CustomMatchers<R = unknown> {
 declare module "vitest" {
   interface Matchers<T = unknown> extends CustomMatchers<T> {}
 
-  interface Assertion<T = any> {
+  interface Assertion<_T = any> {
     toHaveBeenRequested: () => void;
     toHaveBeenRequestedTimes: (times: number) => void;
     toHaveBeenRequestedWith: (options: Record<string, any>) => void;
@@ -65,7 +63,7 @@ declare module "vitest" {
     ) => void;
   }
 
-  interface Assertion<GraphQLHandler> {
+  interface Assertion<_GraphQLHandler> {
     toHaveBeenRequestedWithGqlVariables: (
       variables: Record<string, any>,
     ) => void;

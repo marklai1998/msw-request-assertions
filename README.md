@@ -48,6 +48,17 @@ export default defineConfig({
 })
 ```
 
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    // ...rest of your options
+    "types": ["vitest/globals", "msw-request-assertions/vitest"]
+  }
+}
+
+```
+
 ### Setup for Jest
 
 > [!NOTE]  
@@ -63,6 +74,17 @@ import 'msw-request-assertions/jest'
 module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 }
+```
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    // ...rest of your options
+    "types": ["vitest/globals", "msw-request-assertions/jest"]
+  }
+}
+
 ```
 
 ### Basic Example

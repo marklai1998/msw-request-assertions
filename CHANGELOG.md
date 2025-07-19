@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.0...v1.0.1) (2025-07-19)
+
+
+### Bug Fixes
+
+* type export ([687e3cf](https://github.com/marklai1998/msw-request-assertions/commit/687e3cfc4ef4975b41821dc49aa62741ea911d51))
+
 ## 1.0.0 (2025-07-18)
 
 

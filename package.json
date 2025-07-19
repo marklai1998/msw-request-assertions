@@ -12,7 +12,6 @@
   "exports": {
     ".": {
       "require": {
-        "types": "./dist/cjs/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       },
       "import": {
@@ -22,21 +21,21 @@
     },
     "./vitest": {
       "require": {
-        "types": "./dist/cjs/vitest/index.d.cts",
+        "types": "./dist/cjs/vitest/vitest.d.cts",
         "default": "./dist/cjs/vitest/index.cjs"
       },
       "import": {
-        "types": "./dist/esm/vitest/index.d.ts",
+        "types": "./dist/esm/vitest/vitest.d.ts",
         "default": "./dist/esm/vitest/index.mjs"
       }
     },
     "./jest": {
       "require": {
-        "types": "./dist/cjs/jest/index.d.cts",
+        "types": "./dist/cjs/jest/jest.d.cts",
         "default": "./dist/cjs/jest/index.cjs"
       },
       "import": {
-        "types": "./dist/esm/jest/index.d.ts",
+        "types": "./dist/esm/jest/jest.d.ts",
         "default": "./dist/esm/jest/index.mjs"
       }
     }
@@ -49,9 +48,7 @@
       "jest": [
         "./dist/esm/jest/index.d.ts"
       ],
-      "*": [
-        "./dist/esm/index.d.ts"
-      ]
+      "*": []
     }
   },
   "scripts": {
@@ -108,5 +105,8 @@
   "packageManager": "pnpm@10.13.1",
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "rollup-plugin-copy": "^3.5.0"
   }
 }

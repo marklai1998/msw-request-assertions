@@ -1,7 +1,7 @@
 {
   "name": "msw-request-assertions",
   "version": "1.0.2",
-  "description": "",
+  "description": "Request assertions for MSW",
   "files": [
     "dist"
   ],

@@ -177,7 +177,7 @@ expect(handler).not.toHaveBeenRequestedTimes(1)
 Assert on raw request body (string).
 
 ```typescript
-expect(handler).toHaveBeenRequestedWithBody('name=John&email=john@example.com')
+expect(handler).toHaveBeenRequestedWithBody('{"name":"John Doe","email":"john@example.com"}')
 
 // Nth call variant
 expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body')

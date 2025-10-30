@@ -12,7 +12,7 @@ importers:
         specifier: ^30.0.4
         version: 30.0.4(@types/node@24.1.0)
       vitest:
-        specifier: ^3.2.0
+        specifier: ^3.2.0 || ^4.0.0
         version: 3.2.4(@types/node@24.1.0)(jiti@2.4.2)(msw@2.10.4(@types/node@24.1.0)(typescript@5.9.2))
     devDependencies:
       '@biomejs/biome':

@@ -95,7 +95,7 @@
   "peerDependencies": {
     "jest": "^30.0.4",
     "msw": "^2.0.0",
-    "vitest": "^3.2.0"
+    "vitest": "^3.2.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
     "vitest": {
@@ -108,6 +108,5 @@
   "packageManager": "pnpm@10.14.0",
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {}
+  }
 }

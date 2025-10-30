@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.3...v1.0.4) (2025-10-30)
+
+
+### Bug Fixes
+
+* upgrade vitest peer deps ([d79e4b4](https://github.com/marklai1998/msw-request-assertions/commit/d79e4b4c02e100aac626967ea2c14db2d64dea09))
+
 ## [1.0.3](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.2...v1.0.3) (2025-07-19)
 
 

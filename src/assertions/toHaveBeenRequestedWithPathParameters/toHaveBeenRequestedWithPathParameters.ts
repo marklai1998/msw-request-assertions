@@ -20,7 +20,11 @@ export const toHaveBeenRequestedWithPathParameters: Assertion = {
     (path, resolver, options, ...rest) => {
       const pathParametersAssertion = mockFn();
       pathParametersAssertion.mockName(
-        typeof path === "string" ? path : path.source,
+        typeof path === "string"
+          ? path
+          : path instanceof RegExp
+            ? path.source
+            : path.name,
       );
 
       const newResolver: typeof resolver = (info, ...args) => {

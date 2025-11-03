@@ -19,7 +19,11 @@ export const toHaveBeenRequested: Assertion = {
     (path, resolver, options, ...rest) => {
       const requestedAssertion = mockFn();
       requestedAssertion.mockName(
-        typeof path === "string" ? path : path.source,
+        typeof path === "string"
+          ? path
+          : path instanceof RegExp
+            ? path.source
+            : path.name,
       );
 
       const newResolver: typeof resolver = (info, ...args) => {

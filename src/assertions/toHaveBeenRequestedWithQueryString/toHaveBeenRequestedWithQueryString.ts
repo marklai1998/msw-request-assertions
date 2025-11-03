@@ -20,7 +20,11 @@ export const toHaveBeenRequestedWithQueryString: Assertion = {
     (path, resolver, options, ...rest) => {
       const queryStringAssertion = mockFn();
       queryStringAssertion.mockName(
-        typeof path === "string" ? path : path.source,
+        typeof path === "string"
+          ? path
+          : path instanceof RegExp
+            ? path.source
+            : path.name,
       );
 
       const newResolver: typeof resolver = (info, ...args) => {

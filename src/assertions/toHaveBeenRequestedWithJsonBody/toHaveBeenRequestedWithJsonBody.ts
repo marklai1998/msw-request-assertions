@@ -20,7 +20,13 @@ export const toHaveBeenRequestedWithJsonBody: Assertion = {
     (mockFn, original: HttpRequestHandler): HttpRequestHandler =>
     (path, resolver, options, ...rest) => {
       const jsonBodyAssertion = mockFn();
-      jsonBodyAssertion.mockName(typeof path === "string" ? path : path.source);
+      jsonBodyAssertion.mockName(
+        typeof path === "string"
+          ? path
+          : path instanceof RegExp
+            ? path.source
+            : path.name,
+      );
 
       const newResolver: typeof resolver = async (info, ...args) => {
         const { request } = info;

@@ -19,7 +19,13 @@ export const toHaveBeenRequestedWithBody: Assertion = {
     (mockFn, original) =>
     (path, resolver, options, ...rest) => {
       const bodyAssertion = mockFn();
-      bodyAssertion.mockName(typeof path === "string" ? path : path.source);
+      bodyAssertion.mockName(
+        typeof path === "string"
+          ? path
+          : path instanceof RegExp
+            ? path.source
+            : path.name,
+      );
 
       const newResolver: typeof resolver = async (info, ...args) => {
         const { request } = info;

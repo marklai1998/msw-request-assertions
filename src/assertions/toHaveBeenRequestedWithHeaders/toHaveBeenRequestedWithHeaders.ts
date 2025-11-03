@@ -19,7 +19,13 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
     (mockFn, original) =>
     (path, resolver, options, ...rest) => {
       const headersAssertion = mockFn();
-      headersAssertion.mockName(typeof path === "string" ? path : path.source);
+      headersAssertion.mockName(
+        typeof path === "string"
+          ? path
+          : path instanceof RegExp
+            ? path.source
+            : path.name,
+      );
 
       const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;

@@ -57,7 +57,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marklai1998/msw-request-assertion"
+    "url": "git+https://github.com/marklai1998/msw-request-assertions"
   },
   "keywords": [
     "msw",

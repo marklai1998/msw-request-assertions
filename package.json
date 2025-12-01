@@ -74,23 +74,23 @@
   },
   "homepage": "https://github.com/marklai1998/msw-request-assertion#readme",
   "devDependencies": {
-    "@biomejs/biome": "2.3.3",
+    "@biomejs/biome": "2.3.8",
     "@commitlint/cli": "20.1.0",
     "@commitlint/config-conventional": "20.0.0",
     "@faker-js/faker": "10.1.0",
     "@jest/globals": "30.2.0",
-    "@types/node": "24.10.0",
-    "@vitest/coverage-v8": "4.0.6",
-    "lefthook": "2.0.2",
-    "msw": "2.11.6",
-    "rollup": "4.52.5",
+    "@types/node": "24.10.1",
+    "@vitest/coverage-v8": "4.0.14",
+    "lefthook": "2.0.4",
+    "msw": "2.12.3",
+    "rollup": "4.53.3",
     "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-dts": "6.2.3",
+    "rollup-plugin-dts": "6.3.0",
     "rollup-plugin-esbuild": "6.2.1",
-    "rollup-plugin-node-externals": "8.1.1",
+    "rollup-plugin-node-externals": "8.1.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "typescript": "5.9.3",
-    "wretch": "3.0.2"
+    "wretch": "3.0.5"
   },
   "peerDependencies": {
     "jest": "^30.0.4",
@@ -105,7 +105,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.20.0",
+  "packageManager": "pnpm@10.24.0",
   "engines": {
     "node": ">=18"
   }

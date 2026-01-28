@@ -80,7 +80,7 @@
     "@faker-js/faker": "10.1.0",
     "@jest/globals": "30.2.0",
     "@types/node": "24.10.9",
-    "@vitest/coverage-v8": "4.0.14",
+    "@vitest/coverage-v8": "4.0.18",
     "lefthook": "2.0.4",
     "msw": "2.12.3",
     "rollup": "4.53.3",

@@ -79,7 +79,7 @@
     "@commitlint/config-conventional": "20.0.0",
     "@faker-js/faker": "10.1.0",
     "@jest/globals": "30.2.0",
-    "@types/node": "24.10.1",
+    "@types/node": "24.10.9",
     "@vitest/coverage-v8": "4.0.14",
     "lefthook": "2.0.4",
     "msw": "2.12.3",

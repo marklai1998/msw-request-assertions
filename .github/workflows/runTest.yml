@@ -13,11 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-<<<<<<< HEAD
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
-=======
         uses: actions/checkout@v6
->>>>>>> 2ac8beb (ci: unpin workflow)
         with:
           fetch-depth: 0
 

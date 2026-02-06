@@ -82,7 +82,7 @@
     "@types/node": "24.10.11",
     "@vitest/coverage-v8": "4.0.18",
     "lefthook": "2.1.0",
-    "msw": "2.12.8",
+    "msw": "2.12.9",
     "rollup": "4.57.1",
     "rollup-plugin-copy": "3.5.0",
     "rollup-plugin-dts": "6.3.0",

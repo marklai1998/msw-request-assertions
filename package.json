@@ -79,7 +79,7 @@
     "@faker-js/faker": "10.3.0",
     "@jest/globals": "30.2.0",
     "@marklai/shared-config-commitlint": "1.0.0",
-    "@types/node": "24.10.12",
+    "@types/node": "24.10.13",
     "@vitest/coverage-v8": "4.0.18",
     "lefthook": "2.1.0",
     "msw": "2.12.9",

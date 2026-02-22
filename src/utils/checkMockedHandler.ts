@@ -1,4 +1,4 @@
-import { GraphQLHandler, HttpHandler } from "msw";
+import { GraphQLHandler, HttpHandler } from 'msw';
 
 export function checkMockedHandler(
   input: unknown,
@@ -7,6 +7,6 @@ export function checkMockedHandler(
   const isGraphQLHandler = input instanceof GraphQLHandler;
 
   if (!isHttpHandler && !isGraphQLHandler) {
-    throw new Error("Expected a HttpHandler or GraphQLHandler");
+    throw new Error('Expected a HttpHandler or GraphQLHandler');
   }
 }

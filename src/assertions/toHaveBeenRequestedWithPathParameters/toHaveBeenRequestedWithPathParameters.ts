@@ -1,10 +1,10 @@
-import type { Mock } from "vitest";
-import type { Assertion } from "../../types/index.js";
-import { checkEquality } from "../../utils/checkEquality.js";
-import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
-import { formatMockCalls } from "../../utils/formatMockCalls.js";
+import type { Mock } from 'vitest';
+import type { Assertion } from '../../types/index.js';
+import { checkEquality } from '../../utils/checkEquality.js';
+import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
+import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
-declare module "msw" {
+declare module 'msw' {
   interface HttpHandler {
     pathParametersAssertion?: Mock;
   }
@@ -14,13 +14,13 @@ declare module "msw" {
 }
 
 export const toHaveBeenRequestedWithPathParameters: Assertion = {
-  name: "toHaveBeenRequestedWithPathParameters",
+  name: 'toHaveBeenRequestedWithPathParameters',
   interceptHttp:
     (mockFn, original) =>
     (path, resolver, options, ...rest) => {
       const pathParametersAssertion = mockFn();
       pathParametersAssertion.mockName(
-        typeof path === "string"
+        typeof path === 'string'
           ? path
           : path instanceof RegExp
             ? path.source
@@ -47,13 +47,13 @@ export const toHaveBeenRequestedWithPathParameters: Assertion = {
     (operationName, resolver, options, ...rest) => {
       const pathParametersAssertion = mockFn();
       pathParametersAssertion.mockName(
-        typeof operationName === "string"
+        typeof operationName === 'string'
           ? operationName
           : operationName.toString(),
       );
 
       const newResolver: typeof resolver = (info, ...args) => {
-        const params = "params" in info ? info.params : {};
+        const params = 'params' in info ? info.params : {};
 
         // There is a null prototype
         pathParametersAssertion(JSON.parse(JSON.stringify(params)));
@@ -70,7 +70,7 @@ export const toHaveBeenRequestedWithPathParameters: Assertion = {
   assert: function (received, expected) {
     checkMockedHandler(received);
     const assertion = received.pathParametersAssertion;
-    if (!assertion) throw new Error("No path parameters assertion found");
+    if (!assertion) throw new Error('No path parameters assertion found');
 
     const name = assertion.getMockName();
     const calls = assertion?.mock.calls || [];
@@ -82,7 +82,7 @@ export const toHaveBeenRequestedWithPathParameters: Assertion = {
         formatMockCalls(
           name,
           calls,
-          `Expected ${name} to${isNot ? " not" : ""} have been requested with path parameters ${this.utils.printExpected(JSON.stringify(expected))}`,
+          `Expected ${name} to${isNot ? ' not' : ''} have been requested with path parameters ${this.utils.printExpected(JSON.stringify(expected))}`,
         ),
     };
   },

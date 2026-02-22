@@ -1,10 +1,10 @@
-import type { Mock } from "vitest";
-import type { Assertion } from "../../types/index.js";
-import { checkEquality } from "../../utils/checkEquality.js";
-import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
-import { formatMockCalls } from "../../utils/formatMockCalls.js";
+import type { Mock } from 'vitest';
+import type { Assertion } from '../../types/index.js';
+import { checkEquality } from '../../utils/checkEquality.js';
+import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
+import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
-declare module "msw" {
+declare module 'msw' {
   interface HttpHandler {
     bodyAssertion?: Mock;
   }
@@ -14,13 +14,13 @@ declare module "msw" {
 }
 
 export const toHaveBeenRequestedWithBody: Assertion = {
-  name: "toHaveBeenRequestedWithBody",
+  name: 'toHaveBeenRequestedWithBody',
   interceptHttp:
     (mockFn, original) =>
     (path, resolver, options, ...rest) => {
       const bodyAssertion = mockFn();
       bodyAssertion.mockName(
-        typeof path === "string"
+        typeof path === 'string'
           ? path
           : path instanceof RegExp
             ? path.source
@@ -48,7 +48,7 @@ export const toHaveBeenRequestedWithBody: Assertion = {
     (operationName, resolver, options, ...rest) => {
       const bodyAssertion = mockFn();
       bodyAssertion.mockName(
-        typeof operationName === "string"
+        typeof operationName === 'string'
           ? operationName
           : operationName.toString(),
       );
@@ -72,7 +72,7 @@ export const toHaveBeenRequestedWithBody: Assertion = {
   assert: function (received, expected) {
     checkMockedHandler(received);
     const assertion = received.bodyAssertion;
-    if (!assertion) throw new Error("No body assertion found");
+    if (!assertion) throw new Error('No body assertion found');
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
@@ -84,7 +84,7 @@ export const toHaveBeenRequestedWithBody: Assertion = {
         formatMockCalls(
           name,
           calls,
-          `Expected ${assertion?.getMockName()} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(expected)}`,
+          `Expected ${assertion?.getMockName()} to${isNot ? ' not' : ''} have been requested with body ${this.utils.printExpected(expected)}`,
         ),
     };
   },

@@ -1,8 +1,8 @@
-import { expect, jest } from "@jest/globals";
-import { graphql, http } from "msw";
-import { graphqlAssertions, httpAssertions } from "../assertions/index.js";
-import type { AssertFn } from "../types/index.js";
-import "./jest.d.ts";
+import { expect, jest } from '@jest/globals';
+import { graphql, http } from 'msw';
+import { graphqlAssertions, httpAssertions } from '../assertions/index.js';
+import type { AssertFn } from '../types/index.js';
+import './jest.d.ts';
 
 for (const key in http) {
   const original = http[key as keyof typeof http];

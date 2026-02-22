@@ -17,21 +17,21 @@ export const ordinalOf = (i: number) => {
   return `${i}th`;
 };
 
-export const formatMockCalls = (name: string, calls: unknown[][], msg = "") => {
+export const formatMockCalls = (name: string, calls: unknown[][], msg = '') => {
   if (calls.length) {
     msg += `\n\nReceived: \n\n${calls
       .map((callArg, i) => {
         let methodCall = `  ${ordinalOf(i + 1)} ${name} call:\n\n`;
 
         methodCall += JSON.stringify(callArg[0])
-          .split("\n")
+          .split('\n')
           .map((line) => `    ${line}`)
-          .join("\n");
+          .join('\n');
 
-        methodCall += "\n";
+        methodCall += '\n';
         return methodCall;
       })
-      .join("\n")}`;
+      .join('\n')}`;
   }
   msg += `\n\nNumber of calls: ${calls.length}\n`;
   return msg;

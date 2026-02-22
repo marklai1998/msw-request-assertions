@@ -1,4 +1,4 @@
-declare module "expect" {
+declare module 'expect' {
   interface AsymmetricMatchers {
     toHaveBeenRequested: () => R;
     toHaveBeenRequestedTimes: (times: number) => R;

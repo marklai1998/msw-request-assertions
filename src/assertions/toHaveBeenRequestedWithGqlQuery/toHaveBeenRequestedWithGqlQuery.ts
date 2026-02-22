@@ -1,23 +1,23 @@
-import type { Mock } from "vitest";
-import type { Assertion } from "../../types/index.js";
-import { checkEquality } from "../../utils/checkEquality.js";
-import { checkMockedGraphQLHandler } from "../../utils/checkMockedGraphQLHandler.js";
-import { formatMockCalls } from "../../utils/formatMockCalls.js";
+import type { Mock } from 'vitest';
+import type { Assertion } from '../../types/index.js';
+import { checkEquality } from '../../utils/checkEquality.js';
+import { checkMockedGraphQLHandler } from '../../utils/checkMockedGraphQLHandler.js';
+import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
-declare module "msw" {
+declare module 'msw' {
   interface GraphQLHandler {
     gqlQueryAssertion?: Mock;
   }
 }
 
 export const toHaveBeenRequestedWithGqlQuery: Assertion = {
-  name: "toHaveBeenRequestedWithGqlQuery",
+  name: 'toHaveBeenRequestedWithGqlQuery',
   interceptGql:
     (mockFn, original) =>
     (operationName, resolver, options, ...rest) => {
       const gqlQueryAssertion = mockFn();
       gqlQueryAssertion.mockName(
-        typeof operationName === "string"
+        typeof operationName === 'string'
           ? operationName
           : operationName.toString(),
       );
@@ -38,7 +38,7 @@ export const toHaveBeenRequestedWithGqlQuery: Assertion = {
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
     const assertion = received.gqlQueryAssertion;
-    if (!assertion) throw new Error("No GraphQL query assertion found");
+    if (!assertion) throw new Error('No GraphQL query assertion found');
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
@@ -50,7 +50,7 @@ export const toHaveBeenRequestedWithGqlQuery: Assertion = {
         formatMockCalls(
           name,
           calls,
-          `Expected ${assertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL query ${this.utils.printExpected(expected)}`,
+          `Expected ${assertion?.getMockName()} to${isNot ? ' not' : ''} have been requested with GraphQL query ${this.utils.printExpected(expected)}`,
         ),
     };
   },

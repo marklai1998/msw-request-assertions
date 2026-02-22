@@ -1,23 +1,23 @@
-import type { Mock } from "vitest";
-import type { Assertion } from "../../types/index.js";
-import { checkEquality } from "../../utils/checkEquality.js";
-import { checkMockedGraphQLHandler } from "../../utils/checkMockedGraphQLHandler.js";
-import { formatMockCalls } from "../../utils/formatMockCalls.js";
+import type { Mock } from 'vitest';
+import type { Assertion } from '../../types/index.js';
+import { checkEquality } from '../../utils/checkEquality.js';
+import { checkMockedGraphQLHandler } from '../../utils/checkMockedGraphQLHandler.js';
+import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
-declare module "msw" {
+declare module 'msw' {
   interface GraphQLHandler {
     gqlVariablesAssertion?: Mock;
   }
 }
 
 export const toHaveBeenRequestedWithGqlVariables: Assertion = {
-  name: "toHaveBeenRequestedWithGqlVariables",
+  name: 'toHaveBeenRequestedWithGqlVariables',
   interceptGql:
     (mockFn, original) =>
     (operationName, resolver, options, ...rest) => {
       const gqlVariablesAssertion = mockFn();
       gqlVariablesAssertion.mockName(
-        typeof operationName === "string"
+        typeof operationName === 'string'
           ? operationName
           : operationName.toString(),
       );
@@ -38,7 +38,7 @@ export const toHaveBeenRequestedWithGqlVariables: Assertion = {
   assert: function (received, expected) {
     checkMockedGraphQLHandler(received);
     const assertion = received.gqlVariablesAssertion;
-    if (!assertion) throw new Error("No GraphQL variables assertion found");
+    if (!assertion) throw new Error('No GraphQL variables assertion found');
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
@@ -50,7 +50,7 @@ export const toHaveBeenRequestedWithGqlVariables: Assertion = {
         formatMockCalls(
           name,
           calls,
-          `Expected ${received.gqlVariablesAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
+          `Expected ${received.gqlVariablesAssertion?.getMockName()} to${isNot ? ' not' : ''} have been requested with GraphQL variables ${this.utils.printExpected(JSON.stringify(expected))}`,
         ),
     };
   },

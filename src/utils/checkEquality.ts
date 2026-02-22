@@ -1,6 +1,6 @@
 const isPlainObject = (value: unknown): value is Record<string, unknown> => {
   return (
-    typeof value === "object" && value !== null && value.constructor === Object
+    typeof value === 'object' && value !== null && value.constructor === Object
   );
 };
 
@@ -10,19 +10,19 @@ export const checkEquality = (expected: unknown, actual: unknown): boolean => {
   }
 
   if (
-    typeof expected === "object" &&
+    typeof expected === 'object' &&
     expected !== null &&
-    "asymmetricMatch" in expected &&
-    typeof expected.asymmetricMatch === "function"
+    'asymmetricMatch' in expected &&
+    typeof expected.asymmetricMatch === 'function'
   ) {
     return expected.asymmetricMatch(actual);
   }
 
   if (
-    typeof actual === "object" &&
+    typeof actual === 'object' &&
     actual !== null &&
-    "asymmetricMatch" in actual &&
-    typeof actual.asymmetricMatch === "function"
+    'asymmetricMatch' in actual &&
+    typeof actual.asymmetricMatch === 'function'
   ) {
     return actual.asymmetricMatch(expected);
   }

@@ -1,8 +1,8 @@
-import type { Mock } from "vitest";
-import type { Assertion } from "../../types/index.js";
-import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
+import type { Mock } from 'vitest';
+import type { Assertion } from '../../types/index.js';
+import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
 
-declare module "msw" {
+declare module 'msw' {
   interface HttpHandler {
     requestedAssertion?: Mock;
   }
@@ -13,13 +13,13 @@ declare module "msw" {
 }
 
 export const toHaveBeenRequested: Assertion = {
-  name: "toHaveBeenRequested",
+  name: 'toHaveBeenRequested',
   interceptHttp:
     (mockFn, original) =>
     (path, resolver, options, ...rest) => {
       const requestedAssertion = mockFn();
       requestedAssertion.mockName(
-        typeof path === "string"
+        typeof path === 'string'
           ? path
           : path instanceof RegExp
             ? path.source
@@ -43,9 +43,9 @@ export const toHaveBeenRequested: Assertion = {
     (path, resolver, options, ...rest) => {
       const requestedAssertion = mockFn();
       requestedAssertion.mockName(
-        typeof path === "string"
+        typeof path === 'string'
           ? path
-          : "source" in path
+          : 'source' in path
             ? path.source
             : JSON.stringify(path),
       );
@@ -65,7 +65,7 @@ export const toHaveBeenRequested: Assertion = {
   assert: function (received) {
     checkMockedHandler(received);
     if (!received.requestedAssertion)
-      throw new Error("No request assertion found");
+      throw new Error('No request assertion found');
 
     const calls = received.requestedAssertion.mock.calls;
 
@@ -73,7 +73,7 @@ export const toHaveBeenRequested: Assertion = {
     return {
       pass: calls.length > 0,
       message: () =>
-        `Expected ${received.requestedAssertion?.getMockName()} to${isNot ? " not" : ""} have been requested`,
+        `Expected ${received.requestedAssertion?.getMockName()} to${isNot ? ' not' : ''} have been requested`,
     };
   },
 };

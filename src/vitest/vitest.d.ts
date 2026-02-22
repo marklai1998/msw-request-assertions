@@ -1,4 +1,4 @@
-import "vitest";
+import 'vitest';
 
 interface CustomMatchers<R = unknown> {
   toHaveBeenRequested: () => R;
@@ -32,6 +32,6 @@ interface CustomMatchers<R = unknown> {
   ) => R;
 }
 
-declare module "vitest" {
+declare module 'vitest' {
   interface Matchers<T = any> extends CustomMatchers<T> {}
 }

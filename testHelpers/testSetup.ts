@@ -1,1 +1,1 @@
-import "../src/vitest/index";
+import '../src/vitest/index';

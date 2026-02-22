@@ -1,16 +1,16 @@
-import type { Assertion } from "../../types/index.js";
-import { checkEquality } from "../../utils/checkEquality.js";
-import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
-import { formatMockCalls } from "../../utils/formatMockCalls.js";
-import { getCalls } from "./getCalls.js";
+import type { Assertion } from '../../types/index.js';
+import { checkEquality } from '../../utils/checkEquality.js';
+import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
+import { formatMockCalls } from '../../utils/formatMockCalls.js';
+import { getCalls } from './getCalls.js';
 
 export const toHaveBeenRequestedWith: Assertion = {
-  name: "toHaveBeenRequestedWith",
+  name: 'toHaveBeenRequestedWith',
   interceptHttp: (_mockFn, original) => original,
   interceptGql: (_mockFn, original) => original,
   assert: function (received, expected) {
     checkMockedHandler(received);
-    if (!received.requestedAssertion) throw new Error("No assertion found");
+    if (!received.requestedAssertion) throw new Error('No assertion found');
 
     const calls = getCalls(received, expected);
 
@@ -23,7 +23,7 @@ export const toHaveBeenRequestedWith: Assertion = {
         formatMockCalls(
           name,
           calls.map((call) => [call]),
-          `Expected ${name} to${isNot ? " not" : ""} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
+          `Expected ${name} to${isNot ? ' not' : ''} have been requested with body ${this.utils.printExpected(JSON.stringify(expected))}`,
         ),
     };
   },

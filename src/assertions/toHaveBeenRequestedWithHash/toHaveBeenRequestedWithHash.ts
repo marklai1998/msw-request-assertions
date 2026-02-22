@@ -1,10 +1,10 @@
-import type { Mock } from "vitest";
-import type { Assertion } from "../../types/index.js";
-import { checkEquality } from "../../utils/checkEquality.js";
-import { checkMockedHandler } from "../../utils/checkMockedHandler.js";
-import { formatMockCalls } from "../../utils/formatMockCalls.js";
+import type { Mock } from 'vitest';
+import type { Assertion } from '../../types/index.js';
+import { checkEquality } from '../../utils/checkEquality.js';
+import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
+import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
-declare module "msw" {
+declare module 'msw' {
   interface HttpHandler {
     hashAssertion?: Mock;
   }
@@ -14,13 +14,13 @@ declare module "msw" {
 }
 
 export const toHaveBeenRequestedWithHash: Assertion = {
-  name: "toHaveBeenRequestedWithHash",
+  name: 'toHaveBeenRequestedWithHash',
   interceptHttp:
     (mockFn, original) =>
     (path, resolver, options, ...rest) => {
       const hashAssertion = mockFn();
       hashAssertion.mockName(
-        typeof path === "string"
+        typeof path === 'string'
           ? path
           : path instanceof RegExp
             ? path.source
@@ -48,7 +48,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
     (operationName, resolver, options, ...rest) => {
       const hashAssertion = mockFn();
       hashAssertion.mockName(
-        typeof operationName === "string"
+        typeof operationName === 'string'
           ? operationName
           : operationName.toString(),
       );
@@ -72,7 +72,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
   assert: function (received, expected) {
     checkMockedHandler(received);
     const assertion = received.hashAssertion;
-    if (!assertion) throw new Error("No hash assertion found");
+    if (!assertion) throw new Error('No hash assertion found');
 
     const name = assertion.getMockName();
     const calls = assertion.mock.calls;
@@ -84,7 +84,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
         formatMockCalls(
           name,
           calls,
-          `Expected ${name} to${isNot ? " not" : ""} have been requested with hash ${this.utils.printExpected(expected)}`,
+          `Expected ${name} to${isNot ? ' not' : ''} have been requested with hash ${this.utils.printExpected(expected)}`,
         ),
     };
   },

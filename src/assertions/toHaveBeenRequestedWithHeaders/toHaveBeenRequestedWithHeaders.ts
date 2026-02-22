@@ -31,7 +31,13 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
         const { request } = info;
         const clone = request.clone();
 
-        headersAssertion(Object.fromEntries(clone.headers.entries()));
+        const headers: Record<string, string> = {};
+
+        clone.headers.forEach((value, key) => {
+          headers[key] = value;
+        });
+
+        headersAssertion(headers);
 
         return resolver(info, ...args);
       };
@@ -56,7 +62,13 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
         const { request } = info;
         const clone = request.clone();
 
-        headersAssertion(Object.fromEntries(clone.headers.entries()));
+        const headers: Record<string, string> = {};
+
+        clone.headers.forEach((value, key) => {
+          headers[key] = value;
+        });
+
+        headersAssertion(headers);
 
         return resolver(info, ...args);
       };

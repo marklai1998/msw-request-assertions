@@ -81,7 +81,7 @@
     "@marklai/shared-config-biome": "1.0.0",
     "@marklai/shared-config-commitlint": "1.0.0",
     "@marklai/shared-config-typescript": "1.1.0",
-    "@types/node": "24.10.14",
+    "@types/node": "24.10.15",
     "@vitest/coverage-v8": "4.0.18",
     "lefthook": "2.1.1",
     "msw": "2.12.10",

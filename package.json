@@ -83,7 +83,7 @@
     "@marklai/shared-config-typescript": "1.1.0",
     "@types/node": "24.10.15",
     "@vitest/coverage-v8": "4.0.18",
-    "lefthook": "2.1.1",
+    "lefthook": "2.1.2",
     "msw": "2.12.10",
     "rollup": "4.59.0",
     "rollup-plugin-copy": "3.5.0",

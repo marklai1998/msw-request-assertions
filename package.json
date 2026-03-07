@@ -92,7 +92,7 @@
     "rollup-plugin-node-externals": "8.1.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "typescript": "5.9.3",
-    "wretch": "3.0.6"
+    "wretch": "3.0.7"
   },
   "peerDependencies": {
     "jest": "^30.0.4",

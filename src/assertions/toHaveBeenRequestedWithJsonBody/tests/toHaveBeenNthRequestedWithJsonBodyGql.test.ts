@@ -1,7 +1,7 @@
 import { graphql, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import '../../../vitest';
+import '../../../vitest/index.js';
 
 const getUserQuery = graphql.query('GetUser', ({ variables }) => {
   return HttpResponse.json({

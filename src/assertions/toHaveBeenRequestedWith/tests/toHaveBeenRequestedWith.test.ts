@@ -1,7 +1,7 @@
 import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import wretch from 'wretch';
-import '../../../vitest';
+import '../../../vitest/index.js';
 
 const postHandler = http.post('http://127.0.0.1/users', () => {
   return HttpResponse.json({ id: 1, name: 'John Doe' });

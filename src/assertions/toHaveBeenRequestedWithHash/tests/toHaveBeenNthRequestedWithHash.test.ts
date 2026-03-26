@@ -2,7 +2,7 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import wretch from 'wretch';
-import '../../../vitest';
+import '../../../vitest/index.js';
 
 const pageHandler = http.get('http://127.0.0.1/page', () => {
   return HttpResponse.json({

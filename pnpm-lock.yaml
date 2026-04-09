@@ -13,7 +13,7 @@ importers:
         version: 30.3.0(@types/node@24.12.2)
       vitest:
         specifier: ^3.2.0 || ^4.0.0
-        version: 4.1.2(@types/node@24.12.2)(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))
+        version: 4.1.2(@types/node@24.12.2)(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))
     devDependencies:
       '@biomejs/biome':
         specifier: 2.4.10
@@ -41,13 +41,13 @@ importers:
         version: 24.12.2
       '@vitest/coverage-v8':
         specifier: 4.1.3
-        version: 4.1.3(vitest@4.1.2(@types/node@24.12.2)(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)))
+        version: 4.1.3(vitest@4.1.2(@types/node@24.12.2)(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)))
       lefthook:
         specifier: 2.1.5
         version: 2.1.5
       msw:
-        specifier: 2.12.14
-        version: 2.12.14(@types/node@24.12.2)(typescript@6.0.2)
+        specifier: 2.13.0
+        version: 2.13.0(@types/node@24.12.2)(typescript@6.0.2)
       rollup:
         specifier: 4.60.1
         version: 4.60.1
@@ -2143,8 +2143,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  msw@2.12.14:
-    resolution: {integrity: sha512-4KXa4nVBIBjbDbd7vfQNuQ25eFxug0aropCQFoI0JdOBuJWamkT1yLVIWReFI8SiTRc+H1hKzaNk+cLk2N9rtQ==}
+  msw@2.13.0:
+    resolution: {integrity: sha512-5PPWf7I7DBHb4ZUZ0NUI+/VBDk/eiNYDNJZGt/jZ7+rbCSIK5hRcNTGqWMnn0vT6NrHiQlb0nfpenVGz1vrqpg==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -3720,7 +3720,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vitest/coverage-v8@4.1.3(vitest@4.1.2(@types/node@24.12.2)(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)))':
+  '@vitest/coverage-v8@4.1.3(vitest@4.1.2(@types/node@24.12.2)(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)))':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/utils': 4.1.3
@@ -3732,7 +3732,7 @@ snapshots:
       obug: 2.1.1
       std-env: 4.0.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.2(@types/node@24.12.2)(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))
+      vitest: 4.1.2(@types/node@24.12.2)(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))
 
   '@vitest/expect@4.1.2':
     dependencies:
@@ -3743,13 +3743,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.2(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))':
+  '@vitest/mocker@4.1.2(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))':
     dependencies:
       '@vitest/spy': 4.1.2
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      msw: 2.12.14(@types/node@24.12.2)(typescript@6.0.2)
+      msw: 2.13.0(@types/node@24.12.2)(typescript@6.0.2)
       vite: 8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)
 
   '@vitest/pretty-format@4.1.2':
@@ -4824,7 +4824,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2):
+  msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2):
     dependencies:
       '@inquirer/confirm': 5.1.21(@types/node@24.12.2)
       '@mswjs/interceptors': 0.41.3
@@ -5263,10 +5263,10 @@ snapshots:
       - '@emnapi/core'
       - '@emnapi/runtime'
 
-  vitest@4.1.2(@types/node@24.12.2)(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)):
+  vitest@4.1.2(@types/node@24.12.2)(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1)):
     dependencies:
       '@vitest/expect': 4.1.2
-      '@vitest/mocker': 4.1.2(msw@2.12.14(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))
+      '@vitest/mocker': 4.1.2(msw@2.13.0(@types/node@24.12.2)(typescript@6.0.2))(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.28.0)(jiti@2.6.1))
       '@vitest/pretty-format': 4.1.2
       '@vitest/runner': 4.1.2
       '@vitest/snapshot': 4.1.2

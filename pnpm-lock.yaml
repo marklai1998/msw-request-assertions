@@ -19,8 +19,8 @@ importers:
         specifier: 2.4.13
         version: 2.4.13
       '@commitlint/cli':
-        specifier: 20.5.2
-        version: 20.5.2(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3)
+        specifier: 20.5.3
+        version: 20.5.3(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3)
       '@faker-js/faker':
         specifier: 10.4.0
         version: 10.4.0
@@ -32,7 +32,7 @@ importers:
         version: 1.0.0(@biomejs/biome@2.4.13)
       '@marklai/shared-config-commitlint':
         specifier: 1.0.1
-        version: 1.0.1(@commitlint/cli@20.5.2(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3))
+        version: 1.0.1(@commitlint/cli@20.5.3(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3))
       '@marklai/shared-config-typescript':
         specifier: 1.1.0
         version: 1.1.0(typescript@6.0.3)
@@ -301,8 +301,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@commitlint/cli@20.5.2':
-    resolution: {integrity: sha512-IXr5xd3IX8SEG936P8gcpozRplkDeDSwJlt8UvoY1winwIy2udTbQ/cOCgbaaxcjdDqVoS29VUcz/wkwnSozbA==}
+  '@commitlint/cli@20.5.3':
+    resolution: {integrity: sha512-OJdL0EXWD5y9LPa0nr/geOwzaS8BsdaybKkcloB0JgsguGxNv2R+hC2FTPqrAcprg35zF33KOQerY0x8W1aesA==}
     engines: {node: '>=v18'}
     hasBin: true
 
@@ -2918,7 +2918,7 @@ snapshots:
   '@biomejs/cli-win32-x64@2.4.13':
     optional: true
 
-  '@commitlint/cli@20.5.2(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3)':
+  '@commitlint/cli@20.5.3(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3)':
     dependencies:
       '@commitlint/format': 20.5.0
       '@commitlint/lint': 20.5.3
@@ -3378,9 +3378,9 @@ snapshots:
     dependencies:
       '@biomejs/biome': 2.4.13
 
-  '@marklai/shared-config-commitlint@1.0.1(@commitlint/cli@20.5.2(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3))':
+  '@marklai/shared-config-commitlint@1.0.1(@commitlint/cli@20.5.3(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3))':
     dependencies:
-      '@commitlint/cli': 20.5.2(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3)
+      '@commitlint/cli': 20.5.3(@types/node@24.12.2)(conventional-commits-parser@6.4.0)(typescript@6.0.3)
       '@commitlint/config-conventional': 20.5.0
 
   '@marklai/shared-config-typescript@1.1.0(typescript@6.0.3)':

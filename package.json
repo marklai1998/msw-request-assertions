@@ -107,7 +107,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@11.2.1",
+  "packageManager": "pnpm@11.2.2",
   "engines": {
     "node": ">=18"
   }

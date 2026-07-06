@@ -75,7 +75,7 @@
   "homepage": "https://github.com/marklai1998/msw-request-assertion#readme",
   "devDependencies": {
     "@biomejs/biome": "2.5.2",
-    "@commitlint/cli": "21.1.0",
+    "@commitlint/cli": "21.2.0",
     "@faker-js/faker": "10.5.0",
     "@jest/globals": "30.4.1",
     "@marklai/shared-config-biome": "1.0.1",

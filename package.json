@@ -82,7 +82,7 @@
     "@marklai/shared-config-commitlint": "1.0.5",
     "@marklai/shared-config-typescript": "1.1.0",
     "@types/node": "24.13.2",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-v8": "4.1.10",
     "lefthook": "2.1.9",
     "msw": "2.14.6",
     "rollup": "4.62.2",

@@ -82,7 +82,7 @@
     "@marklai/shared-config-commitlint": "1.1.1",
     "@marklai/shared-config-typescript": "1.1.2",
     "@types/node": "24.13.3",
-    "@vitest/coverage-v8": "4.1.11",
+    "@vitest/coverage-v8": "5.0.0",
     "lefthook": "2.1.12",
     "msw": "2.15.0",
     "rollup": "4.63.1",
@@ -92,12 +92,13 @@
     "rollup-plugin-node-externals": "9.0.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "typescript": "7.0.2",
+    "vitest": "^5.0.0",
     "wretch": "3.0.9"
   },
   "peerDependencies": {
     "jest": "^30.0.4",
     "msw": "^2.0.0",
-    "vitest": "^3.2.0 || ^4.0.0"
+    "vitest": "^3.2.0 || ^4.0.0 || ^5.0.0"
   },
   "peerDependenciesMeta": {
     "vitest": {

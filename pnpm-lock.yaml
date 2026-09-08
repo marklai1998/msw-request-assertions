@@ -168,7 +168,7 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
       vitest:
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0(@types/node@24.13.3)(@vitest/coverage-v8@5.0.0)(msw@2.15.0(@types/node@24.13.3)(typescript@7.0.2))(vite@8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.6.1))
       wretch:
         specifier: 3.0.9
@@ -3493,14 +3493,17 @@ snapshots:
     dependencies:
       '@emnapi/wasi-threads': 1.2.1
       tslib: 2.8.1
+    optional: true
 
   '@emnapi/runtime@1.10.0':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@emnapi/wasi-threads@1.2.1':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@esbuild/aix-ppc64@0.28.2':
     optional: true
@@ -3941,6 +3944,7 @@ snapshots:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
       '@tybys/wasm-util': 0.10.3
+    optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -3967,29 +3971,41 @@ snapshots:
 
   '@oxc-project/types@0.147.0': {}
 
-  '@parcel/watcher-android-arm64@2.6.0': {}
+  '@parcel/watcher-android-arm64@2.6.0':
+    optional: true
 
-  '@parcel/watcher-darwin-arm64@2.6.0': {}
+  '@parcel/watcher-darwin-arm64@2.6.0':
+    optional: true
 
-  '@parcel/watcher-darwin-x64@2.6.0': {}
+  '@parcel/watcher-darwin-x64@2.6.0':
+    optional: true
 
-  '@parcel/watcher-freebsd-x64@2.6.0': {}
+  '@parcel/watcher-freebsd-x64@2.6.0':
+    optional: true
 
-  '@parcel/watcher-linux-arm-glibc@2.6.0': {}
+  '@parcel/watcher-linux-arm-glibc@2.6.0':
+    optional: true
 
-  '@parcel/watcher-linux-arm-musl@2.6.0': {}
+  '@parcel/watcher-linux-arm-musl@2.6.0':
+    optional: true
 
-  '@parcel/watcher-linux-arm64-glibc@2.6.0': {}
+  '@parcel/watcher-linux-arm64-glibc@2.6.0':
+    optional: true
 
-  '@parcel/watcher-linux-arm64-musl@2.6.0': {}
+  '@parcel/watcher-linux-arm64-musl@2.6.0':
+    optional: true
 
-  '@parcel/watcher-linux-x64-glibc@2.6.0': {}
+  '@parcel/watcher-linux-x64-glibc@2.6.0':
+    optional: true
 
-  '@parcel/watcher-linux-x64-musl@2.6.0': {}
+  '@parcel/watcher-linux-x64-musl@2.6.0':
+    optional: true
 
-  '@parcel/watcher-win32-arm64@2.6.0': {}
+  '@parcel/watcher-win32-arm64@2.6.0':
+    optional: true
 
-  '@parcel/watcher-win32-x64@2.6.0': {}
+  '@parcel/watcher-win32-x64@2.6.0':
+    optional: true
 
   '@parcel/watcher@2.6.0':
     dependencies:
@@ -4011,7 +4027,8 @@ snapshots:
       '@parcel/watcher-win32-arm64': 2.6.0
       '@parcel/watcher-win32-x64': 2.6.0
 
-  '@pkgjs/parseargs@0.11.0': {}
+  '@pkgjs/parseargs@0.11.0':
+    optional: true
 
   '@pkgr/core@0.3.6': {}
 
@@ -4156,6 +4173,7 @@ snapshots:
   '@tybys/wasm-util@0.10.3':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@types/babel__core@7.20.5':
     dependencies:
@@ -4290,53 +4308,75 @@ snapshots:
 
   '@ungap/structured-clone@1.4.0': {}
 
-  '@unrs/resolver-binding-android-arm-eabi@1.12.2': {}
+  '@unrs/resolver-binding-android-arm-eabi@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-android-arm64@1.12.2': {}
+  '@unrs/resolver-binding-android-arm64@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-darwin-arm64@1.12.2': {}
+  '@unrs/resolver-binding-darwin-arm64@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-darwin-x64@1.12.2': {}
+  '@unrs/resolver-binding-darwin-x64@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-freebsd-x64@1.12.2': {}
+  '@unrs/resolver-binding-freebsd-x64@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-arm-gnueabihf@1.12.2': {}
+  '@unrs/resolver-binding-linux-arm-gnueabihf@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-arm-musleabihf@1.12.2': {}
+  '@unrs/resolver-binding-linux-arm-musleabihf@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-arm64-gnu@1.12.2': {}
+  '@unrs/resolver-binding-linux-arm64-gnu@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-arm64-musl@1.12.2': {}
+  '@unrs/resolver-binding-linux-arm64-musl@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-loong64-gnu@1.12.2': {}
+  '@unrs/resolver-binding-linux-loong64-gnu@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-loong64-musl@1.12.2': {}
+  '@unrs/resolver-binding-linux-loong64-musl@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-ppc64-gnu@1.12.2': {}
+  '@unrs/resolver-binding-linux-ppc64-gnu@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-riscv64-gnu@1.12.2': {}
+  '@unrs/resolver-binding-linux-riscv64-gnu@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-riscv64-musl@1.12.2': {}
+  '@unrs/resolver-binding-linux-riscv64-musl@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-s390x-gnu@1.12.2': {}
+  '@unrs/resolver-binding-linux-s390x-gnu@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-x64-gnu@1.12.2': {}
+  '@unrs/resolver-binding-linux-x64-gnu@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-linux-x64-musl@1.12.2': {}
+  '@unrs/resolver-binding-linux-x64-musl@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-openharmony-arm64@1.12.2': {}
+  '@unrs/resolver-binding-openharmony-arm64@1.12.2':
+    optional: true
 
   '@unrs/resolver-binding-wasm32-wasi@1.12.2':
     dependencies:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
       '@napi-rs/wasm-runtime': 1.2.3(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+    optional: true
 
-  '@unrs/resolver-binding-win32-arm64-msvc@1.12.2': {}
+  '@unrs/resolver-binding-win32-arm64-msvc@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-win32-ia32-msvc@1.12.2': {}
+  '@unrs/resolver-binding-win32-ia32-msvc@1.12.2':
+    optional: true
 
-  '@unrs/resolver-binding-win32-x64-msvc@1.12.2': {}
+  '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
+    optional: true
 
   '@vitest/coverage-v8@5.0.0(vitest@5.0.0)':
     dependencies:
@@ -5906,7 +5946,8 @@ snapshots:
     dependencies:
       tldts: 7.4.11
 
-  tslib@2.8.1: {}
+  tslib@2.8.1:
+    optional: true
 
   type-detect@4.0.8: {}
 

@@ -12,6 +12,7 @@
   "exports": {
     ".": {
       "require": {
+        "types": "./dist/cjs/index.d.cts",
         "default": "./dist/cjs/index.cjs"
       },
       "import": {
@@ -43,16 +44,16 @@
   "typesVersions": {
     "*": {
       "vitest": [
-        "./dist/esm/vitest/index.d.ts"
+        "./dist/esm/vitest/vitest.d.ts"
       ],
       "jest": [
-        "./dist/esm/jest/index.d.ts"
+        "./dist/esm/jest/jest.d.ts"
       ],
       "*": []
     }
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "tsdown",
     "test": "vitest run --coverage"
   },
   "repository": {
@@ -85,12 +86,7 @@
     "@vitest/coverage-v8": "5.0.0",
     "lefthook": "2.1.12",
     "msw": "2.15.0",
-    "rollup": "4.63.1",
-    "rollup-plugin-copy": "3.5.0",
-    "rollup-plugin-dts": "6.5.1",
-    "rollup-plugin-esbuild": "6.2.1",
-    "rollup-plugin-node-externals": "9.0.1",
-    "rollup-plugin-peer-deps-external": "2.2.4",
+    "tsdown": "0.23.0",
     "typescript": "7.0.2",
     "vitest": "5.0.0",
     "wretch": "3.0.9"

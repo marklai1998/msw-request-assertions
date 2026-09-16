@@ -35,6 +35,9 @@ jobs:
       - name: Lint type
         run: pnpm tsc
 
+      - name: Build
+        run: pnpm build
+
   run-test:
     runs-on: ubuntu-latest
     steps:

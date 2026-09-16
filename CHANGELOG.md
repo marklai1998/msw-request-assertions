@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.6...v1.0.7) (2026-09-16)
+
+
+### Bug Fixes
+
+* build pipeline ([7a115e1](https://github.com/marklai1998/msw-request-assertions/commit/7a115e10f43d4ede7d99c0f7bf0d67cd4bc8c277))
+
 ## [1.0.6](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.5...v1.0.6) (2026-09-16)
 
 

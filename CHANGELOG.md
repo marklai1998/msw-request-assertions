@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.5...v1.0.6) (2026-09-16)
+
+
+### Bug Fixes
+
+* trigger release ([93f28cd](https://github.com/marklai1998/msw-request-assertions/commit/93f28cd952e54ba58a7fa08ed50109960a0e0a45))
+
 ## [1.0.5](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.4...v1.0.5) (2025-11-03)
 
 

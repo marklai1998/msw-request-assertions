@@ -13,6 +13,7 @@ for (const key in http) {
 }
 
 const originalQuery = graphql.query;
+
 const originalMutation = graphql.mutation;
 
 graphql.query = graphqlAssertions.reduce(

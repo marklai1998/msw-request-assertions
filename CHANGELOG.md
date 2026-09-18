@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.7...v2.0.0) (2026-09-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* msw-request-assertions/vitest now augments Vitest 5 Matchers<R, T>. Vitest 4 must import msw-request-assertions/vitest/v4.
+
+### Features
+
+* vitest v5 support ([6594582](https://github.com/marklai1998/msw-request-assertions/commit/6594582dabfed0765d9b05767f9ffc948acea79b))
+
 ## [1.0.7](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.6...v1.0.7) (2026-09-16)
 
 

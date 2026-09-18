@@ -6,7 +6,7 @@ A powerful testing library that provides custom assertion matchers for [Mock Ser
 
 ![NPM](https://img.shields.io/npm/v/msw-request-assertions) ![GitHub CI](https://github.com/marklai1998/msw-request-assertions/actions/workflows/runTest.yml/badge.svg) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org) [![npm type definitions](https://img.shields.io/npm/types/typescript.svg)](https://www.typescriptlang.org/)
 
-[Features](#-features) | [Installation](#-installation) | [API](#-api) | [Contributing](#-contributing)
+[Features](#-features) | [Installation](#-installation) | [Migration](#-migration) | [API](#-api) | [Contributing](#-contributing)
 
 </div>
 
@@ -31,6 +31,8 @@ pnpm add --save-dev msw-request-assertions msw
 ## 🚀 Quick Start
 
 ### Setup for Vitest
+
+`msw-request-assertions/vitest` ships **Vitest 5** matcher types (`Matchers<R, T>`).
 
 ```typescript
 // vitest.setup.ts
@@ -58,6 +60,8 @@ export default defineConfig({
 }
 
 ```
+
+Vitest 4: use `msw-request-assertions/vitest/v4` instead. See [Migration](#-migration).
 
 ### Setup for Jest
 
@@ -126,6 +130,44 @@ test('should create user with correct data', async () => {
   })
 })
 ```
+
+## 🔄 Migration
+
+### Vitest 5 matcher types (breaking)
+
+Default `msw-request-assertions/vitest` types now match Vitest 5:
+
+```ts
+interface Matchers<
+  R extends void | Promise<void> = void | Promise<void>,
+  T = unknown,
+> extends CustomMatchers<R> {}
+```
+
+Vitest 4's `Matchers<T = any>` is a different type-parameter list. TypeScript cannot merge both in one declaration (`TS2428`).
+
+**Vitest 5:** keep the existing import. No code change.
+
+```ts
+import 'msw-request-assertions/vitest'
+```
+
+**Vitest 4:** switch the setup import and `tsconfig` types entry to `/vitest/v4`. Runtime is the same.
+
+```ts
+// vitest.setup.ts
+import 'msw-request-assertions/vitest/v4'
+```
+
+```json
+{
+  "compilerOptions": {
+    "types": ["vitest/globals", "msw-request-assertions/vitest/v4"]
+  }
+}
+```
+
+Do not import both `/vitest` and `/vitest/v4` in the same TypeScript project.
 
 ## 💻 API
 

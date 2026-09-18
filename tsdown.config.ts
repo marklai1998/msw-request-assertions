@@ -29,6 +29,11 @@ export default defineConfig([
         rename: 'vitest.d.ts',
       },
       {
+        from: 'src/vitest/vitest-v4.d.ts',
+        to: 'dist/esm/vitest',
+        rename: 'vitest-v4.d.ts',
+      },
+      {
         from: 'src/jest/jest.d.ts',
         to: 'dist/esm/jest',
         rename: 'jest.d.ts',
@@ -46,6 +51,11 @@ export default defineConfig([
         from: 'src/vitest/vitest.d.ts',
         to: 'dist/cjs/vitest',
         rename: 'vitest.d.cts',
+      },
+      {
+        from: 'src/vitest/vitest-v4.d.ts',
+        to: 'dist/cjs/vitest',
+        rename: 'vitest-v4.d.cts',
       },
       {
         from: 'src/jest/jest.d.ts',

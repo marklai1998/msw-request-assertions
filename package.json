@@ -30,6 +30,16 @@
         "default": "./dist/esm/vitest/index.mjs"
       }
     },
+    "./vitest/v4": {
+      "require": {
+        "types": "./dist/cjs/vitest/vitest-v4.d.cts",
+        "default": "./dist/cjs/vitest/index.cjs"
+      },
+      "import": {
+        "types": "./dist/esm/vitest/vitest-v4.d.ts",
+        "default": "./dist/esm/vitest/index.mjs"
+      }
+    },
     "./jest": {
       "require": {
         "types": "./dist/cjs/jest/jest.d.cts",
@@ -45,6 +55,9 @@
     "*": {
       "vitest": [
         "./dist/esm/vitest/vitest.d.ts"
+      ],
+      "vitest/v4": [
+        "./dist/esm/vitest/vitest-v4.d.ts"
       ],
       "jest": [
         "./dist/esm/jest/jest.d.ts"

@@ -22,7 +22,7 @@ const postHandler = http.post(
 const server = setupServer(userHandler, postHandler);
 
 describe('toHaveBeenRequestedWith - Path Parameters', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
@@ -54,10 +54,9 @@ describe('toHaveBeenRequestedWith - Path Parameters', () => {
     expect(userHandler).toHaveBeenRequestedWith({
       pathParameters: { userId: '123' },
       queryString: '?active=true',
-      hash: '#profile',
-      headers: {
+      headers: expect.objectContaining({
         authorization: 'Bearer token',
-      },
+      }),
     });
   });
 

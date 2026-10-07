@@ -4,7 +4,7 @@ import { checkEquality } from '../../utils/checkEquality.js';
 import { checkMockedGraphQLHandler } from '../../utils/checkMockedGraphQLHandler.js';
 import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
-declare module 'msw' {
+declare module 'msw/graphql' {
   interface GraphQLHandler {
     gqlQueryAssertion?: Mock;
   }

@@ -1,4 +1,4 @@
-import { GraphQLHandler } from 'msw';
+import { GraphQLHandler } from 'msw/graphql';
 
 export function checkMockedGraphQLHandler(
   input: unknown,

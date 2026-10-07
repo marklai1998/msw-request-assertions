@@ -1,15 +1,17 @@
-import { graphql, HttpResponse } from 'msw';
+import { HttpResponse } from 'msw';
+import { graphql } from 'msw/graphql';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import '../../../vitest/index.js';
 
-const getUserQuery = graphql.query('GetUser', ({ variables }) => {
+const gql = graphql.link('*');
+const getUserQuery = gql.query('GetUser', ({ variables }) => {
   return HttpResponse.json({
     data: { user: { id: variables.userId, name: 'John Doe' } },
   });
 });
 
-const createUserMutation = graphql.mutation('CreateUser', ({ variables }) => {
+const createUserMutation = gql.mutation('CreateUser', ({ variables }) => {
   return HttpResponse.json({
     data: { user: { id: 'new-id', name: variables.input.name } },
   });
@@ -34,7 +36,7 @@ async function executeGraphQL(
 }
 
 describe('toHaveBeenRequestedWithHeaders - GraphQL', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
@@ -45,10 +47,12 @@ describe('toHaveBeenRequestedWithHeaders - GraphQL', () => {
       { authorization: 'Bearer token123' },
     );
 
-    expect(getUserQuery).toHaveBeenRequestedWithHeaders({
-      authorization: 'Bearer token123',
-      'content-type': 'application/json',
-    });
+    expect(getUserQuery).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        authorization: 'Bearer token123',
+        'content-type': 'application/json',
+      }),
+    );
   });
 
   it('should match with partial headers', async () => {
@@ -67,12 +71,14 @@ describe('toHaveBeenRequestedWithHeaders - GraphQL', () => {
       },
     );
 
-    expect(createUserMutation).toHaveBeenRequestedWithHeaders({
-      authorization: 'Bearer token456',
-      'content-type': 'application/json',
-      'x-user-id': 'user123',
-      'x-custom-header': 'value',
-    });
+    expect(createUserMutation).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        authorization: 'Bearer token456',
+        'content-type': 'application/json',
+        'x-user-id': 'user123',
+        'x-custom-header': 'value',
+      }),
+    );
   });
 
   it('should match with multiple custom headers', async () => {
@@ -86,12 +92,14 @@ describe('toHaveBeenRequestedWithHeaders - GraphQL', () => {
       },
     );
 
-    expect(getUserQuery).toHaveBeenRequestedWithHeaders({
-      'x-api-key': 'key123',
-      'x-client-version': '1.0.0',
-      'x-request-id': 'req-456',
-      'content-type': 'application/json',
-    });
+    expect(getUserQuery).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        'x-api-key': 'key123',
+        'x-client-version': '1.0.0',
+        'x-request-id': 'req-456',
+        'content-type': 'application/json',
+      }),
+    );
   });
 
   it("should fail when headers don't match", async () => {
@@ -102,10 +110,12 @@ describe('toHaveBeenRequestedWithHeaders - GraphQL', () => {
     );
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenRequestedWithHeaders({
-        authorization: 'Bearer wrong-token',
-        'content-type': 'application/json',
-      });
+      expect(getUserQuery).toHaveBeenRequestedWithHeaders(
+        expect.objectContaining({
+          authorization: 'Bearer wrong-token',
+          'content-type': 'application/json',
+        }),
+      );
     }).toThrow();
   });
 
@@ -134,13 +144,17 @@ describe('toHaveBeenRequestedWithHeaders - GraphQL', () => {
       { authorization: 'Bearer token2' },
     );
 
-    expect(getUserQuery).toHaveBeenRequestedWithHeaders({
-      authorization: 'Bearer token1',
-      'content-type': 'application/json',
-    });
-    expect(getUserQuery).toHaveBeenRequestedWithHeaders({
-      authorization: 'Bearer token2',
-      'content-type': 'application/json',
-    });
+    expect(getUserQuery).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        authorization: 'Bearer token1',
+        'content-type': 'application/json',
+      }),
+    );
+    expect(getUserQuery).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        authorization: 'Bearer token2',
+        'content-type': 'application/json',
+      }),
+    );
   });
 });

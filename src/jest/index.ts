@@ -1,6 +1,7 @@
 /// <reference path="./jest.d.ts" />
 import { expect, jest } from '@jest/globals';
-import { graphql, http } from 'msw';
+import { http } from 'msw';
+import { graphql } from 'msw/graphql';
 import { graphqlAssertions, httpAssertions } from '../assertions/index.js';
 import type { AssertFn } from '../types/index.js';
 
@@ -13,20 +14,24 @@ for (const key in http) {
   );
 }
 
-const originalQuery = graphql.query;
-const originalMutation = graphql.mutation;
+const originalLink = graphql.link.bind(graphql);
+graphql.link = (url) => {
+  const api = originalLink(url);
 
-graphql.query = graphqlAssertions.reduce(
-  (fn, { interceptGql }) =>
-    interceptGql ? interceptGql(jest.fn as any, fn) : fn,
-  originalQuery,
-);
+  api.query = graphqlAssertions.reduce(
+    (fn, { interceptGql }) =>
+      interceptGql ? interceptGql(jest.fn as any, fn) : fn,
+    api.query,
+  );
 
-graphql.mutation = graphqlAssertions.reduce(
-  (fn, { interceptGql }) =>
-    interceptGql ? interceptGql(jest.fn as any, fn) : fn,
-  originalMutation,
-);
+  api.mutation = graphqlAssertions.reduce(
+    (fn, { interceptGql }) =>
+      interceptGql ? interceptGql(jest.fn as any, fn) : fn,
+    api.mutation,
+  );
+
+  return api;
+};
 
 expect.extend(
   [...httpAssertions, ...graphqlAssertions].reduce<Record<string, AssertFn>>(

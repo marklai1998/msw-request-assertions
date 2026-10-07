@@ -6,8 +6,6 @@ declare module 'expect' {
     toHaveBeenNthRequestedWith: (nthCall: number, payload: unknown) => R;
     toHaveBeenRequestedWithBody: (body: string) => R;
     toHaveBeenNthRequestedWithBody: (nthCall: number, body: string) => R;
-    toHaveBeenRequestedWithHash: (hash: string) => R;
-    toHaveBeenNthRequestedWithHash: (nthCall: number, hash: string) => R;
     toHaveBeenRequestedWithHeaders: (headers: unknown) => R;
     toHaveBeenNthRequestedWithHeaders: (nthCall: number, headers: unknown) => R;
     toHaveBeenRequestedWithJsonBody: (body: unknown) => R;
@@ -37,8 +35,6 @@ declare module 'expect' {
     toHaveBeenNthRequestedWith: (nthCall: number, payload: unknown) => R;
     toHaveBeenRequestedWithBody: (body: string) => R;
     toHaveBeenNthRequestedWithBody: (nthCall: number, body: string) => R;
-    toHaveBeenRequestedWithHash: (hash: string) => R;
-    toHaveBeenNthRequestedWithHash: (nthCall: number, hash: string) => R;
     toHaveBeenRequestedWithHeaders: (headers: unknown) => R;
     toHaveBeenNthRequestedWithHeaders: (nthCall: number, headers: unknown) => R;
     toHaveBeenRequestedWithJsonBody: (body: unknown) => R;

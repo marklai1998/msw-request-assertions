@@ -26,7 +26,7 @@ const restHandlers = [apiHandler, formsHandler, uploadHandler];
 const server = setupServer(...restHandlers);
 
 describe('toHaveBeenNthRequestedWithBody', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
 
   afterAll(() => server.close());
 

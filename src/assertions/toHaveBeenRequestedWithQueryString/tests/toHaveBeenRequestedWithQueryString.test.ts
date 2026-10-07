@@ -11,7 +11,7 @@ const handler = http.get('http://127.0.0.1/test', ({ request }) => {
 const server = setupServer(handler);
 
 describe('toHaveBeenRequestedWithQueryString', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 

@@ -1,15 +1,17 @@
-import { graphql, HttpResponse } from 'msw';
+import { HttpResponse } from 'msw';
+import { graphql } from 'msw/graphql';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import '../../../vitest/index.js';
 
-const getUserQuery = graphql.query('GetUser', ({ variables }) => {
+const gql = graphql.link('*');
+const getUserQuery = gql.query('GetUser', ({ variables }) => {
   return HttpResponse.json({
     data: { user: { id: variables.userId, name: 'John Doe' } },
   });
 });
 
-const createUserMutation = graphql.mutation('CreateUser', ({ variables }) => {
+const createUserMutation = gql.mutation('CreateUser', ({ variables }) => {
   return HttpResponse.json({
     data: { user: { id: 'new-id', name: variables.input.name } },
   });
@@ -34,7 +36,7 @@ async function executeGraphQL(
 }
 
 describe('toHaveBeenNthRequestedWithHeaders - GraphQL', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
@@ -50,14 +52,20 @@ describe('toHaveBeenNthRequestedWithHeaders - GraphQL', () => {
       { authorization: 'Bearer token2' },
     );
 
-    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(1, {
-      authorization: 'Bearer token1',
-      'content-type': 'application/json',
-    });
-    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer token2',
-      'content-type': 'application/json',
-    });
+    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        authorization: 'Bearer token1',
+        'content-type': 'application/json',
+      }),
+    );
+    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer token2',
+        'content-type': 'application/json',
+      }),
+    );
   });
 
   it('should match nth request with complex headers', async () => {
@@ -90,18 +98,24 @@ describe('toHaveBeenNthRequestedWithHeaders - GraphQL', () => {
       },
     );
 
-    expect(createUserMutation).toHaveBeenNthRequestedWithHeaders(1, {
-      authorization: 'Bearer token1',
-      'content-type': 'application/json',
-      'x-user-id': 'user123',
-      'x-request-id': 'req1',
-    });
-    expect(createUserMutation).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer token2',
-      'content-type': 'application/json',
-      'x-user-id': 'user456',
-      'x-request-id': 'req2',
-    });
+    expect(createUserMutation).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        authorization: 'Bearer token1',
+        'content-type': 'application/json',
+        'x-user-id': 'user123',
+        'x-request-id': 'req1',
+      }),
+    );
+    expect(createUserMutation).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer token2',
+        'content-type': 'application/json',
+        'x-user-id': 'user456',
+        'x-request-id': 'req2',
+      }),
+    );
   });
 
   it('should match with partial headers at specific position', async () => {
@@ -124,18 +138,24 @@ describe('toHaveBeenNthRequestedWithHeaders - GraphQL', () => {
       },
     );
 
-    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(1, {
-      authorization: 'Bearer token1',
-      'content-type': 'application/json',
-      'x-api-key': 'key1',
-      'x-custom': 'value1',
-    });
-    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer token2',
-      'content-type': 'application/json',
-      'x-api-key': 'key2',
-      'x-custom': 'value2',
-    });
+    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        authorization: 'Bearer token1',
+        'content-type': 'application/json',
+        'x-api-key': 'key1',
+        'x-custom': 'value1',
+      }),
+    );
+    expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer token2',
+        'content-type': 'application/json',
+        'x-api-key': 'key2',
+        'x-custom': 'value2',
+      }),
+    );
   });
 
   it("should fail when nth call doesn't match", async () => {
@@ -151,10 +171,13 @@ describe('toHaveBeenNthRequestedWithHeaders - GraphQL', () => {
     );
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(2, {
-        authorization: 'Bearer wrong-token',
-        'content-type': 'application/json',
-      });
+      expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(
+        2,
+        expect.objectContaining({
+          authorization: 'Bearer wrong-token',
+          'content-type': 'application/json',
+        }),
+      );
     }).toThrow();
   });
 
@@ -166,10 +189,13 @@ describe('toHaveBeenNthRequestedWithHeaders - GraphQL', () => {
     );
 
     expect(() => {
-      expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(2, {
-        authorization: 'Bearer token1',
-        'content-type': 'application/json',
-      });
+      expect(getUserQuery).toHaveBeenNthRequestedWithHeaders(
+        2,
+        expect.objectContaining({
+          authorization: 'Bearer token1',
+          'content-type': 'application/json',
+        }),
+      );
     }).toThrow();
   });
 

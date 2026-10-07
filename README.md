@@ -133,6 +133,30 @@ test('should create user with correct data', async () => {
 
 ## 🔄 Migration
 
+### MSW 3 (breaking)
+
+Peer dependency is `msw@^3`. Node.js 22 or newer is required.
+
+GraphQL handlers are created from `graphql.link()` (`msw/graphql`). This library patches `query` and `mutation` on the link, so import the setup file before calling `graphql.link()`.
+
+```ts
+import { HttpResponse } from 'msw'
+import { graphql } from 'msw/graphql'
+import 'msw-request-assertions/vitest'
+
+const api = graphql.link('http://localhost/graphql')
+
+const getUser = api.query('GetUser', () => {
+  return HttpResponse.json({ data: { user: { id: '1' } } })
+})
+```
+
+Install `graphql` when you assert on GraphQL handlers. MSW 3 treats it as an optional peer.
+
+`server.listen({ onUnhandledRequest })` is now `onUnhandledFrame` in MSW itself.
+
+`toHaveBeenRequestedWithHash`, `toHaveBeenNthRequestedWithHash`, and the `hash` field on `toHaveBeenRequestedWith` are removed. MSW 3 does not expose the URL fragment on the intercepted request.
+
 ### Vitest 5 matcher types (breaking)
 
 Default `msw-request-assertions/vitest` types now match Vitest 5:
@@ -181,7 +205,6 @@ Do not import both `/vitest` and `/vitest/v4` in the same TypeScript project.
     - [toHaveBeenRequestedWithHeaders](#tohavebeenrequestedwithheaders)
 - [URL Matchers](#url-matchers)
     - [toHaveBeenRequestedWithQueryString](#tohavebeenrequestedwithquerystring)
-    - [toHaveBeenRequestedWithHash](#tohavebeenrequestedwithhash)
     - [toHaveBeenRequestedWithPathParameters](#tohavebeenrequestedwithpathparameters)
 - [GraphQL Matchers](#graphql-matchers)
     - [toHaveBeenRequestedWithGqlQuery](#tohavebeenrequestedwithgqlquery)
@@ -243,16 +266,21 @@ expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { userId: '123' })
 
 #### toHaveBeenRequestedWithHeaders
 
-Assert on request headers. Headers are case-insensitive.
+Assert on request headers. Headers are case-insensitive. The object must match exactly. Use `expect.objectContaining` when only some headers matter.
 
 ```typescript
-expect(handler).toHaveBeenRequestedWithHeaders({
-  'authorization': 'Bearer token123',
-  'content-type': 'application/json'
-})
+expect(handler).toHaveBeenRequestedWithHeaders(
+  expect.objectContaining({
+    'authorization': 'Bearer token123',
+    'content-type': 'application/json'
+  })
+)
 
 // Nth call variant
-expect(handler).toHaveBeenNthRequestedWithHeaders(1, { 'x-api-key': 'secret' })
+expect(handler).toHaveBeenNthRequestedWithHeaders(
+  1,
+  expect.objectContaining({ 'x-api-key': 'secret' })
+)
 ```
 
 ### URL Matchers
@@ -293,17 +321,6 @@ const qsFormat = '?' + qs.stringify(params, {
 // Results in: ?filters[]=active&filters[]=verified&sort[field]=name&sort[order]=asc&page=1
 
 expect(handler).toHaveBeenRequestedWithQueryString(qsFormat)
-```
-
-#### toHaveBeenRequestedWithHash
-
-Assert on URL hash fragment.
-
-```typescript
-expect(handler).toHaveBeenRequestedWithHash('#section1')
-
-// Nth call variant
-expect(handler).toHaveBeenNthRequestedWithHash(1, '#top')
 ```
 
 #### toHaveBeenRequestedWithPathParameters
@@ -365,9 +382,8 @@ Assert on multiple request properties at once. See [RequestPayload](#requestpayl
 // HTTP example
 expect(handler).toHaveBeenRequestedWith({
   jsonBody: { name: 'John' },
-  headers: { 'authorization': 'Bearer token' },
+  headers: expect.objectContaining({ 'authorization': 'Bearer token' }),
   queryString: '?page=1',
-  hash: '#top',
   pathParameters: { userId: '123' }
 })
 
@@ -380,7 +396,7 @@ expect(gqlHandler).toHaveBeenRequestedWith({
 // Nth call variant
 expect(handler).toHaveBeenNthRequestedWith(2, {
   jsonBody: { action: 'update' },
-  headers: { 'content-type': 'application/json' }
+  headers: expect.objectContaining({ 'content-type': 'application/json' })
 })
 ```
 
@@ -392,11 +408,13 @@ All matchers have an "nth" variant to assert on specific call positions. The fir
 // Basic matchers
 expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body')
 expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { data: 'second call' })
-expect(handler).toHaveBeenNthRequestedWithHeaders(3, { 'x-retry': '2' })
+expect(handler).toHaveBeenNthRequestedWithHeaders(
+  3,
+  expect.objectContaining({ 'x-retry': '2' })
+)
 
 // URL matchers
 expect(handler).toHaveBeenNthRequestedWithQueryString(1, '?page=1')
-expect(handler).toHaveBeenNthRequestedWithHash(2, '#section2')
 expect(handler).toHaveBeenNthRequestedWithPathParameters(1, { id: '123' })
 
 // GraphQL matchers
@@ -427,7 +445,6 @@ type RequestPayload = {
   
   // URL components
   queryString?: string;
-  hash?: string;
   pathParameters?: Record<string, string>;
   
   // GraphQL specific

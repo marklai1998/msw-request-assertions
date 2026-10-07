@@ -1,15 +1,17 @@
-import { graphql, HttpResponse } from 'msw';
+import { HttpResponse } from 'msw';
+import { graphql } from 'msw/graphql';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import '../../../vitest/index.js';
 
-const getUserQuery = graphql.query('GetUser', ({ variables }) => {
+const gql = graphql.link('*');
+const getUserQuery = gql.query('GetUser', ({ variables }) => {
   return HttpResponse.json({
     data: { user: { id: variables.userId, name: 'John Doe' } },
   });
 });
 
-const createUserMutation = graphql.mutation('CreateUser', ({ variables }) => {
+const createUserMutation = gql.mutation('CreateUser', ({ variables }) => {
   return HttpResponse.json({
     data: { user: { id: 'new-id', name: variables.input.name } },
   });
@@ -27,7 +29,7 @@ async function executeGraphQL(query: string, variables?: unknown) {
 }
 
 describe('toHaveBeenNthRequestedWithJsonBody - GraphQL', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 

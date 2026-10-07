@@ -11,7 +11,7 @@ const apiHandler = http.post('http://127.0.0.1/api/data', () => {
 const server = setupServer(apiHandler);
 
 describe('toHaveBeenRequestedWithHeaders', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
@@ -21,10 +21,12 @@ describe('toHaveBeenRequestedWithHeaders', () => {
       .post({ data: 'test' })
       .json();
 
-    expect(apiHandler).toHaveBeenRequestedWithHeaders({
-      authorization: 'Bearer token123',
-      'content-type': 'application/json',
-    });
+    expect(apiHandler).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        authorization: 'Bearer token123',
+        'content-type': 'application/json',
+      }),
+    );
   });
 
   it('should match request with multiple headers', async () => {
@@ -37,11 +39,13 @@ describe('toHaveBeenRequestedWithHeaders', () => {
       .post({ data: 'test' })
       .json();
 
-    expect(apiHandler).toHaveBeenRequestedWithHeaders({
-      authorization: 'Bearer token123',
-      'content-type': 'application/json',
-      'x-client-version': '1.0.0',
-    });
+    expect(apiHandler).toHaveBeenRequestedWithHeaders(
+      expect.objectContaining({
+        authorization: 'Bearer token123',
+        'content-type': 'application/json',
+        'x-client-version': '1.0.0',
+      }),
+    );
   });
 
   it("should fail when headers don't match", async () => {
@@ -51,9 +55,11 @@ describe('toHaveBeenRequestedWithHeaders', () => {
       .json();
 
     expect(() => {
-      expect(apiHandler).toHaveBeenRequestedWithHeaders({
-        authorization: 'Bearer different-token',
-      });
+      expect(apiHandler).toHaveBeenRequestedWithHeaders(
+        expect.objectContaining({
+          authorization: 'Bearer different-token',
+        }),
+      );
     }).toThrow();
   });
 

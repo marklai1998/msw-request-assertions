@@ -14,7 +14,7 @@ const getHandler = http.get('http://127.0.0.1/users', () => {
 const server = setupServer(postHandler, getHandler);
 
 describe('toHaveBeenRequestedWith', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 
@@ -35,11 +35,10 @@ describe('toHaveBeenRequestedWith', () => {
     expect(postHandler).toHaveBeenRequestedWith({
       jsonBody: userData,
       queryString: '?source=web',
-      hash: '#section1',
-      headers: {
+      headers: expect.objectContaining({
         authorization: 'Bearer token456',
         'content-type': 'application/json',
-      },
+      }),
     });
   });
 

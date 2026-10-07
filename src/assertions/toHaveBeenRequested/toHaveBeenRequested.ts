@@ -6,7 +6,9 @@ declare module 'msw' {
   interface HttpHandler {
     requestedAssertion?: Mock;
   }
+}
 
+declare module 'msw/graphql' {
   interface GraphQLHandler {
     requestedAssertion?: Mock;
   }

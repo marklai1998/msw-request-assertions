@@ -18,7 +18,7 @@ const restHandlers = [usersHandler, apiHandler];
 const server = setupServer(...restHandlers);
 
 describe('toHaveBeenRequestedTimes', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
 
   afterAll(() => server.close());
 

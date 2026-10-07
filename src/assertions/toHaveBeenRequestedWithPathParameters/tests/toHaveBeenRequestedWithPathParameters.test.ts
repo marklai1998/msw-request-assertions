@@ -22,7 +22,7 @@ const postHandler = http.get(
 const server = setupServer(userHandler, postHandler);
 
 describe('toHaveBeenRequestedWithPathParameters', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 

@@ -44,18 +44,18 @@ describe('toHaveBeenNthRequestedWith', () => {
       jsonBody: { name: 'John' },
       queryString: '?page=1',
       hash: '#section1',
-      headers: {
+      headers: expect.objectContaining({
         authorization: 'Bearer token123',
         'content-type': 'application/json',
-      },
+      }),
     });
 
     expect(usersHandler).toHaveBeenNthRequestedWith(2, {
       body: 'name=Jane&email=jane@example.com',
       queryString: '?page=2',
-      headers: {
+      headers: expect.objectContaining({
         'content-type': 'application/x-www-form-urlencoded',
-      },
+      }),
     });
   });
 

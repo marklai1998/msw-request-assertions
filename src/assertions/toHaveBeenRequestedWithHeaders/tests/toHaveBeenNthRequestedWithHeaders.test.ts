@@ -45,9 +45,12 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .get()
       .json();
 
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(1, {
-      authorization: 'Bearer token1',
-    });
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        authorization: 'Bearer token1',
+      }),
+    );
   });
 
   it('should match 2nd request with headers', async () => {
@@ -63,9 +66,12 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .get()
       .json();
 
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer token2',
-    });
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer token2',
+      }),
+    );
   });
 
   it('should match 3rd request with headers', async () => {
@@ -89,11 +95,14 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .post({ data: 'third' })
       .json();
 
-    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(3, {
-      'content-type': 'application/json',
-      'x-api-key': 'secret123',
-      'x-client-version': '1.0.0',
-    });
+    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(
+      3,
+      expect.objectContaining({
+        'content-type': 'application/json',
+        'x-api-key': 'secret123',
+        'x-client-version': '1.0.0',
+      }),
+    );
   });
 
   it('should match nth request with multiple headers', async () => {
@@ -114,12 +123,15 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .post({ data: 'complex' })
       .json();
 
-    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer token123',
-      'content-type': 'application/json',
-      'x-client-version': '1.0.0',
-      'x-request-id': 'req-12345',
-    });
+    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer token123',
+        'content-type': 'application/json',
+        'x-client-version': '1.0.0',
+        'x-request-id': 'req-12345',
+      }),
+    );
   });
 
   it('should match nth request with case-insensitive headers', async () => {
@@ -138,11 +150,14 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .get()
       .json();
 
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      'content-type': 'application/json',
-      authorization: 'Bearer token456',
-      'x-custom-header': 'custom-value',
-    });
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        'content-type': 'application/json',
+        authorization: 'Bearer token456',
+        'x-custom-header': 'custom-value',
+      }),
+    );
   });
 
   it('should match nth request with empty headers', async () => {
@@ -157,10 +172,13 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .json();
 
     // First request should have default headers (content-type from JSON)
-    expect(webhookHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      'content-type': 'application/json',
-      'x-custom': 'value',
-    });
+    expect(webhookHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        'content-type': 'application/json',
+        'x-custom': 'value',
+      }),
+    );
   });
 
   it('should match nth request with webhook headers', async () => {
@@ -180,12 +198,15 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .post({ event: 'webhook2' })
       .json();
 
-    expect(webhookHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      'content-type': 'application/json',
-      'x-webhook-secret': 'secret2',
-      'x-webhook-timestamp': '1640995200',
-      'x-webhook-signature': 'sha256=signature',
-    });
+    expect(webhookHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        'content-type': 'application/json',
+        'x-webhook-secret': 'secret2',
+        'x-webhook-timestamp': '1640995200',
+        'x-webhook-signature': 'sha256=signature',
+      }),
+    );
   });
 
   it("should fail when nth request headers don't match", async () => {
@@ -202,9 +223,12 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .json();
 
     expect(() => {
-      expect(authHandler).toHaveBeenNthRequestedWithHeaders(2, {
-        authorization: 'Bearer wrong-token',
-      });
+      expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+        2,
+        expect.objectContaining({
+          authorization: 'Bearer wrong-token',
+        }),
+      );
     }).toThrow();
   });
 
@@ -214,9 +238,12 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
     await wretch('http://127.0.0.1/protected').headers(headers).get().json();
 
     expect(() => {
-      expect(authHandler).toHaveBeenNthRequestedWithHeaders(2, {
-        authorization: 'Bearer token123',
-      });
+      expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+        2,
+        expect.objectContaining({
+          authorization: 'Bearer token123',
+        }),
+      );
     }).toThrow();
   });
 
@@ -272,17 +299,26 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .post({ event: 'webhook' })
       .json();
 
-    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(1, {
-      'content-type': 'application/json',
-      'x-api-key': 'api-key-123',
-    });
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(1, {
-      authorization: 'Bearer auth-token',
-    });
-    expect(webhookHandler).toHaveBeenNthRequestedWithHeaders(1, {
-      'content-type': 'application/json',
-      'x-webhook-secret': 'webhook-secret',
-    });
+    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        'content-type': 'application/json',
+        'x-api-key': 'api-key-123',
+      }),
+    );
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        authorization: 'Bearer auth-token',
+      }),
+    );
+    expect(webhookHandler).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        'content-type': 'application/json',
+        'x-webhook-secret': 'webhook-secret',
+      }),
+    );
   });
 
   it('should handle requests with same headers on different calls', async () => {
@@ -302,15 +338,24 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .get()
       .json();
 
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(1, {
-      authorization: 'Bearer duplicate-token',
-    });
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(3, {
-      authorization: 'Bearer duplicate-token',
-    });
-    expect(authHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer different-token',
-    });
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      1,
+      expect.objectContaining({
+        authorization: 'Bearer duplicate-token',
+      }),
+    );
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      3,
+      expect.objectContaining({
+        authorization: 'Bearer duplicate-token',
+      }),
+    );
+    expect(authHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer different-token',
+      }),
+    );
   });
 
   it('should handle partial header matching', async () => {
@@ -331,10 +376,13 @@ describe('toHaveBeenNthRequestedWithHeaders', () => {
       .json();
 
     // Test partial matching - only check specific headers we care about
-    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(2, {
-      authorization: 'Bearer token123',
-      'content-type': 'application/json',
-      'x-client-version': '1.0.0',
-    });
+    expect(apiHandler).toHaveBeenNthRequestedWithHeaders(
+      2,
+      expect.objectContaining({
+        authorization: 'Bearer token123',
+        'content-type': 'application/json',
+        'x-client-version': '1.0.0',
+      }),
+    );
   });
 });

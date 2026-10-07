@@ -265,16 +265,21 @@ expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { userId: '123' })
 
 #### toHaveBeenRequestedWithHeaders
 
-Assert on request headers. Headers are case-insensitive. Only the headers you pass are compared. Other headers on the request are ignored.
+Assert on request headers. Headers are case-insensitive. The object must match exactly. Use `expect.objectContaining` when only some headers matter.
 
 ```typescript
-expect(handler).toHaveBeenRequestedWithHeaders({
-  'authorization': 'Bearer token123',
-  'content-type': 'application/json'
-})
+expect(handler).toHaveBeenRequestedWithHeaders(
+  expect.objectContaining({
+    'authorization': 'Bearer token123',
+    'content-type': 'application/json'
+  })
+)
 
 // Nth call variant
-expect(handler).toHaveBeenNthRequestedWithHeaders(1, { 'x-api-key': 'secret' })
+expect(handler).toHaveBeenNthRequestedWithHeaders(
+  1,
+  expect.objectContaining({ 'x-api-key': 'secret' })
+)
 ```
 
 ### URL Matchers
@@ -387,7 +392,7 @@ Assert on multiple request properties at once. See [RequestPayload](#requestpayl
 // HTTP example
 expect(handler).toHaveBeenRequestedWith({
   jsonBody: { name: 'John' },
-  headers: { 'authorization': 'Bearer token' },
+  headers: expect.objectContaining({ 'authorization': 'Bearer token' }),
   queryString: '?page=1',
   hash: '#top',
   pathParameters: { userId: '123' }
@@ -402,7 +407,7 @@ expect(gqlHandler).toHaveBeenRequestedWith({
 // Nth call variant
 expect(handler).toHaveBeenNthRequestedWith(2, {
   jsonBody: { action: 'update' },
-  headers: { 'content-type': 'application/json' }
+  headers: expect.objectContaining({ 'content-type': 'application/json' })
 })
 ```
 
@@ -414,7 +419,10 @@ All matchers have an "nth" variant to assert on specific call positions. The fir
 // Basic matchers
 expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body')
 expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { data: 'second call' })
-expect(handler).toHaveBeenNthRequestedWithHeaders(3, { 'x-retry': '2' })
+expect(handler).toHaveBeenNthRequestedWithHeaders(
+  3,
+  expect.objectContaining({ 'x-retry': '2' })
+)
 
 // URL matchers
 expect(handler).toHaveBeenNthRequestedWithQueryString(1, '?page=1')

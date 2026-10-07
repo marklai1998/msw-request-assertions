@@ -36,10 +36,10 @@ describe('toHaveBeenRequestedWith', () => {
       jsonBody: userData,
       queryString: '?source=web',
       hash: '#section1',
-      headers: {
+      headers: expect.objectContaining({
         authorization: 'Bearer token456',
         'content-type': 'application/json',
-      },
+      }),
     });
   });
 

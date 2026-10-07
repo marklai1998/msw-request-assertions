@@ -1,6 +1,6 @@
 import type { Mock } from 'vitest';
 import type { Assertion } from '../../types/index.js';
-import { matchHeaders } from '../../utils/checkEquality.js';
+import { checkEquality } from '../../utils/checkEquality.js';
 import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
 import { formatMockCalls } from '../../utils/formatMockCalls.js';
 
@@ -92,7 +92,7 @@ export const toHaveBeenRequestedWithHeaders: Assertion = {
 
     const { isNot } = this;
     return {
-      pass: calls.some((call) => matchHeaders(call[0], expected)),
+      pass: calls.some((call) => checkEquality(call[0], expected)),
       message: () =>
         formatMockCalls(
           name,

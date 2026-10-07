@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/marklai1998/msw-request-assertions/compare/v2.0.0...v3.0.0) (2026-10-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* peer dependency is msw@^3 and Node.js >=22. GraphQL handlers come from msw/graphql via graphql.link(). Import the setup file before calling link().
+
+### Features
+
+* support msw 3 ([#242](https://github.com/marklai1998/msw-request-assertions/issues/242)) ([e44a753](https://github.com/marklai1998/msw-request-assertions/commit/e44a7534adc8097bb604782b986ee255d148e3b7))
+
 ## [2.0.0](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.7...v2.0.0) (2026-09-18)
 
 

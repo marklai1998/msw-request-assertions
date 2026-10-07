@@ -1,5 +1,5 @@
 import type { Assertion } from '../../types/index.js';
-import { checkEquality } from '../../utils/checkEquality.js';
+import { matchHeaders } from '../../utils/checkEquality.js';
 import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
 import { formatMockCalls, ordinalOf } from '../../utils/formatMockCalls.js';
 
@@ -18,7 +18,7 @@ export const toHaveBeenNthRequestedWithHeaders: Assertion = {
 
     const { isNot } = this;
     return {
-      pass: checkEquality(nthCall, expected),
+      pass: matchHeaders(nthCall, expected),
       message: () =>
         formatMockCalls(
           name,

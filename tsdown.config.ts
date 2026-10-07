@@ -9,7 +9,7 @@ const entry = {
 const shared = {
   entry,
   platform: 'node' as const,
-  target: 'node18',
+  target: 'node22',
   sourcemap: true,
   dts: true,
   deps: { neverBundle: true as const },

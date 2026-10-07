@@ -26,7 +26,7 @@ const restHandlers = [apiHandler, authHandler, webhookHandler];
 const server = setupServer(...restHandlers);
 
 describe('toHaveBeenNthRequestedWithHeaders', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
 
   afterAll(() => server.close());
 

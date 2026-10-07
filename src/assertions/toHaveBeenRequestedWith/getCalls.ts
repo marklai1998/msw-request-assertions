@@ -1,4 +1,5 @@
-import { GraphQLHandler, type HttpHandler } from 'msw';
+import type { HttpHandler } from 'msw';
+import { GraphQLHandler } from 'msw/graphql';
 
 export const getCalls = (
   received: HttpHandler | GraphQLHandler,

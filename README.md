@@ -133,6 +133,28 @@ test('should create user with correct data', async () => {
 
 ## 🔄 Migration
 
+### MSW 3 (breaking)
+
+Peer dependency is `msw@^3`. Node.js 22 or newer is required.
+
+GraphQL handlers are created from `graphql.link()` (`msw/graphql`). This library patches `query` and `mutation` on the link, so import the setup file before calling `graphql.link()`.
+
+```ts
+import { HttpResponse } from 'msw'
+import { graphql } from 'msw/graphql'
+import 'msw-request-assertions/vitest'
+
+const api = graphql.link('http://localhost/graphql')
+
+const getUser = api.query('GetUser', () => {
+  return HttpResponse.json({ data: { user: { id: '1' } } })
+})
+```
+
+Install `graphql` when you assert on GraphQL handlers. MSW 3 treats it as an optional peer.
+
+`server.listen({ onUnhandledRequest })` is now `onUnhandledFrame` in MSW itself.
+
 ### Vitest 5 matcher types (breaking)
 
 Default `msw-request-assertions/vitest` types now match Vitest 5:
@@ -243,7 +265,7 @@ expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { userId: '123' })
 
 #### toHaveBeenRequestedWithHeaders
 
-Assert on request headers. Headers are case-insensitive.
+Assert on request headers. Headers are case-insensitive. Only the headers you pass are compared. Other headers on the request are ignored.
 
 ```typescript
 expect(handler).toHaveBeenRequestedWithHeaders({

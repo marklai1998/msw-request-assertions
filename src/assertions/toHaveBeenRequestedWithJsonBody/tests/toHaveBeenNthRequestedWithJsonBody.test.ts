@@ -28,7 +28,7 @@ const restHandlers = [usersHandler, productsHandler, configHandler];
 const server = setupServer(...restHandlers);
 
 describe('toHaveBeenNthRequestedWithJsonBody', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
 
   afterAll(() => server.close());
 

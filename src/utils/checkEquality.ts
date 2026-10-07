@@ -63,3 +63,35 @@ export const checkEquality = (expected: unknown, actual: unknown): boolean => {
 
   return false;
 };
+
+/** Expected headers must match. Extra headers on the request are ignored. */
+export const matchHeaders = (received: unknown, expected: unknown): boolean => {
+  if (!isPlainObject(expected) || !isPlainObject(received)) {
+    return false;
+  }
+
+  return Object.entries(expected).every(([key, value]) =>
+    checkEquality(value, received[key.toLowerCase()]),
+  );
+};
+
+export const matchRequestPayload = (
+  expected: unknown,
+  actual: unknown,
+): boolean => {
+  if (
+    isPlainObject(expected) &&
+    isPlainObject(actual) &&
+    'headers' in expected
+  ) {
+    if (!matchHeaders(actual.headers, expected.headers)) {
+      return false;
+    }
+
+    const { headers: _expectedHeaders, ...restExpected } = expected;
+    const { headers: _actualHeaders, ...restActual } = actual;
+    return checkEquality(restExpected, restActual);
+  }
+
+  return checkEquality(expected, actual);
+};

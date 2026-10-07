@@ -11,7 +11,7 @@ const apiHandler = http.post('http://127.0.0.1/api/data', () => {
 const server = setupServer(apiHandler);
 
 describe('toHaveBeenRequestedWithHeaders', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
   afterAll(() => server.close());
   afterEach(() => server.resetHandlers());
 

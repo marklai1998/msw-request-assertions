@@ -1,5 +1,5 @@
 import type { Assertion } from '../../types/index.js';
-import { checkEquality } from '../../utils/checkEquality.js';
+import { matchRequestPayload } from '../../utils/checkEquality.js';
 import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
 import { formatMockCalls } from '../../utils/formatMockCalls.js';
 import { getCalls } from './getCalls.js';
@@ -18,7 +18,7 @@ export const toHaveBeenRequestedWith: Assertion = {
     const name = received.requestedAssertion.getMockName();
 
     return {
-      pass: calls.some((call) => checkEquality(expected, call)),
+      pass: calls.some((call) => matchRequestPayload(expected, call)),
       message: () =>
         formatMockCalls(
           name,

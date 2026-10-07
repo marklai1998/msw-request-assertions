@@ -14,7 +14,7 @@ const restHandlers = [myHandler];
 const server = setupServer(...restHandlers);
 
 describe('toHaveBeenRequestedWithHash', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
 
   afterAll(() => server.close());
 

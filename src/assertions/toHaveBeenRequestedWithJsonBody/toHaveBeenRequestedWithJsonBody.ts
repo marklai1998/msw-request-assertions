@@ -9,6 +9,9 @@ declare module 'msw' {
   interface HttpHandler {
     jsonBodyAssertion?: Mock;
   }
+}
+
+declare module 'msw/graphql' {
   interface GraphQLHandler {
     jsonBodyAssertion?: Mock;
   }

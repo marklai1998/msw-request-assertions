@@ -26,7 +26,7 @@ const restHandlers = [pageHandler, docsHandler, apiHandler];
 const server = setupServer(...restHandlers);
 
 describe('toHaveBeenNthRequestedWithHash', () => {
-  beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
+  beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
 
   afterAll(() => server.close());
 

@@ -1,8 +1,12 @@
 /// <reference path="./vitest.d.ts" />
-import { graphql, http } from 'msw';
+import { http } from 'msw';
+import { graphql } from 'msw/graphql';
 import { expect } from 'vitest';
 import { graphqlAssertions, httpAssertions } from '../assertions/index.js';
 import type { AssertFn } from '../types/index.js';
+import { installRequestHashCapture } from '../utils/captureRequestHash.js';
+
+installRequestHashCapture();
 
 for (const key in http) {
   const original = http[key as keyof typeof http];
@@ -12,19 +16,22 @@ for (const key in http) {
   );
 }
 
-const originalQuery = graphql.query;
+const originalLink = graphql.link.bind(graphql);
+graphql.link = (url) => {
+  const api = originalLink(url);
 
-const originalMutation = graphql.mutation;
+  api.query = graphqlAssertions.reduce(
+    (fn, { interceptGql }) => (interceptGql ? interceptGql(vi.fn, fn) : fn),
+    api.query,
+  );
 
-graphql.query = graphqlAssertions.reduce(
-  (fn, { interceptGql }) => (interceptGql ? interceptGql(vi.fn, fn) : fn),
-  originalQuery,
-);
+  api.mutation = graphqlAssertions.reduce(
+    (fn, { interceptGql }) => (interceptGql ? interceptGql(vi.fn, fn) : fn),
+    api.mutation,
+  );
 
-graphql.mutation = graphqlAssertions.reduce(
-  (fn, { interceptGql }) => (interceptGql ? interceptGql(vi.fn, fn) : fn),
-  originalMutation,
-);
+  return api;
+};
 
 expect.extend(
   [...httpAssertions, ...graphqlAssertions].reduce<Record<string, AssertFn>>(

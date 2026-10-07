@@ -1,5 +1,6 @@
 import type { Mock } from 'vitest';
 import type { Assertion } from '../../types/index.js';
+import { getCapturedRequestHash } from '../../utils/captureRequestHash.js';
 import { checkEquality } from '../../utils/checkEquality.js';
 import { checkMockedHandler } from '../../utils/checkMockedHandler.js';
 import { formatMockCalls } from '../../utils/formatMockCalls.js';
@@ -8,6 +9,9 @@ declare module 'msw' {
   interface HttpHandler {
     hashAssertion?: Mock;
   }
+}
+
+declare module 'msw/graphql' {
   interface GraphQLHandler {
     hashAssertion?: Mock;
   }
@@ -30,7 +34,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
       const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;
         const clone = request.clone();
-        const hash = new URL(clone.url).hash;
+        const hash = getCapturedRequestHash() || new URL(clone.url).hash;
 
         hashAssertion(hash);
 
@@ -56,7 +60,7 @@ export const toHaveBeenRequestedWithHash: Assertion = {
       const newResolver: typeof resolver = (info, ...args) => {
         const { request } = info;
         const clone = request.clone();
-        const hash = new URL(clone.url).hash;
+        const hash = getCapturedRequestHash() || new URL(clone.url).hash;
 
         hashAssertion(hash);
 

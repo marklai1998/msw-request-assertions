@@ -1,4 +1,5 @@
-import type { GraphQLRequestHandler, HttpRequestHandler } from 'msw';
+import type { HttpRequestHandler } from 'msw';
+import type { GraphQLRequestHandler } from 'msw/graphql';
 import type { expect, Mock } from 'vitest';
 
 export type AssertFn = Parameters<typeof expect.extend>[0][string];

@@ -8,6 +8,9 @@ declare module 'msw' {
   interface HttpHandler {
     queryStringAssertion?: Mock;
   }
+}
+
+declare module 'msw/graphql' {
   interface GraphQLHandler {
     queryStringAssertion?: Mock;
   }

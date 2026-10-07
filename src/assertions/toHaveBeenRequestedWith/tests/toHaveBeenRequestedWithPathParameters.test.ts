@@ -54,7 +54,6 @@ describe('toHaveBeenRequestedWith - Path Parameters', () => {
     expect(userHandler).toHaveBeenRequestedWith({
       pathParameters: { userId: '123' },
       queryString: '?active=true',
-      hash: '#profile',
       headers: expect.objectContaining({
         authorization: 'Bearer token',
       }),

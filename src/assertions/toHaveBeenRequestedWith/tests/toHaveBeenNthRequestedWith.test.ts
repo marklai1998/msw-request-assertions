@@ -43,7 +43,6 @@ describe('toHaveBeenNthRequestedWith', () => {
     expect(usersHandler).toHaveBeenNthRequestedWith(1, {
       jsonBody: { name: 'John' },
       queryString: '?page=1',
-      hash: '#section1',
       headers: expect.objectContaining({
         authorization: 'Bearer token123',
         'content-type': 'application/json',

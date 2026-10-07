@@ -4,9 +4,6 @@ import { graphql } from 'msw/graphql';
 import { expect } from 'vitest';
 import { graphqlAssertions, httpAssertions } from '../assertions/index.js';
 import type { AssertFn } from '../types/index.js';
-import { installRequestHashCapture } from '../utils/captureRequestHash.js';
-
-installRequestHashCapture();
 
 for (const key in http) {
   const original = http[key as keyof typeof http];

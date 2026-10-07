@@ -155,6 +155,8 @@ Install `graphql` when you assert on GraphQL handlers. MSW 3 treats it as an opt
 
 `server.listen({ onUnhandledRequest })` is now `onUnhandledFrame` in MSW itself.
 
+`toHaveBeenRequestedWithHash`, `toHaveBeenNthRequestedWithHash`, and the `hash` field on `toHaveBeenRequestedWith` are removed. MSW 3 does not expose the URL fragment on the intercepted request.
+
 ### Vitest 5 matcher types (breaking)
 
 Default `msw-request-assertions/vitest` types now match Vitest 5:
@@ -203,7 +205,6 @@ Do not import both `/vitest` and `/vitest/v4` in the same TypeScript project.
     - [toHaveBeenRequestedWithHeaders](#tohavebeenrequestedwithheaders)
 - [URL Matchers](#url-matchers)
     - [toHaveBeenRequestedWithQueryString](#tohavebeenrequestedwithquerystring)
-    - [toHaveBeenRequestedWithHash](#tohavebeenrequestedwithhash)
     - [toHaveBeenRequestedWithPathParameters](#tohavebeenrequestedwithpathparameters)
 - [GraphQL Matchers](#graphql-matchers)
     - [toHaveBeenRequestedWithGqlQuery](#tohavebeenrequestedwithgqlquery)
@@ -322,17 +323,6 @@ const qsFormat = '?' + qs.stringify(params, {
 expect(handler).toHaveBeenRequestedWithQueryString(qsFormat)
 ```
 
-#### toHaveBeenRequestedWithHash
-
-Assert on URL hash fragment.
-
-```typescript
-expect(handler).toHaveBeenRequestedWithHash('#section1')
-
-// Nth call variant
-expect(handler).toHaveBeenNthRequestedWithHash(1, '#top')
-```
-
 #### toHaveBeenRequestedWithPathParameters
 
 Assert on URL path parameters (for dynamic routes).
@@ -394,7 +384,6 @@ expect(handler).toHaveBeenRequestedWith({
   jsonBody: { name: 'John' },
   headers: expect.objectContaining({ 'authorization': 'Bearer token' }),
   queryString: '?page=1',
-  hash: '#top',
   pathParameters: { userId: '123' }
 })
 
@@ -426,7 +415,6 @@ expect(handler).toHaveBeenNthRequestedWithHeaders(
 
 // URL matchers
 expect(handler).toHaveBeenNthRequestedWithQueryString(1, '?page=1')
-expect(handler).toHaveBeenNthRequestedWithHash(2, '#section2')
 expect(handler).toHaveBeenNthRequestedWithPathParameters(1, { id: '123' })
 
 // GraphQL matchers
@@ -457,7 +445,6 @@ type RequestPayload = {
   
   // URL components
   queryString?: string;
-  hash?: string;
   pathParameters?: Record<string, string>;
   
   // GraphQL specific

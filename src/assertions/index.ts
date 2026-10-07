@@ -8,8 +8,6 @@ import { toHaveBeenNthRequestedWithGqlQuery } from './toHaveBeenRequestedWithGql
 import { toHaveBeenRequestedWithGqlQuery } from './toHaveBeenRequestedWithGqlQuery/toHaveBeenRequestedWithGqlQuery.js';
 import { toHaveBeenNthRequestedWithGqlVariables } from './toHaveBeenRequestedWithGqlVariables/toHaveBeenNthRequestedWithGqlVariables.js';
 import { toHaveBeenRequestedWithGqlVariables } from './toHaveBeenRequestedWithGqlVariables/toHaveBeenRequestedWithGqlVariables.js';
-import { toHaveBeenNthRequestedWithHash } from './toHaveBeenRequestedWithHash/toHaveBeenNthRequestedWithHash.js';
-import { toHaveBeenRequestedWithHash } from './toHaveBeenRequestedWithHash/toHaveBeenRequestedWithHash.js';
 import { toHaveBeenNthRequestedWithHeaders } from './toHaveBeenRequestedWithHeaders/toHaveBeenNthRequestedWithHeaders.js';
 import { toHaveBeenRequestedWithHeaders } from './toHaveBeenRequestedWithHeaders/toHaveBeenRequestedWithHeaders.js';
 import { toHaveBeenNthRequestedWithJsonBody } from './toHaveBeenRequestedWithJsonBody/toHaveBeenNthRequestedWithJsonBody.js';
@@ -33,8 +31,6 @@ export const assertions = [
   toHaveBeenNthRequestedWith,
   toHaveBeenRequestedWithBody,
   toHaveBeenNthRequestedWithBody,
-  toHaveBeenRequestedWithHash,
-  toHaveBeenNthRequestedWithHash,
   toHaveBeenRequestedWithHeaders,
   toHaveBeenNthRequestedWithHeaders,
   toHaveBeenRequestedWithJsonBody,

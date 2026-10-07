@@ -14,7 +14,6 @@ export const getCalls = (
     received.queryStringAssertion?.mock.calls ?? [];
   const jsonBodyAssertionCalls = received.jsonBodyAssertion?.mock.calls ?? [];
   const headersAssertionCalls = received.headersAssertion?.mock.calls ?? [];
-  const hashAssertionCalls = received.hashAssertion?.mock.calls ?? [];
   const pathParametersAssertionCalls =
     received.pathParametersAssertion?.mock.calls || [];
   const gqlVariablesAssertionCalls =
@@ -40,9 +39,6 @@ export const getCalls = (
     }
     if ('headers' in expected) {
       call.headers = headersAssertionCalls[idx]?.[0];
-    }
-    if ('hash' in expected) {
-      call.hash = hashAssertionCalls[idx]?.[0];
     }
     if ('pathParameters' in expected) {
       call.pathParameters = pathParametersAssertionCalls[idx]?.[0];

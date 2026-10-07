@@ -35,7 +35,6 @@ describe('toHaveBeenRequestedWith', () => {
     expect(postHandler).toHaveBeenRequestedWith({
       jsonBody: userData,
       queryString: '?source=web',
-      hash: '#section1',
       headers: expect.objectContaining({
         authorization: 'Bearer token456',
         'content-type': 'application/json',

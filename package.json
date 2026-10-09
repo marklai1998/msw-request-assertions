@@ -122,7 +122,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@12.10.0",
+  "packageManager": "pnpm@12.10.1",
   "engines": {
     "node": ">=22"
   }

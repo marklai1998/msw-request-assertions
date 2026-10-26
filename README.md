@@ -36,18 +36,18 @@ pnpm add --save-dev msw-request-assertions msw
 
 ```typescript
 // vitest.setup.ts
-import 'msw-request-assertions/vitest'
+import 'msw-request-assertions/vitest';
 ```
 
 ```typescript
 // vitest.config.ts
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
     setupFiles: ['./vitest.setup.ts'],
   },
-})
+});
 ```
 
 ```json
@@ -70,14 +70,14 @@ Vitest 4: use `msw-request-assertions/vitest/v4` instead. See [Migration](#-migr
 
 ```typescript
 // jest.setup.ts
-import 'msw-request-assertions/jest'
+import 'msw-request-assertions/jest';
 ```
 
 ```javascript
 // jest.config.js
 module.exports = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-}
+};
 ```
 
 ```json
@@ -94,41 +94,41 @@ module.exports = {
 ### Basic Example
 
 ```typescript
-import { http, HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
 // Create MSW handlers
 const userHandler = http.post('/api/users', () => {
-  return HttpResponse.json({ id: 1, name: 'John Doe' })
-})
+  return HttpResponse.json({ id: 1, name: 'John Doe' });
+});
 
-const server = setupServer(userHandler)
+const server = setupServer(userHandler);
 
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 test('should create user with correct data', async () => {
-  const userData = { name: 'John Doe', email: 'john@example.com' }
-  
+  const userData = { name: 'John Doe', email: 'john@example.com' };
+
   await fetch('/api/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(userData)
-  })
+    body: JSON.stringify(userData),
+  });
 
   // Assert the request was made
-  expect(userHandler).toHaveBeenRequested()
-  
+  expect(userHandler).toHaveBeenRequested();
+
   // Assert the request body
-  expect(userHandler).toHaveBeenRequestedWithJsonBody(userData)
-  
+  expect(userHandler).toHaveBeenRequestedWithJsonBody(userData);
+
   // Assert multiple properties at once
   expect(userHandler).toHaveBeenRequestedWith({
     jsonBody: userData,
-    headers: { 'content-type': 'application/json' }
-  })
-})
+    headers: { 'content-type': 'application/json' },
+  });
+});
 ```
 
 ## 🔄 Migration
@@ -140,15 +140,15 @@ Peer dependency is `msw@^3`. Node.js 22 or newer is required.
 GraphQL handlers are created from `graphql.link()` (`msw/graphql`). This library patches `query` and `mutation` on the link, so import the setup file before calling `graphql.link()`.
 
 ```ts
-import { HttpResponse } from 'msw'
-import { graphql } from 'msw/graphql'
-import 'msw-request-assertions/vitest'
+import { HttpResponse } from 'msw';
+import { graphql } from 'msw/graphql';
+import 'msw-request-assertions/vitest';
 
-const api = graphql.link('http://localhost/graphql')
+const api = graphql.link('http://localhost/graphql');
 
 const getUser = api.query('GetUser', () => {
-  return HttpResponse.json({ data: { user: { id: '1' } } })
-})
+  return HttpResponse.json({ data: { user: { id: '1' } } });
+});
 ```
 
 Install `graphql` when you assert on GraphQL handlers. MSW 3 treats it as an optional peer.
@@ -173,14 +173,14 @@ Vitest 4's `Matchers<T = any>` is a different type-parameter list. TypeScript ca
 **Vitest 5:** keep the existing import. No code change.
 
 ```ts
-import 'msw-request-assertions/vitest'
+import 'msw-request-assertions/vitest';
 ```
 
 **Vitest 4:** switch the setup import and `tsconfig` types entry to `/vitest/v4`. Runtime is the same.
 
 ```ts
 // vitest.setup.ts
-import 'msw-request-assertions/vitest/v4'
+import 'msw-request-assertions/vitest/v4';
 ```
 
 ```json
@@ -196,24 +196,24 @@ Do not import both `/vitest` and `/vitest/v4` in the same TypeScript project.
 ## 💻 API
 
 - [Basic Request Matchers](#basic-request-matchers)
-    - [toHaveBeenRequested](#tohavebeenrequested)
+  - [toHaveBeenRequested](#tohavebeenrequested)
     - [toHaveBeenRequestedTimes](#tohavebeenrequestedtimes)
 - [Body Matchers](#body-matchers)
-    - [toHaveBeenRequestedWithBody](#tohavebeenrequestedwithbody)
+  - [toHaveBeenRequestedWithBody](#tohavebeenrequestedwithbody)
     - [toHaveBeenRequestedWithJsonBody](#tohavebeenrequestedwithjsonbody)
 - [Header Matchers](#header-matchers)
-    - [toHaveBeenRequestedWithHeaders](#tohavebeenrequestedwithheaders)
+  - [toHaveBeenRequestedWithHeaders](#tohavebeenrequestedwithheaders)
 - [URL Matchers](#url-matchers)
-    - [toHaveBeenRequestedWithQueryString](#tohavebeenrequestedwithquerystring)
+  - [toHaveBeenRequestedWithQueryString](#tohavebeenrequestedwithquerystring)
     - [toHaveBeenRequestedWithPathParameters](#tohavebeenrequestedwithpathparameters)
 - [GraphQL Matchers](#graphql-matchers)
-    - [toHaveBeenRequestedWithGqlQuery](#tohavebeenrequestedwithgqlquery)
+  - [toHaveBeenRequestedWithGqlQuery](#tohavebeenrequestedwithgqlquery)
     - [toHaveBeenRequestedWithGqlVariables](#tohavebeenrequestedwithgqlvariables)
 - [Unified Matcher](#unified-matcher)
-    - [toHaveBeenRequestedWith](#tohavebeenrequestedwith)
+  - [toHaveBeenRequestedWith](#tohavebeenrequestedwith)
 - [Nth Call Matchers](#nth-call-matchers)
 - [Types](#types)
-    - [RequestPayload](#requestpayload)
+  - [RequestPayload](#requestpayload)
 
 ### Basic Request Matchers
 
@@ -222,8 +222,8 @@ Do not import both `/vitest` and `/vitest/v4` in the same TypeScript project.
 Assert that a handler was called at least once.
 
 ```typescript
-expect(handler).toHaveBeenRequested()
-expect(handler).not.toHaveBeenRequested()
+expect(handler).toHaveBeenRequested();
+expect(handler).not.toHaveBeenRequested();
 ```
 
 #### toHaveBeenRequestedTimes
@@ -231,8 +231,8 @@ expect(handler).not.toHaveBeenRequested()
 Assert that a handler was called exactly n times.
 
 ```typescript
-expect(handler).toHaveBeenRequestedTimes(3)
-expect(handler).not.toHaveBeenRequestedTimes(1)
+expect(handler).toHaveBeenRequestedTimes(3);
+expect(handler).not.toHaveBeenRequestedTimes(1);
 ```
 
 ### Body Matchers
@@ -242,10 +242,12 @@ expect(handler).not.toHaveBeenRequestedTimes(1)
 Assert on raw request body (string).
 
 ```typescript
-expect(handler).toHaveBeenRequestedWithBody('{"name":"John Doe","email":"john@example.com"}')
+expect(handler).toHaveBeenRequestedWithBody(
+  '{"name":"John Doe","email":"john@example.com"}',
+);
 
 // Nth call variant
-expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body')
+expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body');
 ```
 
 #### toHaveBeenRequestedWithJsonBody
@@ -255,11 +257,11 @@ Assert on JSON request body (parsed object).
 ```typescript
 expect(handler).toHaveBeenRequestedWithJsonBody({
   name: 'John Doe',
-  email: 'john@example.com'
-})
+  email: 'john@example.com',
+});
 
 // Nth call variant
-expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { userId: '123' })
+expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { userId: '123' });
 ```
 
 ### Header Matchers
@@ -271,16 +273,16 @@ Assert on request headers. Headers are case-insensitive. The object must match e
 ```typescript
 expect(handler).toHaveBeenRequestedWithHeaders(
   expect.objectContaining({
-    'authorization': 'Bearer token123',
-    'content-type': 'application/json'
-  })
-)
+    authorization: 'Bearer token123',
+    'content-type': 'application/json',
+  }),
+);
 
 // Nth call variant
 expect(handler).toHaveBeenNthRequestedWithHeaders(
   1,
-  expect.objectContaining({ 'x-api-key': 'secret' })
-)
+  expect.objectContaining({ 'x-api-key': 'secret' }),
+);
 ```
 
 ### URL Matchers
@@ -293,34 +295,38 @@ Assert on URL query parameters.
 > The input is a string to avoid serialization issues, especially with arrays and custom formats. This gives you full control over the exact query string format.
 
 ```typescript
-expect(handler).toHaveBeenRequestedWithQueryString('?page=1&limit=10')
-expect(handler).toHaveBeenRequestedWithQueryString('') // No query params
+expect(handler).toHaveBeenRequestedWithQueryString('?page=1&limit=10');
+expect(handler).toHaveBeenRequestedWithQueryString(''); // No query params
 
 // Nth call variant
-expect(handler).toHaveBeenNthRequestedWithQueryString(2, '?filter=active')
+expect(handler).toHaveBeenNthRequestedWithQueryString(2, '?filter=active');
 
 // Custom serialization with qs library
-import qs from 'qs'
+import qs from 'qs';
 
 const params = {
   filters: ['active', 'verified'],
   sort: { field: 'name', order: 'asc' },
-  page: 1
-}
+  page: 1,
+};
 
 // Different serialization formats
-const standardFormat = '?' + new URLSearchParams({ 
-  'filters[]': 'active',
-  'filters[]': 'verified' 
-}).toString()
+const standardFormat =
+  '?' +
+  new URLSearchParams({
+    'filters[]': 'active',
+    'filters[]': 'verified',
+  }).toString();
 
-const qsFormat = '?' + qs.stringify(params, { 
-  arrayFormat: 'brackets',
-  encode: false 
-})
+const qsFormat =
+  '?' +
+  qs.stringify(params, {
+    arrayFormat: 'brackets',
+    encode: false,
+  });
 // Results in: ?filters[]=active&filters[]=verified&sort[field]=name&sort[order]=asc&page=1
 
-expect(handler).toHaveBeenRequestedWithQueryString(qsFormat)
+expect(handler).toHaveBeenRequestedWithQueryString(qsFormat);
 ```
 
 #### toHaveBeenRequestedWithPathParameters
@@ -331,11 +337,11 @@ Assert on URL path parameters (for dynamic routes).
 // For route: /users/:userId/posts/:postId
 expect(handler).toHaveBeenRequestedWithPathParameters({
   userId: '123',
-  postId: '456'
-})
+  postId: '456',
+});
 
 // Nth call variant
-expect(handler).toHaveBeenNthRequestedWithPathParameters(1, { id: '789' })
+expect(handler).toHaveBeenNthRequestedWithPathParameters(1, { id: '789' });
 ```
 
 ### GraphQL Matchers
@@ -352,10 +358,13 @@ expect(gqlHandler).toHaveBeenRequestedWithGqlQuery(`
       name
     }
   }
-`)
+`);
 
 // Nth call variant
-expect(gqlHandler).toHaveBeenNthRequestedWithGqlQuery(1, 'query { users { id } }')
+expect(gqlHandler).toHaveBeenNthRequestedWithGqlQuery(
+  1,
+  'query { users { id } }',
+);
 ```
 
 #### toHaveBeenRequestedWithGqlVariables
@@ -365,11 +374,11 @@ Assert on GraphQL variables.
 ```typescript
 expect(gqlHandler).toHaveBeenRequestedWithGqlVariables({
   id: '123',
-  filters: { status: 'active' }
-})
+  filters: { status: 'active' },
+});
 
 // Nth call variant
-expect(gqlHandler).toHaveBeenNthRequestedWithGqlVariables(2, { userId: '456' })
+expect(gqlHandler).toHaveBeenNthRequestedWithGqlVariables(2, { userId: '456' });
 ```
 
 ### Unified Matcher
@@ -382,22 +391,22 @@ Assert on multiple request properties at once. See [RequestPayload](#requestpayl
 // HTTP example
 expect(handler).toHaveBeenRequestedWith({
   jsonBody: { name: 'John' },
-  headers: expect.objectContaining({ 'authorization': 'Bearer token' }),
+  headers: expect.objectContaining({ authorization: 'Bearer token' }),
   queryString: '?page=1',
-  pathParameters: { userId: '123' }
-})
+  pathParameters: { userId: '123' },
+});
 
 // GraphQL example
 expect(gqlHandler).toHaveBeenRequestedWith({
   gqlQuery: 'query GetUser($id: ID!) { user(id: $id) { name } }',
-  gqlVariables: { id: '123' }
-})
+  gqlVariables: { id: '123' },
+});
 
 // Nth call variant
 expect(handler).toHaveBeenNthRequestedWith(2, {
   jsonBody: { action: 'update' },
-  headers: expect.objectContaining({ 'content-type': 'application/json' })
-})
+  headers: expect.objectContaining({ 'content-type': 'application/json' }),
+});
 ```
 
 ### Nth Call Matchers
@@ -406,26 +415,26 @@ All matchers have an "nth" variant to assert on specific call positions. The fir
 
 ```typescript
 // Basic matchers
-expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body')
-expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { data: 'second call' })
+expect(handler).toHaveBeenNthRequestedWithBody(1, 'first call body');
+expect(handler).toHaveBeenNthRequestedWithJsonBody(2, { data: 'second call' });
 expect(handler).toHaveBeenNthRequestedWithHeaders(
   3,
-  expect.objectContaining({ 'x-retry': '2' })
-)
+  expect.objectContaining({ 'x-retry': '2' }),
+);
 
 // URL matchers
-expect(handler).toHaveBeenNthRequestedWithQueryString(1, '?page=1')
-expect(handler).toHaveBeenNthRequestedWithPathParameters(1, { id: '123' })
+expect(handler).toHaveBeenNthRequestedWithQueryString(1, '?page=1');
+expect(handler).toHaveBeenNthRequestedWithPathParameters(1, { id: '123' });
 
 // GraphQL matchers
-expect(gqlHandler).toHaveBeenNthRequestedWithGqlQuery(1, 'query { users }')
-expect(gqlHandler).toHaveBeenNthRequestedWithGqlVariables(2, { limit: 10 })
+expect(gqlHandler).toHaveBeenNthRequestedWithGqlQuery(1, 'query { users }');
+expect(gqlHandler).toHaveBeenNthRequestedWithGqlVariables(2, { limit: 10 });
 
 // Unified matcher
 expect(handler).toHaveBeenNthRequestedWith(3, {
   jsonBody: { name: 'Jane' },
-  queryString: '?include=profile'
-})
+  queryString: '?include=profile',
+});
 ```
 
 ### Types
@@ -439,18 +448,18 @@ type RequestPayload = {
   // HTTP/GraphQL body content
   body?: string;
   jsonBody?: unknown;
-  
+
   // HTTP headers (case-insensitive)
   headers?: Record<string, string>;
-  
+
   // URL components
   queryString?: string;
   pathParameters?: Record<string, string>;
-  
+
   // GraphQL specific
   gqlQuery?: string;
   gqlVariables?: unknown;
-}
+};
 ```
 
 ## 🤝 Contributing

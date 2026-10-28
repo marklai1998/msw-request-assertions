@@ -95,7 +95,7 @@
     "@marklai/shared-config-biome": "1.0.2",
     "@marklai/shared-config-commitlint": "1.1.2",
     "@marklai/shared-config-typescript": "1.1.2",
-    "@types/node": "24.19.2",
+    "@types/node": "26.6.5",
     "@vitest/coverage-v8": "5.0.5",
     "graphql": "17.0.2",
     "lefthook": "2.2.2",

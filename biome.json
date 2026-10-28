@@ -1,8 +1,13 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "extends": ["@marklai/shared-config-biome"],
+  "extends": [
+    "@marklai/shared-config-biome"
+  ],
   "files": {
-    "includes": ["**", "!CHANGELOG.md"]
+    "includes": [
+      "**",
+      "!CHANGELOG.md"
+    ]
   },
   "linter": {
     "rules": {
@@ -15,5 +20,15 @@
         }
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "pnpm-lock.yaml"
+      ],
+      "formatter": {
+        "enabled": false
+      }
+    }
+  ]
 }

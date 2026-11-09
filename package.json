@@ -96,13 +96,13 @@
     "@marklai/shared-config-commitlint": "1.1.3",
     "@marklai/shared-config-typescript": "1.1.2",
     "@types/node": "26.6.6",
-    "@vitest/coverage-v8": "5.0.5",
+    "@vitest/coverage-v8": "5.1.0",
     "graphql": "17.1.0",
     "lefthook": "2.2.2",
     "msw": "3.0.4",
     "tsdown": "0.23.5",
     "typescript": "7.0.2",
-    "vitest": "5.0.5",
+    "vitest": "5.1.0",
     "wretch": "3.0.9"
   },
   "peerDependencies": {

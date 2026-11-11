@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0](https://github.com/marklai1998/msw-request-assertions/compare/v2.0.0...v3.0.0) (2026-11-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* the package is ESM only; the CommonJS build is removed and Jest must run in ESM mode. Vitest 3 and 4 are no longer supported, the msw-request-assertions/vitest/v4 entry point is removed and the vitest peer dependency is now ^5.0.0.
+* peer dependency is msw@^3 and Node.js >=22. GraphQL handlers come from msw/graphql via graphql.link(). Import the setup file before calling link().
+
+### Features
+
+* ship ESM only and drop Vitest 3/4 support ([6177984](https://github.com/marklai1998/msw-request-assertions/commit/6177984162a1f9b0c5c777c52b2dfecefac1340d))
+* support msw 3 ([#242](https://github.com/marklai1998/msw-request-assertions/issues/242)) ([e44a753](https://github.com/marklai1998/msw-request-assertions/commit/e44a7534adc8097bb604782b986ee255d148e3b7))
+
 ## [2.0.0](https://github.com/marklai1998/msw-request-assertions/compare/v1.0.7...v2.0.0) (2026-09-18)
 
 

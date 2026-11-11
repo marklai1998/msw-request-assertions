@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -29,14 +30,39 @@ jobs:
 
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
         id: release
-        with:
-          release-type: node
+
+      # Decide from the actual state instead of release-please's one-shot
+      # `release_created` output, so a release whose publish was skipped
+      # (e.g. release-please erroring after tagging) is published on the next run.
+      - name: Check if release needs publishing
+        id: check
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="v$VERSION"
+          if ! git ls-remote --exit-code --tags origin "refs/tags/$TAG" > /dev/null; then
+            echo "Tag $TAG not found, nothing to publish"
+            exit 0
+          fi
+          if npm view "$NAME@$VERSION" version > /dev/null 2>&1; then
+            echo "$NAME@$VERSION already on npm"
+            exit 0
+          fi
+          echo "Publishing $NAME@$VERSION from $TAG"
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout release tag
+        if: ${{ steps.check.outputs.publish == 'true' }}
+        run: |
+          git fetch --tags --force origin
+          git checkout "${{ steps.check.outputs.tag }}"
 
       - name: Install dependencies
         run: pnpm i --frozen-lockfile
 
       - run: pnpm build
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.check.outputs.publish == 'true' }}
 
       - run: pnpm publish --access public --no-git-checks
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.check.outputs.publish == 'true' }}

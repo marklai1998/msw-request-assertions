@@ -61,12 +61,12 @@ export default defineConfig({
 
 ```
 
-Vitest 4: use `msw-request-assertions/vitest/v4` instead. See [Migration](#-migration).
+Requires Vitest 5.
 
 ### Setup for Jest
 
 > [!NOTE]  
-> Jest support is not a first-class citizen due to complex setup requirements between ESM and CJS modules. While we provide Jest compatibility, our main development and testing efforts are focused on Vitest. Feel free to [raise an issue](https://github.com/marklai1998/msw-request-assertions/issues) if you encounter Jest-specific problems.
+> Jest support is not a first-class citizen. This package is ESM only, so Jest must run in [ESM mode](https://jestjs.io/docs/ecmascript-modules). While we provide Jest compatibility, our main development and testing efforts are focused on Vitest. Feel free to [raise an issue](https://github.com/marklai1998/msw-request-assertions/issues) if you encounter Jest-specific problems.
 
 ```typescript
 // jest.setup.ts
@@ -157,41 +157,17 @@ Install `graphql` when you assert on GraphQL handlers. MSW 3 treats it as an opt
 
 `toHaveBeenRequestedWithHash`, `toHaveBeenNthRequestedWithHash`, and the `hash` field on `toHaveBeenRequestedWith` are removed. MSW 3 does not expose the URL fragment on the intercepted request.
 
-### Vitest 5 matcher types (breaking)
+### ESM only (breaking)
 
-Default `msw-request-assertions/vitest` types now match Vitest 5:
+The package ships ES modules only. The CommonJS build (`dist/cjs`, `require()`) is removed. Use `import`, or run Jest in [ESM mode](https://jestjs.io/docs/ecmascript-modules).
 
-```ts
-interface Matchers<
-  R extends void | Promise<void> = void | Promise<void>,
-  T = unknown,
-> extends CustomMatchers<R> {}
-```
+### Vitest 5 only (breaking)
 
-Vitest 4's `Matchers<T = any>` is a different type-parameter list. TypeScript cannot merge both in one declaration (`TS2428`).
-
-**Vitest 5:** keep the existing import. No code change.
+Vitest 3 and 4 are no longer supported, and the `msw-request-assertions/vitest/v4` entry point is removed. `msw-request-assertions/vitest` types match Vitest 5's `Matchers<R, T>`. Upgrade to Vitest 5 and keep the existing import:
 
 ```ts
 import 'msw-request-assertions/vitest';
 ```
-
-**Vitest 4:** switch the setup import and `tsconfig` types entry to `/vitest/v4`. Runtime is the same.
-
-```ts
-// vitest.setup.ts
-import 'msw-request-assertions/vitest/v4';
-```
-
-```json
-{
-  "compilerOptions": {
-    "types": ["vitest/globals", "msw-request-assertions/vitest/v4"]
-  }
-}
-```
-
-Do not import both `/vitest` and `/vitest/v4` in the same TypeScript project.
 
 ## 💻 API
 

@@ -6,61 +6,29 @@
     "dist"
   ],
   "type": "module",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs",
-  "types": "dist/esm/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": {
-        "types": "./dist/cjs/index.d.cts",
-        "default": "./dist/cjs/index.cjs"
-      },
-      "import": {
-        "types": "./dist/esm/index.d.ts",
-        "default": "./dist/esm/index.mjs"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./vitest": {
-      "require": {
-        "types": "./dist/cjs/vitest/vitest.d.cts",
-        "default": "./dist/cjs/vitest/index.cjs"
-      },
-      "import": {
-        "types": "./dist/esm/vitest/vitest.d.ts",
-        "default": "./dist/esm/vitest/index.mjs"
-      }
-    },
-    "./vitest/v4": {
-      "require": {
-        "types": "./dist/cjs/vitest/vitest-v4.d.cts",
-        "default": "./dist/cjs/vitest/index.cjs"
-      },
-      "import": {
-        "types": "./dist/esm/vitest/vitest-v4.d.ts",
-        "default": "./dist/esm/vitest/index.mjs"
-      }
+      "types": "./dist/vitest/vitest.d.ts",
+      "default": "./dist/vitest/index.js"
     },
     "./jest": {
-      "require": {
-        "types": "./dist/cjs/jest/jest.d.cts",
-        "default": "./dist/cjs/jest/index.cjs"
-      },
-      "import": {
-        "types": "./dist/esm/jest/jest.d.ts",
-        "default": "./dist/esm/jest/index.mjs"
-      }
-    }
+      "types": "./dist/jest/jest.d.ts",
+      "default": "./dist/jest/index.js"
+    },
+    "./package.json": "./package.json"
   },
   "typesVersions": {
     "*": {
       "vitest": [
-        "./dist/esm/vitest/vitest.d.ts"
-      ],
-      "vitest/v4": [
-        "./dist/esm/vitest/vitest-v4.d.ts"
+        "./dist/vitest/vitest.d.ts"
       ],
       "jest": [
-        "./dist/esm/jest/jest.d.ts"
+        "./dist/jest/jest.d.ts"
       ],
       "*": []
     }
@@ -109,7 +77,7 @@
     "jest": "^30.0.4",
     "graphql": ">=16",
     "msw": "^3.0.0",
-    "vitest": "^3.2.0 || ^4.0.0 || ^5.0.0"
+    "vitest": "^5.0.0"
   },
   "peerDependenciesMeta": {
     "graphql": {

@@ -2,11 +2,25 @@
   "name": "msw-request-assertions",
   "version": "3.0.0",
   "description": "Request assertions for MSW",
-  "files": [
-    "dist"
+  "keywords": [
+    "msw",
+    "vitest",
+    "vitest-plugin",
+    "api",
+    "mock",
+    "mocking",
+    "testing"
   ],
+  "homepage": "https://github.com/marklai1998/msw-request-assertion#readme",
+  "bugs": {
+    "url": "https://github.com/marklai1998/msw-request-assertion/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marklai1998/msw-request-assertions"
+  },
+  "license": "MIT",
   "type": "module",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -22,6 +36,7 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
       "vitest": [
@@ -33,28 +48,13 @@
       "*": []
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsdown",
     "test": "vitest run --coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marklai1998/msw-request-assertions"
-  },
-  "keywords": [
-    "msw",
-    "vitest",
-    "vitest-plugin",
-    "api",
-    "mock",
-    "mocking",
-    "testing"
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/marklai1998/msw-request-assertion/issues"
-  },
-  "homepage": "https://github.com/marklai1998/msw-request-assertion#readme",
   "devDependencies": {
     "@biomejs/biome": "2.6.5",
     "@commitlint/cli": "21.2.4",
@@ -74,8 +74,8 @@
     "wretch": "3.0.9"
   },
   "peerDependencies": {
-    "jest": "^30.0.4",
     "graphql": ">=16",
+    "jest": "^30.0.4",
     "msw": "^3.0.0",
     "vitest": "^5.0.0"
   },
@@ -83,10 +83,10 @@
     "graphql": {
       "optional": true
     },
-    "vitest": {
+    "jest": {
       "optional": true
     },
-    "jest": {
+    "vitest": {
       "optional": true
     }
   },
